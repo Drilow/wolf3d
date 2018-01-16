@@ -6,7 +6,7 @@
 #    By: adleau <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/10 19:07:04 by adleau            #+#    #+#              #
-#    Updated: 2018/01/11 14:58:48 by adleau           ###   ########.fr        #
+#    Updated: 2018/01/16 15:43:28 by adleau           ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -34,6 +34,9 @@ SDL_DIR		=	SDL2-2.0.7
 SDL_LIB		=	$(SDL_DIR)/build/.libs/libSDL2.a
 SDL_INC		=	$(SDL_DIR)/include/
 
+##SDL_IMG_DIR	=	SDL2_image-2.0.2
+##SDL_IMG_LIB	=	$(SDL_IMG_DIR)/
+
 ifeq ($(UNAME), Darwin)
 FLAG_SDL	=	-I/$(SDL_INC) $(SDL_LIB) -framework Cocoa -framework CoreAudio -framework AudioToolbox -framework ForceFeedback -framework CoreVideo -framework Carbon -framework IOKit -liconv
 endif
@@ -46,6 +49,8 @@ SRC_BASE	=	\
 			main.c\
 			w3d/w3d.c\
 			engine/engine.c\
+			sdl/sdl_wrapper.c	\
+			events/events.c		\
 
 SRCS		=	$(addprefix $(SRC_DIR), $(SRC_BASE))
 OBJS		=	$(addprefix $(OBJ_DIR), $(SRC_BASE:.c=.o))
@@ -65,10 +70,14 @@ $(NAME):		$(SDL_LIB) $(LIBFT_LIB) $(OBJ_DIR) $(OBJS)
 		-I $(INC_DIR)calcs/ \
 		-I $(INC_DIR)parser/ \
 		-I $(INC_DIR)sdl/ \
+		-I $(INC_DIR)events/ \
 		-I $(LIBFT_INC) $(LIBFT_LIB) \
 		$(FLAG_SDL) \
 		$(FLAGS)
 	@printf "\r\033[48;5;15;38;5;25m✅ MAKE $(NAME)\033[0m\033[K\n"
+
+$(SDL_IMG_DIR):
+
 
 $(SDL_DIR):
 	@printf "\r\033[38;5;11m⌛ EXTRACT %10.10s\033[0m\033[K" $(SDL_DIR)
@@ -94,6 +103,7 @@ $(OBJ_DIR) :
 	@mkdir -p $(OBJ_DIR)/calcs
 	@mkdir -p $(OBJ_DIR)/parser
 	@mkdir -p $(OBJ_DIR)/sdl
+	@mkdir -p $(OBJ_DIR)/events
 	@mkdir -p $(dir $(OBJS))
 
 $(OBJ_DIR)%.o :	$(SRC_DIR)%.c | $(OBJ_DIR)
