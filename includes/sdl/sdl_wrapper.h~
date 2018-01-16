@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/11 14:35:49 by adleau            #+#    #+#             */
-/*   Updated: 2018/01/16 17:48:01 by adleau           ###   ########.fr       */
+/*   Updated: 2018/01/16 12:40:16 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,9 @@
 # define WIN_HT 480
 # include <SDL.h>
 
-/* SDL_WRAPPER
-** holds the data relevant to the SDL
- */
-
 typedef struct			s_sdl_wrapper
 {
 	SDL_Window			*screen;
-	SDL_Surface			*menu;
-	SDL_Surface			*wolf;
 	SDL_Event			event;
 }						t_sdl_wrapper;
 
