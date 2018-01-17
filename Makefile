@@ -5,160 +5,117 @@
 #                                                     +:+ +:+         +:+      #
 #    By: adleau <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2018/01/10 19:07:04 by adleau            #+#    #+#              #
-#    Updated: 2018/01/16 15:43:28 by adleau           ###   ########.fr        #
+#    Created: 2018/01/17 12:44:17 by adleau            #+#    #+#              #
+#    Updated: 2018/01/17 14:24:13 by adleau           ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
-NAME		=	wolf3d
+NCOL=\x1b[0m
+VERT=\x1b[32;01m
+JAUN=\x1b[33;01m
+ROUG =\x1b[31;01m
+BLEU =\x1b[34;01m
 
-CC			=	gcc
-FLAGS		=	-Wall -Wextra -Werror
+NAME = wolf3d
 
-DELTA		=	$$(echo "$$(tput cols)-47"|bc)
+CC = gcc
 
-LIBFT_DIR	=	libft/
-LIBFT_LIB	=	$(LIBFT_DIR)libft.a
-LIBFT_INC	=	$(LIBFT_DIR)
+CFLAGS = -Wall -Werror -Wextra #-c -O3 -g3 -std=c89
 
-SRC_DIR		=	srcs/
-W3D_SRC		=	$(SRC_DIR)w3d/
-INC_DIR		=	includes/
+LDFLAGS = `ext/SDL2/bin/sdl2-config --cflags --libs -lSDL2 -lSDL2_image`
 
+LIB	 =  -L./ext/SDL2/lib -I./ext/SDL2/include/SDL2
+LIB	 += -L./ext/SDL2_Image/lib -I./ext/SDL2_Image/include/SDL2
+#LIB	 += -L./ext/SDL2_ttf/lib -I./ext/SDL2_ttf/include/SDL2
+LIB	 += -lSDL2 -lSDL2_image
 
-OBJ_DIR		=	objs/
+LIB_PATH  =  '/home/baarg/Desktop/new_SDL/ext/SDL2_Image/lib'
+#LIB_PATH += ':/home/baarg/Desktop/new_SDL/ext/SDL2_ttf/lib'
+LIB_PATH += ':/home/baarg/Desktop/new_SDL/ext/SDL2/lib'
 
-UNAME		=	$(shell uname)
+SRCPATH = srcs/
 
-SDL_DIR		=	SDL2-2.0.7
-SDL_LIB		=	$(SDL_DIR)/build/.libs/libSDL2.a
-SDL_INC		=	$(SDL_DIR)/include/
+SRC =   $(SRCPATH)main.c \
+		$(SRCPATH)draw/draw.c \
+		$(SRCPATH)engine/engine.c\
+		$(SRCPATH)events/events.c \
+		$(SRCPATH)sdl/sdl_wrapper.c \
+		$(SRCPATH)w3d/w3d.c \
 
-##SDL_IMG_DIR	=	SDL2_image-2.0.2
-##SDL_IMG_LIB	=	$(SDL_IMG_DIR)/
+OBJ = $(SRC:.c=.o)
 
-ifeq ($(UNAME), Darwin)
-FLAG_SDL	=	-I/$(SDL_INC) $(SDL_LIB) -framework Cocoa -framework CoreAudio -framework AudioToolbox -framework ForceFeedback -framework CoreVideo -framework Carbon -framework IOKit -liconv
-endif
+all: ext $(NAME)
 
-ifeq ($(UNAME), Linux)
-	FLAG_SDL	=	-I/$(SDL_INC) $(SDL_LIB) -lXext -lX11 -lm -ldl -pthread
-endif
+$(NAME): $(OBJ)
+		make -C libft/
+		@echo "$(VERT)~> [ libft library made. ]$(NCOL)"
+		$(CC) $(OBJ) -o $(NAME) -Iincludes/ $(LDFLAGS) -Llibft/ -lft $(LIB)
+		@echo "$(VERT)~> [ binary file '$(NAME)' made. ]$(NCOL)"
 
-SRC_BASE	=	\
-			main.c\
-			w3d/w3d.c\
-			engine/engine.c\
-			sdl/sdl_wrapper.c	\
-			events/events.c		\
+%.o: %.c
+		$(CC) $(LDFLAGS) -o $@ -c $< -Ilibft/ -Iincludes/ $(LIB)
 
-SRCS		=	$(addprefix $(SRC_DIR), $(SRC_BASE))
-OBJS		=	$(addprefix $(OBJ_DIR), $(SRC_BASE:.c=.o))
-NB			=	$(words $(SRC_BASE))
-INDEX		=	0
+clean:
+		rm -rf $(OBJ)
+		@echo "$(JAUN)~> [ .o files erased. ]$(NCOL)"
+		make clean -C libft/
 
-all : $(SDL_LIB)
-	@make -j -C $(LIBFT_DIR)
-	@make -j $(NAME)
+fclean: clean
+		rm -f $(NAME)
+		@echo "$(JAUN)~> [ binary file '$(NAME)' erased. ]$(NCOL)"
+		rm -fr ext
+		rm -fr ext/SDL2 ext/SDL2_Image ext/SDL_ttf
+		rm -fr SDL2-2.0.7.tar.gz SDL2-2.0.7 ext/SDL2/junk
+		rm -fr SDL2_image-2.0.2.tar.gz SDL2_image-2.0.2 ext/SDL2_Image/junk
+#		rm -fr SDL2_ttf-2.0.12.tar.gz SDL2_ttf-2.0.12 ext/SDL2_ttf/junk
+		@echo "$(JAUN)~> [ SDL2 folder cleaned. ]$(NCOL)"
+		make fclean -C libft/
+		@echo "$(JAUN)~> [ libft cleaned. ]$(NCOL)"
 
-$(NAME):		$(SDL_LIB) $(LIBFT_LIB) $(OBJ_DIR) $(OBJS)
-	@$(CC) $(OBJS) -o $(NAME) \
-		-I $(INC_DIR) \
-		-I $(INC_DIR)w3d/ \
-		-I $(INC_DIR)window/ \
-		-I $(INC_DIR)engine/ \
-		-I $(INC_DIR)calcs/ \
-		-I $(INC_DIR)parser/ \
-		-I $(INC_DIR)sdl/ \
-		-I $(INC_DIR)events/ \
-		-I $(LIBFT_INC) $(LIBFT_LIB) \
-		$(FLAG_SDL) \
-		$(FLAGS)
-	@printf "\r\033[48;5;15;38;5;25m✅ MAKE $(NAME)\033[0m\033[K\n"
+re: clean all
 
-$(SDL_IMG_DIR):
+ext: ext/SDL2 ext/SDL2_Image #ext/SDL2_ttf
+#ext: ext/SDL2_Image ext/SDL2_ttf
 
+ext/SDL2:
+		rm -fr ext/SDL2
+		mkdir -p ext/SDL2/junk
+		rm -fr  SDL2-2.0.7
+		curl -O http://www.libsdl.org/release/SDL2-2.0.7.tar.gz
+		@echo "$(VERT)~> [ SDL library downloaded. ]$(NCOL)"
+		tar xf SDL2-2.0.7.tar.gz
+		( cd SDL2-2.0.7 \
+		&& ./configure --prefix=$(shell pwd)/ext/SDL2/ \
+		&& $(MAKE) && $(MAKE) install )
+		mv -f SDL2-2.0.7.tar.gz SDL2-2.0.7 ext/SDL2/junk
+		@echo "$(VERT)~> [ SDL library set up. ]$(NCOL)"
 
-$(SDL_DIR):
-	@printf "\r\033[38;5;11m⌛ EXTRACT %10.10s\033[0m\033[K" $(SDL_DIR)
-	@$(shell tar xzf $(SDL_DIR).zip)
-	@printf "\r\033[48;5;15;38;5;25m✅ EXTRACT $(SDL_DIR)\033[0m\033[K\n"
+ext/SDL2_Image:
+		rm -fr ext/SDL2_Image
+		mkdir -p ext/SDL2_Image/junk
+		rm -fr SDL2_image-2.0.2
+		curl -O http://www.libsdl.org/projects/SDL_image/release/SDL2_image-2.0.2.tar.gz
+		@echo "$(VERT)~> [ SDL_Image library downloaded. ]$(NCOL)"
+		tar xf SDL2_image-2.0.2.tar.gz
+		( export SDL2_CONFIG='$(shell pwd)/ext/SDL2/bin/sdl2-config' \
+		&& cd SDL2_image-2.0.2 \
+		&& ./configure --prefix=$(shell pwd)/ext/SDL2_Image/ \
+		&& $(MAKE) && $(MAKE) install );
+		mv -f SDL2_image-2.0.2.tar.gz SDL2_image-2.0.2 ext/SDL2_Image/junk
+		@echo "$(VERT)~> [ SDL_Image library set up. ]$(NCOL)"
 
-$(SDL_LIB): $(SDL_DIR)
-	@printf "\r\033[38;5;11m⌛ CONFIGURE %10.10s" $(SDL_DIR)
-	@cd $(SDL_DIR) && ./configure >/dev/null
-	@printf "\r\033[48;5;15;38;5;25m✅ CONFIGURE $(SDL_DIR)\033[0m\033[K\n"
-	@printf "\r\033[38;5;11m⌛ MAKE %10.10s" $(SDL_DIR)
-	@cd $(SDL_DIR) && make >/dev/null 2>/dev/null
-	@printf "\r\033[48;5;15;38;5;25m✅ MAKE $(SDL_DIR)\033[0m\033[K\n"
+ext/SDL2_ttf:
+		rm -fr ext/SDL2_ttf
+		mkdir -p ext/SDL2_ttf/junk
+		rm -fr SDL2_ttf-2.0.12.tar.gz SDL2_ttf-2.0.12
+#		wget http://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-2.0.12.tar.gz
+#		@echo "$(VERT)~> [ SDL_ttf library downloaded. ]$(NCOL)"
+#		tar xf SDL2_ttf-2.0.12.tar.gz
+#		( export SDL2_CONFIG='$(shell pwd)/ext/SDL2/bin/sdl2-config' \
+#		&& cd SDL2_ttf-2.0.12 \
+#		&& ./configure --prefix=$(shell pwd)/ext/SDL2_ttf/ \
+#		&& $(MAKE) && $(MAKE) install );
+#		@echo "$(VERT)~> [ SDL_ttf library set up. ]$(NCOL)"
+#		mv -f SDL2_ttf-2.0.12.tar.gz SDL2_ttf-2.0.12 ext/SDL2_ttf/junk
 
-$(LIBFT_LIB):
-	@make -j -C $(LIBFT_DIR)
-
-$(OBJ_DIR) :
-	@mkdir -p $(OBJ_DIR)
-	@mkdir -p $(OBJ_DIR)/w3d
-	@mkdir -p $(OBJ_DIR)/window
-	@mkdir -p $(OBJ_DIR)/wengine
-	@mkdir -p $(OBJ_DIR)/calcs
-	@mkdir -p $(OBJ_DIR)/parser
-	@mkdir -p $(OBJ_DIR)/sdl
-	@mkdir -p $(OBJ_DIR)/events
-	@mkdir -p $(dir $(OBJS))
-
-$(OBJ_DIR)%.o :	$(SRC_DIR)%.c | $(OBJ_DIR)
-	@$(eval DONE=$(shell echo $$(($(INDEX)*20/$(NB)))))
-	@$(eval PERCENT=$(shell echo $$(($(INDEX)*100/$(NB)))))
-	@$(eval COLOR=$(shell echo $$(($(PERCENT)%35+196))))
-	@$(eval TO_DO=$(shell echo $$((20-$(INDEX)*20/$(NB)))))
-	@printf "\r\033[38;5;11m⌛ MAKE %10.10s : %2d%% \033[48;5;%dm%*s\033[0m%*s\033[48;5;255m \033[0m \033[38;5;11m %*s\033[0m\033[K" $(NAME) $(PERCENT) $(COLOR) $(DONE) "" $(TO_DO) "" $(DELTA) "$@"
-	@$(CC) $(FLAGS) -MMD -c $< -o $@\
-		-I $(INC_DIR)\
-		-I $(SDL_INC)\
-		-I $(LIBFT_INC)
-	@$(eval INDEX=$(shell echo $$(($(INDEX)+1))))
-
-clean:			cleanlib
-	@rm -rf $(OBJ_DIR)
-	@printf "\r\033[01;38;5;202m✖ clean $(NAME).\033[0m\033[K\n"
-
-cleanlib:
-	@make -C $(LIBFT_DIR) clean
-
-fcleanpart:			clean fcleanlib
-	@rm -f $(NAME)
-	@printf "\r\033[38;5;196m❌ fclean $(NAME).\033[0m\033[K\n"
-
-fclean:			clean fcleanlib fcleansdl
-	@rm -f $(NAME)
-	@printf "\r\033[38;5;196m❌ fclean $(NAME).\033[0m\033[K\n"
-
-cleansdl:
-	@if [ -f $(SDL_DIR)/Makefile ] ; \
-	then \
-		make -C $(SDL_DIR) clean; \
-		printf "\r\033[01;38;5;202m✖ clean $(SDL_DIR).\033[0m\033[K\n"; \
-	else \
-		printf "\r\033[01;38;5;202m✖ Nothing to be done: $(SDL_DIR).\033[0m\033[K\n"; \
-	fi;
-
-fcleansdl:		cleansdl
-	@if [ -e $(SDL_DIR) ] ; \
-	then \
-		rm -rf $(SDL_DIR); \
-		printf "\r\033[38;5;196m❌ fclean $(SDL_DIR).\033[0m\033[K\n"; \
-	else \
-		printf "\r\033[38;5;196m❌ Nothing to be done: $(SDL_DIR).\033[0m\033[K\n"; \
-	fi;
-
-
-fcleanlib:		cleanlib
-	@make -C $(LIBFT_DIR) fclean
-
-re:				fcleanpart all
-
-relib:			fcleanlib $(LIBFT_LIB) $(SDL_LIB)
-
-.PHONY :		fclean clean re relib cleanlib fcleanlib resdl cleansdl fcleansdl fcleanpart
-
--include $(OBJS:.o=.d)
+.PHONY: clean all re fclean]]]]]

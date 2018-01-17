@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/16 14:31:00 by adleau            #+#    #+#             */
-/*   Updated: 2018/01/16 17:50:54 by adleau           ###   ########.fr       */
+/*   Updated: 2018/01/17 14:23:59 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,19 +23,20 @@ void		draw_menu(t_engine *eng)
 
 	/* SDL interprets each pixel as a 32-bit number, so our masks must depend
 	   on the endianness (byte order) of the machine */
-	#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
 	rmask = 0xff000000;
 	gmask = 0x00ff0000;
 	bmask = 0x0000ff00;
 	amask = 0x000000ff;
-	#else
+#else
 	rmask = 0x000000ff;
 	gmask = 0x0000ff00;
 	bmask = 0x00ff0000;
 	amask = 0xff000000;
-	#endif
+#endif
+	if (!(eng->mainwindow.menu = SDL_CreateRGBSurface(0, WIN_WD, WIN_HT, 32, rmask, gmask, bmask, amask)))
+		exit(1);
 
-	eng->mainwindow->menu = SDL_CreateRGBSurface(0, width, height, 32, rmask, gmask, bmask, amask);
 }
 
 /* draw function
