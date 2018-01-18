@@ -1,31 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   engine.h                                           :+:      :+:    :+:   */
+/*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/01/11 14:11:02 by adleau            #+#    #+#             */
-/*   Updated: 2018/01/18 13:11:18 by adleau           ###   ########.fr       */
+/*   Created: 2018/01/18 11:59:30 by adleau            #+#    #+#             */
+/*   Updated: 2018/01/18 13:27:47 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ENGINE_H
-# define ENGINE_H
-# include <sdl/sdl_wrapper.h>
-# include <w3d/w3d.h>
-# include <w3d/map.h>
-# include <parser/parser.h>
+#include <parser/parser.h>
+#include <fcntl.h>
+#include <sys/types.h>
+#include <sys/uio.h>
+#include <unistd.h>
+#include <SDL_image.h>
+#include <engine/engine.h>
 
-typedef struct			s_engine
+void			parser(t_engine *eng, char *path)
 {
-	t_sdl_wrapper			mainwindow;
-	t_parser				parser;
-//	struct s_doom			doomengine;
-//	struct s_duke			dukeengine;
-	char					picker;
-}							t_engine;
 
-void					engine(void);
-
-#endif
+}

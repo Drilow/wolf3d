@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/11 14:10:32 by adleau            #+#    #+#             */
-/*   Updated: 2018/01/16 14:29:35 by adleau           ###   ########.fr       */
+/*   Updated: 2018/01/18 13:32:50 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ void				engine(void)
 	t_engine		eng;
 
 	init_engine(&eng);
-	draw(&eng);
 	/* code here */
 	engine_loop(&eng);
 }

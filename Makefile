@@ -6,7 +6,7 @@
 #    By: adleau <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/17 12:44:17 by adleau            #+#    #+#              #
-#    Updated: 2018/01/17 14:24:13 by adleau           ###   ########.fr        #
+#    Updated: 2018/01/18 13:45:01 by adleau           ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -41,15 +41,26 @@ SRC =   $(SRCPATH)main.c \
 		$(SRCPATH)events/events.c \
 		$(SRCPATH)sdl/sdl_wrapper.c \
 		$(SRCPATH)w3d/w3d.c \
+		$(SRCPATH)parser/parser.c	\
+
+INCPATH	=	includes/
+
+INC	=	$(INCPATH)draw/draw.h \
+		$(INCPATH)engine/engine.h \
+		$(INCPATH)events/events.h \
+		$(INCPATH)sdl/sdl_wrapper.h \
+		$(INCPATH)w3d/w3d.h \
+		$(INCPATH)parser/parser.h	\
+
 
 OBJ = $(SRC:.c=.o)
 
 all: ext $(NAME)
 
-$(NAME): $(OBJ)
+$(NAME): $(OBJ) $(INC)
 		make -C libft/
 		@echo "$(VERT)~> [ libft library made. ]$(NCOL)"
-		$(CC) $(OBJ) -o $(NAME) -Iincludes/ $(LDFLAGS) -Llibft/ -lft $(LIB)
+		$(CC) $(CFLAGS) $(OBJ) -o $(NAME) -Iincludes/ $(LDFLAGS) -Llibft/ -lft $(LIB)
 		@echo "$(VERT)~> [ binary file '$(NAME)' made. ]$(NCOL)"
 
 %.o: %.c
