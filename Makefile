@@ -6,7 +6,7 @@
 #    By: adleau <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/17 12:44:17 by adleau            #+#    #+#              #
-#    Updated: 2018/01/18 13:45:01 by adleau           ###   ########.fr        #
+#    Updated: 2018/01/19 13:07:46 by adleau           ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -20,23 +20,25 @@ NAME = wolf3d
 
 CC = gcc
 
-CFLAGS = -Wall -Werror -Wextra #-c -O3 -g3 -std=c89
+CFLAGS = -Wall -Werror -Wextra -O3 -g3 -std=c89
 
 LDFLAGS = `ext/SDL2/bin/sdl2-config --cflags --libs -lSDL2 -lSDL2_image`
 
-LIB	 =  -L./ext/SDL2/lib -I./ext/SDL2/include/SDL2
+LIB	 :=  -L./ext/SDL2/lib -I./ext/SDL2/include/SDL2
 LIB	 += -L./ext/SDL2_Image/lib -I./ext/SDL2_Image/include/SDL2
 #LIB	 += -L./ext/SDL2_ttf/lib -I./ext/SDL2_ttf/include/SDL2
 LIB	 += -lSDL2 -lSDL2_image
 
-LIB_PATH  =  '/home/baarg/Desktop/new_SDL/ext/SDL2_Image/lib'
+#LIB_PATH  =  '/home/baarg/Desktop/new_SDL/ext/SDL2_Image/lib'
 #LIB_PATH += ':/home/baarg/Desktop/new_SDL/ext/SDL2_ttf/lib'
-LIB_PATH += ':/home/baarg/Desktop/new_SDL/ext/SDL2/lib'
+#LIB_PATH += ':/home/baarg/Desktop/new_SDL/ext/SDL2/lib'
 
 SRCPATH = srcs/
 
 SRC =   $(SRCPATH)main.c \
 		$(SRCPATH)draw/draw.c \
+		$(SRCPATH)draw/init_draw.c \
+		$(SRCPATH)draw/draw_shapes.c \
 		$(SRCPATH)engine/engine.c\
 		$(SRCPATH)events/events.c \
 		$(SRCPATH)sdl/sdl_wrapper.c \
@@ -60,11 +62,11 @@ all: ext $(NAME)
 $(NAME): $(OBJ) $(INC)
 		make -C libft/
 		@echo "$(VERT)~> [ libft library made. ]$(NCOL)"
-		$(CC) $(CFLAGS) $(OBJ) -o $(NAME) -Iincludes/ $(LDFLAGS) -Llibft/ -lft $(LIB)
+		$(CC) $(OBJ) -o $(NAME) -Iincludes/ $(LDFLAGS) -Ilibft/ -Llibft/ -lft $(LIB)
 		@echo "$(VERT)~> [ binary file '$(NAME)' made. ]$(NCOL)"
 
 %.o: %.c
-		$(CC) $(LDFLAGS) -o $@ -c $< -Ilibft/ -Iincludes/ $(LIB)
+		$(CC) $(LDLAGS) -o  $@ -c $< -Ilibft/ -Iincludes/ $(LIB) -Qunused-arguments
 
 clean:
 		rm -rf $(OBJ)
@@ -129,4 +131,4 @@ ext/SDL2_ttf:
 #		@echo "$(VERT)~> [ SDL_ttf library set up. ]$(NCOL)"
 #		mv -f SDL2_ttf-2.0.12.tar.gz SDL2_ttf-2.0.12 ext/SDL2_ttf/junk
 
-.PHONY: clean all re fclean]]]]]
+.PHONY: clean all re fclean
