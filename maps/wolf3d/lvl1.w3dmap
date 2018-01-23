@@ -1,9 +1,12 @@
 {
 w3dmapformat:
-WEST_WALL = "assets/default/wall1.jpg"
-EAST_WALL = "assets/default/wall2.jpg"
-NORTH_WALL = "assets/default/wall3.jpg"
-SOUTH_WALL = "assets/default/wall4.jpg"
+X: 14
+Y: 14
+CameraDirection: 180
+WEST_WALL = "assets/textures/default/wall1.jpg"
+EAST_WALL = "assets/textures/default/wall2.jpg"
+NORTH_WALL = "assets/textures/default/wall3.jpg"
+SOUTH_WALL = "assets/textures/default/wall4.jpg"
 }
 1 1 1 1 1 1 1 1 1 1 1 1 1 1
 1 S 1 0 0 0 0 0 0 0 0 0 0 1

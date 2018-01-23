@@ -6,10 +6,11 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/16 14:31:00 by adleau            #+#    #+#             */
-/*   Updated: 2018/01/19 16:00:05 by adleau           ###   ########.fr       */
+/*   Updated: 2018/01/23 15:42:35 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <cleanup/cleanup.h>
 #include <SDL.h>
 #include <engine/engine.h>
 #include <stdio.h>
@@ -31,11 +32,23 @@ void		draw_menu(t_engine *const eng)
 {
 	init_menu_rectangles(&(eng->mainwindow.data));
 	draw_menu_sub(eng);
-	eng->mainwindow.renderer = SDL_CreateRenderer(eng->mainwindow.screen, -1, SDL_RENDERER_ACCELERATED);
-	eng->mainwindow.tex = SDL_CreateTextureFromSurface(eng->mainwindow.renderer, eng->mainwindow.menu);
+	if (!(eng->mainwindow.renderer) && !eng->mainwindow.tex)
+	{
+		if (!(eng->mainwindow.renderer = SDL_CreateRenderer(eng->mainwindow.screen, -1, SDL_RENDERER_ACCELERATED)))
+		{
+			printf("%s\n", SDL_GetError());
+			free_everything(eng, 1);
+		}
+		if (!(eng->mainwindow.tex = SDL_CreateTextureFromSurface(eng->mainwindow.renderer, eng->mainwindow.menu)))
+		{
+			printf("%s\n", SDL_GetError());
+			free_everything(eng, 1);
+		}
+	}
 	SDL_RenderClear(eng->mainwindow.renderer);
 	SDL_RenderCopy(eng->mainwindow.renderer, eng->mainwindow.tex, NULL, NULL);
 	SDL_RenderPresent(eng->mainwindow.renderer);
+	eng->to_be_drawn = 1;
 }
 
 /* draw function

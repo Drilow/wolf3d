@@ -6,7 +6,7 @@
 #    By: adleau <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/17 12:44:17 by adleau            #+#    #+#              #
-#    Updated: 2018/01/19 13:07:46 by adleau           ###   ########.fr        #
+#    Updated: 2018/01/21 21:06:51 by adleau           ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -20,7 +20,7 @@ NAME = wolf3d
 
 CC = gcc
 
-CFLAGS = -Wall -Werror -Wextra -O3 -g3 -std=c89
+CFLAGS = -Wall -Werror -Wextra -O3 -g3 #-std=c89
 
 LDFLAGS = `ext/SDL2/bin/sdl2-config --cflags --libs -lSDL2 -lSDL2_image`
 
@@ -37,13 +37,18 @@ SRCPATH = srcs/
 
 SRC =   $(SRCPATH)main.c \
 		$(SRCPATH)draw/draw.c \
+		$(SRCPATH)draw/draw_w3d.c \
 		$(SRCPATH)draw/init_draw.c \
 		$(SRCPATH)draw/draw_shapes.c \
+		$(SRCPATH)draw/raycaster.c \
 		$(SRCPATH)engine/engine.c\
 		$(SRCPATH)events/events.c \
 		$(SRCPATH)sdl/sdl_wrapper.c \
 		$(SRCPATH)w3d/w3d.c \
 		$(SRCPATH)parser/parser.c	\
+		$(SRCPATH)parser/binds.c	\
+		$(SRCPATH)cleanup/cleanup.c	\
+		$(SRCPATH)helpers/helpers.c	\
 
 INCPATH	=	includes/
 
@@ -53,6 +58,8 @@ INC	=	$(INCPATH)draw/draw.h \
 		$(INCPATH)sdl/sdl_wrapper.h \
 		$(INCPATH)w3d/w3d.h \
 		$(INCPATH)parser/parser.h	\
+		$(INCPATH)cleanup/cleanup.h	\
+		$(INCPATH)helpers/helpers.h	\
 
 
 OBJ = $(SRC:.c=.o)
@@ -66,7 +73,7 @@ $(NAME): $(OBJ) $(INC)
 		@echo "$(VERT)~> [ binary file '$(NAME)' made. ]$(NCOL)"
 
 %.o: %.c
-		$(CC) $(LDLAGS) -o  $@ -c $< -Ilibft/ -Iincludes/ $(LIB) -Qunused-arguments
+		$(CC) $(CFLAGS) $(LDLAGS) -o  $@ -c $< -Ilibft/ -Iincludes/ $(LIB) -Qunused-arguments
 
 clean:
 		rm -rf $(OBJ)
