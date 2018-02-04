@@ -6,7 +6,7 @@
 #    By: adleau <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/17 12:44:17 by adleau            #+#    #+#              #
-#    Updated: 2018/01/21 21:06:51 by adleau           ###   ########.fr        #
+#    Updated: 2018/02/03 21:33:30 by adleau           ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -36,31 +36,28 @@ LIB	 += -lSDL2 -lSDL2_image
 SRCPATH = srcs/
 
 SRC =   $(SRCPATH)main.c \
-		$(SRCPATH)draw/draw.c \
-		$(SRCPATH)draw/draw_w3d.c \
-		$(SRCPATH)draw/init_draw.c \
-		$(SRCPATH)draw/draw_shapes.c \
-		$(SRCPATH)draw/raycaster.c \
-		$(SRCPATH)engine/engine.c\
-		$(SRCPATH)events/events.c \
-		$(SRCPATH)sdl/sdl_wrapper.c \
-		$(SRCPATH)w3d/w3d.c \
-		$(SRCPATH)parser/parser.c	\
-		$(SRCPATH)parser/binds.c	\
-		$(SRCPATH)cleanup/cleanup.c	\
-		$(SRCPATH)helpers/helpers.c	\
+		$(SRCPATH)mainmenu.c \
+		$(SRCPATH)full_run.c \
+		$(SRCPATH)mandatory_part/wolf.c \
+		$(SRCPATH)bonus/bonus.c \
+		$(SRCPATH)helpers/cleanup.c \
+		$(SRCPATH)helpers/sdl_wrapper.c \
+		$(SRCPATH)helpers/engine_init.c	\
+		$(SRCPATH)helpers/loop.c	\
+		$(SRCPATH)helpers/str_helpers.c	\
+		$(SRCPATH)helpers/draw_functions.c	\
 
 INCPATH	=	includes/
 
-INC	=	$(INCPATH)draw/draw.h \
-		$(INCPATH)engine/engine.h \
-		$(INCPATH)events/events.h \
-		$(INCPATH)sdl/sdl_wrapper.h \
-		$(INCPATH)w3d/w3d.h \
-		$(INCPATH)parser/parser.h	\
-		$(INCPATH)cleanup/cleanup.h	\
-		$(INCPATH)helpers/helpers.h	\
-
+INC	=	$(INCPATH)menu.h \
+		$(INCPATH)full_run.h \
+		$(INCPATH)engine.h	\
+		$(INCPATH)mandatory_part/wolf.h \
+		$(INCPATH)bonus/bonus.h \
+		$(INCPATH)helpers/cleanup.h \
+		$(INCPATH)helpers/sdl_wrapper.h \
+		$(INCPATH)helpers/loop.h \
+		$(INCPATH)helpers/str_helpers.h \
 
 OBJ = $(SRC:.c=.o)
 
