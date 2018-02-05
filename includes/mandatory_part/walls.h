@@ -1,37 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   w3d_map.h                                          :+:      :+:    :+:   */
+/*   walls.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/02/05 09:52:45 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/05 09:52:46 by adleau           ###   ########.fr       */
+/*   Created: 2018/02/05 08:37:54 by adleau            #+#    #+#             */
+/*   Updated: 2018/02/05 09:59:57 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef W3D_MAP_H
-# define W3D_MAP_H
-# include <SDL.h>
+#ifndef WALLS_H
+# define WALLS_H
 # include <helpers/shapes.h>
 
-typedef struct			s_w3d_camera
+typedef struct		s_range
 {
-	double				orientation;
-	int					screendist;
-	double				fov;
-	double				range[2];
-	t_vector_2d			direction;
-	t_vector_2d			player;
-}						t_w3d_camera;
+	int				start;
+	int				end;
+}					t_range;
 
-typedef struct			s_w3dmap
+typedef struct		s_wall
 {
-	char				**map;
-	t_vector_2d			size;
-	t_vector_2d			pos;
-	t_w3d_camera		cam;
-	SDL_Surface			**walls;
-}						t_w3dmap;
+	t_range			left; // 0 -> start of wall
+	t_range			right; // end of shown wall -> end of wall
+	int				*collumns; // array of all the collumns of the wall
+	int				current;
+}					t_wall;
+
+void			draw_wall(SDL_Surface *surf, SDL_Surface *src, int x_screen, t_wall *wall);
 
 #endif

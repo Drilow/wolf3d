@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   wolf.h                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/02/05 08:26:31 by adleau            #+#    #+#             */
+/*   Updated: 2018/02/05 08:27:15 by adleau           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef WOLF_H
 # define WOLF_H
 # include <helpers/sdl_wrapper.h>
@@ -15,4 +27,7 @@ typedef struct		s_wolf
 
 void				wolf_loop(t_wolf *wolf);
 void				w3d_draw(t_wolf *wolf);
+void				init_wolf(t_wolf *wolf, t_sdl_wrapper *wrap, char *path);
+void				w3d_parse(t_wolf *wolf);
+
 #endif

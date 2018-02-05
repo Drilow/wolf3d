@@ -1,37 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   w3d_map.h                                          :+:      :+:    :+:   */
+/*   walls.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/02/05 09:52:45 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/05 09:52:46 by adleau           ###   ########.fr       */
+/*   Created: 2018/02/05 08:37:54 by adleau            #+#    #+#             */
+/*   Updated: 2018/02/05 08:43:44 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef W3D_MAP_H
-# define W3D_MAP_H
-# include <SDL.h>
+#ifndef WALLS_H
+# define WALLS_H
 # include <helpers/shapes.h>
 
-typedef struct			s_w3d_camera
+typedef struct		s_wall
 {
-	double				orientation;
-	int					screendist;
-	double				fov;
-	double				range[2];
-	t_vector_2d			direction;
-	t_vector_2d			player;
-}						t_w3d_camera;
-
-typedef struct			s_w3dmap
-{
-	char				**map;
-	t_vector_2d			size;
-	t_vector_2d			pos;
-	t_w3d_camera		cam;
-	SDL_Surface			**walls;
-}						t_w3dmap;
+	int				collumns;
+	int				*coll_tab;
+	t_vector_2d		dim;
+	t_rect			positions;
+}					t_wall;
 
 #endif

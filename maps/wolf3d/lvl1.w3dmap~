@@ -4,7 +4,7 @@ X: 14
 Y: 14
 CameraDirection: 180
 WEST_WALL = "assets/textures/default/wall1.jpg"
-EAST_WALL = "assets/textures/default/wall5.jpg"
+EAST_WALL = "assets/textures/default/wall2.jpg"
 NORTH_WALL = "assets/textures/default/wall3.jpg"
 SOUTH_WALL = "assets/textures/default/wall4.jpg"
 }
