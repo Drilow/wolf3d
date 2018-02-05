@@ -39,6 +39,8 @@ SRC =   $(SRCPATH)main.c \
 		$(SRCPATH)mainmenu.c \
 		$(SRCPATH)full_run.c \
 		$(SRCPATH)mandatory_part/wolf.c \
+		$(SRCPATH)mandatory_part/wolf_loop.c \
+		$(SRCPATH)mandatory_part/wolf_draw.c \
 		$(SRCPATH)bonus/bonus.c \
 		$(SRCPATH)helpers/cleanup.c \
 		$(SRCPATH)helpers/sdl_wrapper.c \

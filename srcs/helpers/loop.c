@@ -1,5 +1,6 @@
 #include <engine.h>
 #include <full_run.h>
+#include <helpers/cleanup.h>
 #define EVENT_PTR eng->wrap.event
 #define WIN_PTR eng->wrap.screen
 
@@ -26,7 +27,10 @@ int				mouseup_events(t_engine __attribute__((unused))*eng)
 void			keyup_events(t_engine *eng)
 {
 	if (EVENT_PTR.key.keysym.sym == SDLK_ESCAPE)
+	{
+		free_sdl_wrapper(&(eng->wrap));
 		exit(0);
+	}
 }
 
 /* engine_loop function

@@ -13,4 +13,6 @@ typedef struct		s_wolf
 	t_w3dcalc		calc;
 }					t_wolf;
 
+void				wolf_loop(t_wolf *wolf);
+void				w3d_draw(t_wolf *wolf);
 #endif

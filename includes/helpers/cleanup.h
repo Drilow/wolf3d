@@ -18,8 +18,10 @@
 # include <helpers/sdl_wrapper.h>
 # include <engine.h>
 
+void			free_sdl_wrapper(t_sdl_wrapper *sdl_wrap);
 void			free_engine(t_engine *eng, int i);
 void			free_wolf(t_wolf *wolf, int i);
 void			free_menu(t_mainmenu *menu, t_sdl_wrapper *wrap, int i);
 void			free_bonus(t_bonus *bonus, t_sdl_wrapper *wrap, int i);
+
 #endif

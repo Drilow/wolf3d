@@ -85,11 +85,10 @@ void			w3d_parse(t_wolf *wolf)
 	while ((wolf->parse.beenread = get_next_line
 	(wolf->parse.fd, &(wolf->parse.buf))) != -1)
 	{
-		printf("bite\n");
 		if (wolf->parse.beenread == 0)
 			break ;
+		printf("bite\n");
 		fill_parse_tab_and_map(wolf, wolf->parse.buf);
-		printf("couteau\n");
 	}
 	if (wolf->parse.beenread == -1)
 		free_wolf(wolf, 1);
@@ -133,10 +132,11 @@ void		init_w3dmap(t_wolf *wolf, t_w3dmap *map)
 ** initializes all the data relative to the w3d wolfine
 */
 
-void		init_wolf(t_wolf *wolf, t_sdl_wrapper __attribute__((unused))*wrap, char *path)
+void		init_wolf(t_wolf *wolf, t_sdl_wrapper *wrap, char *path)
 {
 	init_w3dparse(wolf, path);
 	init_w3dmap(wolf, &(wolf->map));
+	wrap->drawn = 0;
 	w3d_parse(wolf);
 }
 
@@ -150,5 +150,8 @@ void		mandatory_part(t_sdl_wrapper *wrap, char *path)
 
 	if (wrap == NULL)
 		init_sdl_wrap(wrap);
+	else
+		wolf.wrap = wrap;
 	init_wolf(&wolf, wrap, path);
+	wolf_loop(&wolf);
 }
