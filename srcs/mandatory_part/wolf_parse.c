@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:23:53 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/05 11:34:21 by adleau           ###   ########.fr       */
+/*   Updated: 2018/02/06 08:21:09 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,25 @@ void			fill_parse_tab_and_map(t_wolf *wolf, char *line)
 		get_map(wolf, &(wolf->map), line);
 }
 
+t_vector_2d		get_starting(char **map)
+{
+	t_vector_2d	r;
+
+	r.y = -1;
+	while (map[++(r.y)])
+	{
+		r.x = -1;
+		while (map[r.y][++(r.x)])
+		{
+			if (map[r.y][r.x] == 'S')
+				return (r);
+		}
+	}
+	r.x = -1;
+	r.y = -1;
+	return (r);
+}
+
 /* parse function
 ** entry pointo to the parse
  */
@@ -122,6 +141,7 @@ void			w3d_parse(t_wolf *wolf)
 	}
 	if (wolf->parse.beenread == -1)
 		free_wolf(wolf, 1);
+	wolf->map.pos = get_starting(wolf->map.map);
 	wolf->parse.done = 1;
 	close(wolf->parse.fd);
 }

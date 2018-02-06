@@ -6,7 +6,6 @@
 #include <bonus/bonus.h>
 #include <menu.h>
 
-
 /* free_sdl_wrapper
 ** frees everything SDL-related
  */

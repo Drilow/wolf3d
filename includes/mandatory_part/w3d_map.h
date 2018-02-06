@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 09:52:45 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/05 09:52:46 by adleau           ###   ########.fr       */
+/*   Updated: 2018/02/06 08:14:01 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,14 @@ typedef struct			s_w3d_camera
 	double				fov;
 	double				range[2];
 	t_vector_2d			direction;
-	t_vector_2d			player;
+	t_vector_2d			player; // pos in cell
 }						t_w3d_camera;
 
 typedef struct			s_w3dmap
 {
 	char				**map;
 	t_vector_2d			size;
-	t_vector_2d			pos;
+	t_vector_2d			pos; // in map
 	t_w3d_camera		cam;
 	SDL_Surface			**walls;
 }						t_w3dmap;
