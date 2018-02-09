@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:36:41 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/05 11:34:32 by adleau           ###   ########.fr       */
+/*   Updated: 2018/02/09 13:14:01 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ void			draw_wall(SDL_Surface *surf, SDL_Surface *src, int x_screen, t_wall *wall
 {
 	int			off;
 
+	printf("AAAAAA\n");
 	wall->current = -1;
 	off = wall->left.end;
 	while (++wall->current < wall->right.end)
@@ -71,8 +72,7 @@ void			draw_wall(SDL_Surface *surf, SDL_Surface *src, int x_screen, t_wall *wall
 		if (wall->current >= wall->left.end && wall->current < wall->right.start)
 		{
 			draw_collumn(surf, src, x_screen + (wall->current - off), wall);
-//			printf("oui?\n");
+			printf("oui?\n");
 		}
 	}
-
 }

@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:37:54 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/06 08:24:58 by adleau           ###   ########.fr       */
+/*   Updated: 2018/02/08 13:25:56 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef struct		s_wall
 	int				*collumns; // array of all the collumns of the wall
 	t_vector_2d		direction;
 	t_vector_2d		inmap;
+	int				wall_surf;
 	int				current; // for drawing purposes
 }					t_wall;
 

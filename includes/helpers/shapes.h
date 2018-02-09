@@ -9,6 +9,12 @@ typedef struct		s_color
 	int				b;
 }					t_color;
 
+typedef struct		s_vector_2d_d
+{
+	double			x;
+	double			y;
+}					t_vector_2d_d;
+
 /* s_vector_2d struct
 ** contains the x and y position of a given point
 */

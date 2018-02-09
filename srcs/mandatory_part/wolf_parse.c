@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:23:53 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/06 08:21:09 by adleau           ###   ########.fr       */
+/*   Updated: 2018/02/09 12:49:56 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,9 @@ int				get_map_infos(t_wolf *wolf, t_w3dmap *map, char *line)
 		}
 	}
 	if (!ft_strncmp(line, "CameraDirection:", ft_strlen("CameraDirection:")))
+	{
 		map->cam.orientation = ft_atoi(line + ft_strlen("CameraDirection:"));
+	}
 	return (0);
 }
 
@@ -144,4 +146,5 @@ void			w3d_parse(t_wolf *wolf)
 	wolf->map.pos = get_starting(wolf->map.map);
 	wolf->parse.done = 1;
 	close(wolf->parse.fd);
+	printf("popo %f\n", wolf->map.cam.orientation);
 }

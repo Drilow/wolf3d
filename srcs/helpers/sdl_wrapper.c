@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/11 19:54:22 by adleau            #+#    #+#             */
-/*   Updated: 2018/01/21 20:52:47 by adleau           ###   ########.fr       */
+/*   Updated: 2018/02/08 13:38:05 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <helpers/cleanup.h>
 #include <helpers/sdl_wrapper.h>
 #include <libft.h>
+#include <stdio.h>
 
 void			init_sdl_wrap(t_sdl_wrapper *wrap)
 {

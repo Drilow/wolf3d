@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:24:39 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/05 12:51:26 by adleau           ###   ########.fr       */
+/*   Updated: 2018/02/09 12:53:18 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,10 @@
 void		init_w3dcam(t_w3d_camera *cam)
 {
 	cam->fov = 60;
-	cam->screendist = WIN_WD / 2 / tan(cam->fov * M_PI / 180);
-	cam->range[0] = cam->orientation - cam->fov /2;
-	cam->range[1] = cam->orientation + cam->fov /2;
+	cam->screendist = WIN_WD / 2 / tan(cam->fov / 2 * M_PI / 180);
+	printf("init w3dcam %f\n", cam->orientation);
+	cam->range[0] = cam->orientation - cam->fov / 2;
+	cam->range[1] = cam->orientation + cam->fov / 2;
 	cam->direction.x = 0;
 	cam->direction.y = 0;
 	cam->player.x = CELL / 2;
@@ -51,7 +52,6 @@ void		init_w3dmap(t_wolf *wolf, t_w3dmap *map)
 	map->size.y = 0;
 	map->pos.x = -1;
 	map->pos.y = -1;
-	init_w3dcam(&(map->cam));
 	if (!(map->walls = (SDL_Surface**)malloc(sizeof(SDL_Surface*) * 4)))
 		free_wolf(wolf, 1);
 }
@@ -63,7 +63,8 @@ void		init_w3dmap(t_wolf *wolf, t_w3dmap *map)
 void		init_wolf(t_wolf *wolf, t_sdl_wrapper *wrap, char *path)
 {
 	init_w3dparse(wolf, path);
-	init_w3dmap(wolf, &(wolf->map));
 	wrap->drawn = 0;
+	init_w3dmap(wolf, &(wolf->map));
 	w3d_parse(wolf);
+	init_w3dcam(&(wolf->map.cam));
 }

@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:27:33 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/05 12:44:21 by adleau           ###   ########.fr       */
+/*   Updated: 2018/02/08 13:42:58 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,20 @@ void		wolf_loop(t_wolf *wolf)
 	wolf->wrap->drawn = 0;
 	while (istrue)
 	{
-		if (!(wolf->wrap->tex = SDL_CreateTextureFromSurface(wolf->wrap->renderer, wolf->wrap->wolf)))
-			exit(1);
+		if (!(wolf->wrap->renderer))
+			if (!(wolf->wrap->renderer = SDL_CreateRenderer(wolf->wrap->screen, -1, SDL_RENDERER_ACCELERATED)))
+			{
+				printf("ahahah, %s\n", SDL_GetError());
+				exit(1);
+			}
+		if (!wolf->wrap->tex)
+		{
+			if (!(wolf->wrap->tex = SDL_CreateTextureFromSurface(wolf->wrap->renderer, wolf->wrap->wolf)))
+			{
+				printf("ahahah, %s\n", SDL_GetError());
+				exit(1);
+			}
+		}
 		w3d_draw(wolf);
 		while (SDL_PollEvent(&(EVENT_PTR)))
 		{
@@ -47,8 +59,8 @@ void		wolf_loop(t_wolf *wolf)
 			else if (EVENT_PTR.type == SDL_KEYUP)
 				keyup_events_w3d(wolf);
 /*			else if (EVENT_PTR.type == SDL_MOUSEBUTTONUP)
-				if ((ret = mouseup_events(eng)))
-					istrue = 0;
+			if ((ret = mouseup_events(eng)))
+			istrue = 0;
 */		}
 	}
 }
