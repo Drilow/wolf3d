@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:36:41 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/09 13:14:01 by adleau           ###   ########.fr       */
+/*   Updated: 2018/02/09 18:09:37 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ Uint32			get_color_from_tex(SDL_Surface *src, t_wall *wall, int x, int y)
 	return (color);
 }
 
-void			draw_collumn(SDL_Surface *surf, SDL_Surface *src, int x_screen, t_wall *wall)
+void			draw_collumn(SDL_Surface *surf, SDL_Surface __attribute__((unused))*src, int x_screen, t_wall *wall)
 {
 	int			y;
 	int			y_onscreen;
@@ -71,8 +71,11 @@ void			draw_wall(SDL_Surface *surf, SDL_Surface *src, int x_screen, t_wall *wall
 	{
 		if (wall->current >= wall->left.end && wall->current < wall->right.start)
 		{
-			draw_collumn(surf, src, x_screen + (wall->current - off), wall);
-			printf("oui?\n");
+			printf("oui? xscreen %d | %d ||| %d col %d\n", x_screen + (wall->current - off), wall->current, wall->right.end, wall->collumns[wall->current]);
+			if (wall->collumns[wall->current] <= WIN_HT)
+				draw_collumn(surf, src, x_screen + (wall->current - off), wall);
+			printf("non? xscreen %d | %d ||| %d\n", x_screen + (wall->current - off), wall->current, wall->right.end);
+//			exit(1);
 		}
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:28:28 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/09 13:11:36 by adleau           ###   ########.fr       */
+/*   Updated: 2018/02/10 10:25:13 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,24 +67,32 @@ int				was_wall_hit(t_w3dcalc *calc, char **map, int flag) // 0 = x, 1 = y
 {
 	if (flag)
 	{
-		printf("zbobi %d \n", (int)calc->processed.y / CELL);
+		printf("zbobi %d %d\n", (int)calc->processed.y / CELL, calc->end.x);
 		if (calc->end.x)
-			return (0);
-		if (map[(int)(calc->start.y + (calc->direction.y * calc->processed.y / CELL))][(int)(calc->start.x + calc->direction.x * calc->inc)] != '0' && map[(int)(calc->start.y + (calc->direction.y * calc->processed.y / CELL))][(int)(calc->start.x + calc->direction.x * calc->inc)] != 'S')
 		{
-			printf("TEUB %d %d %c\n", (int)(calc->start.y + (calc->direction.y * calc->processed.y / CELL)), (int)(calc->start.x + calc->direction.x * calc->inc), map[(int)(calc->start.y + (calc->direction.y * calc->processed.y / CELL))][(int)(calc->start.x + calc->direction.x * calc->inc)]);
+			printf("KESKISPASS %d\n", calc->end.x);
+//			exit(1);
+			return (0);
+		}
+			printf("TEUB inc %d %d %d %c\n", calc->inc, (int)(calc->start.y + (calc->direction.y * calc->processed.y / CELL)), (int)(calc->start.x + calc->direction.x * calc->inc), map[(int)(calc->start.y + (calc->direction.y * calc->processed.y / CELL))][(int)(calc->start.x + calc->direction.x * calc->inc)]);
+			if (map[(int)(calc->start.y + (calc->direction.y * calc->processed.y / CELL))][(int)(calc->start.x + calc->direction.x * (calc->inc - 1))] != '0' && map[(int)(calc->start.y + (calc->direction.y * calc->processed.y / CELL))][(int)(calc->start.x + calc->direction.x * calc->inc)] != 'S')
+		{
 //			exit(1);
 			calc->end.x = calc->inc;
+			printf("postteub %d\n", calc->end.x);
 			return (0);
 		}
 	}
 	else
 	{
+		printf("boob\n");
+		printf("calc->end.y %d\n", calc->end.y);
 		if (calc->end.y)
 			return (0);
 		if (map[(int)(calc->start.y + calc->direction.y * calc->inc)][(int)(calc->start.x + (calc->direction.x * calc->processed.x / CELL))] != '0' && map[(int)(calc->start.y + calc->direction.y * calc->inc)][(int)(calc->start.x + (calc->direction.x * calc->processed.x / CELL))] != 'S')
 		{
 			calc->end.y = calc->inc;
+			printf("%d\n", calc->end.y);
 			return (0);
 		}
 
@@ -92,7 +100,7 @@ int				was_wall_hit(t_w3dcalc *calc, char **map, int flag) // 0 = x, 1 = y
 	return (1);
 }
 
-int				get_ht(t_w3dcalc *calc, t_wall *wall)
+int				get_ht(t_w3dcalc *calc, t_wall *wall)//, int i)
 {
 	int			ht;
 
@@ -102,8 +110,10 @@ int				get_ht(t_w3dcalc *calc, t_wall *wall)
 	{
 		ht = (WIN_WD / 2 / tan(30 * M_PI / 180)) * CELL / (sqrt(pow((calc->proc_for1.x * (calc->player.x / CELL)), 2) + pow(calc->player.y, 2)) + sqrt(pow((CELL * calc->end.y), 2) + pow(calc->processed.x, 2)));
 		wall->inmap.x = (int)(calc->processed.x / CELL + 1) * calc->direction.x;
-		wall->inmap.y = calc->end.y * calc->direction.y;
+		wall->inmap.y = (calc->end.y - 1) * calc->direction.y;
 		printf("1ere\n");
+//		if (!i)
+//			wall->left.end =
 		if (calc->direction.x == -1)
 			wall->wall_surf = 0;
 		else
@@ -113,7 +123,7 @@ int				get_ht(t_w3dcalc *calc, t_wall *wall)
 	{
 		ht = (WIN_WD / 2 / tan(30 * M_PI / 180)) * CELL / (sqrt(pow((calc->proc_for1.y * (calc->player.y / CELL)), 2) + pow(calc->player.x, 2)) + sqrt(pow((CELL * calc->inc), 2) + pow(calc->processed.y, 2)));
 		wall->inmap.y = (int)(calc->processed.y / CELL + 1) * calc->direction.y;
-		wall->inmap.x = calc->end.x * calc->direction.x;
+		wall->inmap.x = (calc->end.x - 1) * calc->direction.x;
 		printf("2eme %d %d || %d ||| %f\n", wall->inmap.y, wall->inmap.x, ht, calc->processed.y);
 		if (calc->direction.x == -1)
 			wall->wall_surf = 2;
@@ -143,14 +153,18 @@ void			launch_ray(t_wall *wall, t_w3dmap *map, double ray, int i)
 			calc.processed.x += (calc.proc_for1.x * (calc.player.x / CELL));
 			calc.processed.y += (calc.proc_for1.y * (calc.player.y / CELL));
 		}
-		if (!(calc.end.x))
-			calc.processed.x += calc.proc_for1.x;
-		if (!(calc.end.y))
-			calc.processed.y += calc.proc_for1.y;
+		else
+		{
+			if (!(calc.end.x))
+				calc.processed.x += calc.proc_for1.x;
+			if (!(calc.end.y))
+				calc.processed.y += calc.proc_for1.y;
+		}
 		calc.inc++;
 	}
-	printf("processed %f %f\n", calc.processed.y, calc.processed.x);
 	wall->collumns[i] = get_ht(&calc, wall);
+	printf("processed i %d  %f %f || %d ||| %d %d\n", i, calc.processed.y, calc.processed.x, wall->collumns[i], wall->inmap.y, wall->inmap.x);
+//	exit(1);
 }
 
 int				compare_vector_2d(t_vector_2d v1, t_vector_2d v2)
@@ -164,7 +178,6 @@ int				*realloc_dup(int *tab, int len)
 {
 	int			*new;
 
-	printf("%d\n", len);
 	if (!len && tab)
 	{
 		if (!(new = (int*)malloc(sizeof(int))))
@@ -176,8 +189,11 @@ int				*realloc_dup(int *tab, int len)
 		return (NULL);
 	if (tab)
 	{
-		ft_memcpy(new, tab, len);
-		ft_memdel((void*)&tab);
+		ft_memcpy(new, tab, len - 1);
+		printf("NOOOOOON\n");
+		if (tab)
+			ft_memdel((void*)&tab);
+		printf("OK\n");
 	}
 	return (new);
 }
@@ -196,26 +212,25 @@ int				launch_rays(t_wall *wall, t_wolf *wolf, double *rays, double inc)
 	int			i;
 	t_vector_2d	start;
 
-	i= 1;
-	if (!(wall->collumns = (int*)malloc(sizeof(int*))))
-		free_wolf(wolf, 1);
-	printf("launch rays %f\n", *rays);
-	launch_ray(wall, &(wolf->map), *rays, 0);
-	start = wolf->map.pos;
-	*rays += inc;
-	printf("%d %d %d %d\n", start.y, start.x, wall->inmap.y, wall->inmap.x);
-	while (!compare_vector_2d(add_vectors(wall->inmap, start), start))
+	i= 0;
+	start.x = -1;
+	start.y = -1;
+//	printf("%d %d %d %d\n", start.y, start.x, wall->inmap.y, wall->inmap.x);
+	while ((start.x == -1 && start.y == -1) || (!compare_vector_2d(wall->inmap, start) && *rays < wolf->map.cam.range[1]))
 	{
-		launch_ray(wall, &(wolf->map), *rays, i);
-		printf("wololo %d || %d\n", i, wall->collumns[i]);
-		if (!(wall->collumns = realloc_dup(wall->collumns, i + 1)))
+		if (!(wall->collumns = (int*)realloc(wall->collumns, sizeof(int) * (i + 1))))
 			free_wolf(wolf, 1);
-		printf("wut\n");
+		launch_ray(wall, &(wolf->map), *rays, i);
+		if (!i)
+			start = wall->inmap;
+		printf("wololo %d || %d | %f", i, wall->collumns[i], *rays);
+		printf("zob %d %d %d %d\n", start.y, start.x, wall->inmap.y, wall->inmap.x);
 		*rays += inc;
 		i++;
 	}
+	printf("wut %d\n", wall->collumns[i - 1]);
+	printf("zobi %d %f ", i, *rays);
 	printf("%d %d %d %d\n", start.y, start.x, wall->inmap.y, wall->inmap.x);
-	printf("zobi\n");
 //	exit(1);
 	return (i - 1);
 }
@@ -265,11 +280,19 @@ void		w3d_draw(t_wolf *wolf)
 		if (!wall.collumns)
 		{
 			wall.current = x;
+			wall.left.end = 0;
 			x += launch_rays(&wall, wolf, &rays, inc);
+			wall.right.start = x;
+			wall.right.end = x;
+			printf("dr dorito %d || %d ||\n", x, wall.collumns[0]);
 		}
-		draw_wall(wolf->wrap->wolf, pick_wall(wall.wall_surf, wolf->map.walls), wall.current, &wall);
+//		draw_wall(wolf->wrap->wolf, pick_wall(wall.wall_surf, wolf->map.walls), wall.current, &wall);
+		free(wall.collumns);
+		wall.collumns = NULL;
 		init_wall(&wall);
 	}
+	exit(1);
+//	printf("mais que se passe t il?\n");
 	SDL_RenderClear(wolf->wrap->renderer);
 	SDL_RenderCopy(wolf->wrap->renderer, wolf->wrap->tex, NULL, NULL);
 	SDL_RenderPresent(wolf->wrap->renderer);
