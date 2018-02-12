@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:36:41 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/09 18:09:37 by adleau           ###   ########.fr       */
+/*   Updated: 2018/02/12 14:49:24 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ void			draw_collumn(SDL_Surface *surf, SDL_Surface __attribute__((unused))*src, 
 	while (++y < wall->collumns[wall->current])
 	{
 //		printf("%d %d\n", y + y_onscreen, x_screen);
-		draw_px(surf, x_screen, y + y_onscreen, get_color_from_tex(src, wall, wall->current, y));
-//		printf("c\n");
+		draw_px(surf, x_screen, y + y_onscreen, 0xFFFFFF);//get_color_from_tex(src, wall, wall->current, y));
+//		printf("maerde %d || %d\n", x_screen,  y + y_onscreen);
 	}
 //	printf("b\n");
 }
@@ -64,17 +64,18 @@ void			draw_wall(SDL_Surface *surf, SDL_Surface *src, int x_screen, t_wall *wall
 {
 	int			off;
 
-	printf("AAAAAA\n");
+//	printf("AAAAAA\n");
 	wall->current = -1;
 	off = wall->left.end;
 	while (++wall->current < wall->right.end)
 	{
 		if (wall->current >= wall->left.end && wall->current < wall->right.start)
 		{
-			printf("oui? xscreen %d | %d ||| %d col %d\n", x_screen + (wall->current - off), wall->current, wall->right.end, wall->collumns[wall->current]);
-			if (wall->collumns[wall->current] <= WIN_HT)
+//			printf("oui? xscreen %d | %d ||| %d col %d ", x_screen + (wall->current - off), wall->current, wall->right.end, wall->collumns[wall->current]);
+			if (wall->collumns[wall->current] > 0 && wall->collumns[wall->current] <= WIN_HT)
 				draw_collumn(surf, src, x_screen + (wall->current - off), wall);
-			printf("non? xscreen %d | %d ||| %d\n", x_screen + (wall->current - off), wall->current, wall->right.end);
+//			printf("\n");
+//			printf("non? xscreen %d | %d ||| %d\n", x_screen + (wall->current - off), wall->current, wall->right.end);
 //			exit(1);
 		}
 	}
