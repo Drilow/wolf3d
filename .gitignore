@@ -1,3 +1,5 @@
 ext/*
 */*.o
 */*/*.o
+wolf3d
+SDL*
