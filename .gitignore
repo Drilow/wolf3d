@@ -3,3 +3,4 @@ ext/*
 */*/*.o
 wolf3d
 SDL*
+libft/*
