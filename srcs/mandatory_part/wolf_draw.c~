@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:28:28 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/14 14:27:31 by adleau           ###   ########.fr       */
+/*   Updated: 2018/02/12 14:55:57 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,50 +16,6 @@
 #include <mandatory_part/walls.h>
 #include <mandatory_part/w3d_calc.h>
 #include <helpers/cleanup.h>
-#include <mandatory_part/w3d_rays.h>
-
-void				init_wall(t_wall *wall)
-{
-	wall->start = -1;
-	wall->end = -1;
-	wall->l_off = -1;
-	wall->first_proc = -1;
-	wall->processed_size = -1;
-	wall->direction.x = 0;
-	wall->direction.y = 0;
-	wall->inmap.x = -1;
-	wall->inmap.y = -1;
-	wall->next = NULL;
-}
-
-int					init_walls(t_walls *walls)
-{
-	walls->collumns = NULL;
-	if (!(walls->collumns = (int*)malloc(sizeof(int) * (WIN_WD + 1))))
-		return (1);
-	ft_bzero((void*)walls->collumns, WIN_WD + 1);
-	walls->wall = NULL;
-	if (!(walls->wall = (t_wall*)malloc(sizeof(t_wall))))
-		return (1);
-	init_wall(walls->wall);
-	return (0);
-}
-
-double			get_angle(double d)
-{
-	double		r;
-
-	r = 0;
-	if (d < 90)
-		r = 90 - d;
-	else if (d < 180)
-		r = d - 90;
-	else if (d < 270)
-		r = 270 - d;
-	else if (d < 360)
-		r = d - 270;
-	return (r);
-}
 
 void			get_direction(t_vector_2d *direction, double ray)
 {
@@ -72,87 +28,6 @@ void			get_direction(t_vector_2d *direction, double ray)
 	else if ((ray < 90 && ray >= 0) || (ray > 270 && ray < 360))
 		direction->y = -1;
 }
-
-t_vector_2d			get_player(t_vector_2d player, t_vector_2d direction)
-{
-	t_vector_2d		ret;
-
-	ret.x = (direction.x == 1) ? player.x : CELL - player.x;
-	ret.y = (direction.y == 1) ? player.y : CELL - player.y;
-	return (ret);
-}
-
-void				init_ray(t_wolf *wolf, t_w3dray *w_ray, double c_ray, int x)
-{
-	w_ray->orientation = c_ray;
-	w_ray->angle = get_angle(c_ray);
-	get_direction(&(w_ray->direction), c_ray);
-	w_ray->inmap.x = wolf->map.pos.x;
-	w_ray->inmap.y = wolf->map.pos.y;
-	w_ray->off = get_player(wolf->map.cam.player, w_ray->direction);
-	w_ray->proc_x.x = 0;
-	w_ray->proc_x.y = 0;
-	w_ray->proc_y.x = 0;
-	w_ray->proc_y.y = 0;
-	w_ray->hit.x = 0;
-	w_ray->hit.y = 0;
-	w_ray->distance.x = 0;
-	w_ray->distance.y = 0;
-}
-
-t_vector_2d			detect_wall(t_wolf *wolf, t_wall *wall, double c_ray, int x)
-{
-	t_w3dray		w_ray;
-
-	init_ray(wolf, &w_ray, c_ray, x);
-	while (w_ray.distance.x == 0 || w_ray.distance.y == 0)
-	{
-		if ((wolf->map.map[w_ray.inmap.y + (w_ray.direction.y * w_ray.proc_x.y / CELL)][w_ray.inmap.x + (w_ray.direction.x * w_ray.proc_x.x / CELL)] != '0') &&
-	(wolf->map.map[w_ray.inmap.y + (w_ray.direction.y * w_ray.proc_x.y / CELL)][w_ray.inmap.x + (w_ray.direction.x * w_ray.proc_x.x / CELL)] != 'S'))
-			w_ray.distance.x = get_dist(w_ray.proc_x);
-		if ((wolf->map.map[w_ray.inmap.y + (w_ray.direction.y * w_ray.proc_y.y / CELL)][w_ray.inmap.x + (w_ray.direction.x * w_ray.proc_y.x / CELL)] != '0') &&
-	(wolf->map.map[w_ray.inmap.y + (w_ray.direction.y * w_ray.proc_y.y / CELL)][w_ray.inmap.x + (w_ray.direction.x * w_ray.proc_y.x / CELL)] != 'S'))
-			w_ray.distance.y = get_dist(w_ray.proc_y);
-	}
-	w_ray.inmap.x = (w_ray.distance.x < w_ray.distance.y) ? w_ray.inmap.x + (w_ray.direction.x * w_ray.proc_x.x / CELL) :
-	w_ray.inmap.x + (w_ray.direction.x * w_ray.proc_y.x / CELL);
-	w_ray.inmap.y = (w_ray.distance.x < w_ray.distance.y) ? w_ray.inmap.y + (w_ray.direction.y * w_ray.proc_x.y / CELL) :
-	w_ray.inmap.y + (w_ray.direction.y * w_ray.proc_y.y / CELL);
-	return (w_ray.inmap);
-}
-
-void				w3d_draw(t_wolf *wolf)
-{
-	int				x;
-	t_walls			walls;
-	t_wall			*start;
-	double			rays;
-	double			inc;
-
-	if (init_walls(&walls))
-		free_wolf(wolf, 1);
-	x = -1;
-	start = walls->wall;
-	rays = wolf->map.cam.range[0];
-	inc = wolf->map.cam.fov / WIN_WD;
-	while (++x <= WIN_WD) // raycast loop
-	{
-		if (walls->wall->start < 0)
-			walls->wall->inmap = detect_wall(wolf, walls->wall, rays, x);
-		else if (compare_vector_2d(detect_wall(wolf, walls->wall, rays, x), walls->wall.inmap))
-		{
-			if (!(walls->wall->next = (t_wall*)malloc(sizeof(t_wall))))
-				free_wolf(wolf, 1);
-			walls->wall = walls->wall->next;
-			init_wall(walls->wall);
-			walls->wall->inmap = detect_wall(wolf, walls->wall, rays, x);
-		}
-		rays += inc;
-	}
-	walls->wall = start;
-}
-
-/*
 
 void			init_w3d_calc(t_w3dcalc *calc, t_w3dmap *map, double ray)
 {
@@ -170,6 +45,22 @@ void			init_w3d_calc(t_w3dcalc *calc, t_w3dmap *map, double ray)
 	calc->end.x = 0;
 	calc->end.y = 0;
 	calc->distance = 0;
+}
+
+double			get_angle(double d)
+{
+	double		r;
+
+	r = 0;
+	if (d < 90)
+		r = 90 - d;
+	else if (d < 180)
+		r = d - 90;
+	else if (d < 270)
+		r = 270 - d;
+	else if (d < 360)
+		r = d - 270;
+	return (r);
 }
 
 int				was_wall_hit(t_w3dcalc *calc, char **map, int flag) // 0 = x, 1 = y
@@ -348,7 +239,7 @@ int				launch_rays(t_wall *wall, t_wolf *wolf, double *rays, double inc)
 /* init_wall function
 ** initializes the wall structure for the drawing
  */
-/*
+
 void		init_wall(t_wall *wall)
 {
 	wall->left.start = -1;
@@ -372,7 +263,7 @@ SDL_Surface		*pick_wall(int i, SDL_Surface **walls)
 /* w3d_draw function
 ** entry point of the drawing module
  */
-/*
+
 void		w3d_draw(t_wolf *wolf)
 {
 	double	rays;
@@ -408,5 +299,3 @@ void		w3d_draw(t_wolf *wolf)
 	SDL_RenderCopy(wolf->wrap->renderer, wolf->wrap->tex, NULL, NULL);
 	SDL_RenderPresent(wolf->wrap->renderer);
 }
-
-*/

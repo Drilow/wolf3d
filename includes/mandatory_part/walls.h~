@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:37:54 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/14 13:31:06 by adleau           ###   ########.fr       */
+/*   Updated: 2018/02/08 13:25:56 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,28 +22,15 @@ typedef struct		s_range
 
 typedef struct		s_wall
 {
-	int				start; // 0 for first wall, whatever next
-	int				end; // tab index
-	int				l_off; // left offset : (processed.first * xmaxwall) / processed.size
-	int				first_proc; // index of the cell hit < CELL
-	int				processed_size; // size from first_proc to end of the wall (CELL - first_proc)
-	t_vector_2d		direction; // used to pick the wall
+	t_range			left; // 0 -> start of wall
+	t_range			right; // end of shown wall -> end of wall
+	int				*collumns; // array of all the collumns of the wall
+	t_vector_2d		direction;
 	t_vector_2d		inmap;
-	struct s_wall	*next;
+	int				wall_surf;
+	int				current; // for drawing purposes
 }					t_wall;
-
-typedef struct		s_walls
-{
-	int				*collumns; // all the collumns displayed
-	t_wall			*wall;
-}					t_walls;
 
 void			draw_wall(SDL_Surface *surf, SDL_Surface *src, int x_screen, t_wall *wall);
 
 #endif
-
-
-
-
-
-
