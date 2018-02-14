@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:28:28 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/14 14:27:31 by adleau           ###   ########.fr       */
+/*   Updated: 2018/02/14 18:59:46 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,13 @@
 #include <helpers/cleanup.h>
 #include <mandatory_part/w3d_rays.h>
 
+int				compare_vector_2d(t_vector_2d v1, t_vector_2d v2)
+{
+	if (v1.x == v2.x && v1.y == v2.y)
+		return (0);
+	return (1);
+}
+
 void				init_wall(t_wall *wall)
 {
 	wall->start = -1;
@@ -25,6 +32,7 @@ void				init_wall(t_wall *wall)
 	wall->l_off = -1;
 	wall->first_proc = -1;
 	wall->processed_size = -1;
+	wall->col = 0;
 	wall->direction.x = 0;
 	wall->direction.y = 0;
 	wall->inmap.x = -1;
@@ -82,10 +90,11 @@ t_vector_2d			get_player(t_vector_2d player, t_vector_2d direction)
 	return (ret);
 }
 
-void				init_ray(t_wolf *wolf, t_w3dray *w_ray, double c_ray, int x)
+void				init_ray(t_wolf *wolf, t_w3dray *w_ray, double c_ray)
 {
 	w_ray->orientation = c_ray;
 	w_ray->angle = get_angle(c_ray);
+	w_ray->tanner = tan(w_ray->angle * M_PI / 180);
 	get_direction(&(w_ray->direction), c_ray);
 	w_ray->inmap.x = wolf->map.pos.x;
 	w_ray->inmap.y = wolf->map.pos.y;
@@ -100,24 +109,75 @@ void				init_ray(t_wolf *wolf, t_w3dray *w_ray, double c_ray, int x)
 	w_ray->distance.y = 0;
 }
 
+int					get_dist(t_vector_2d *proc)
+{
+	return (sqrt(pow(proc->x, 2) + pow(proc->y, 2)));
+}
+
+void				launch_ray(t_w3dray *w_ray)
+{
+	if (w_ray->proc_x.x == 0 && w_ray->proc_y.y == 0)
+	{
+		w_ray->proc_x.y = CELL - w_ray->off.y;
+		w_ray->proc_x.x = w_ray->proc_x.y / w_ray->tanner;
+		w_ray->proc_y.x = CELL - w_ray->off.x;
+		w_ray->proc_y.y = w_ray->proc_y.x * w_ray->tanner;
+	}
+	else
+	{
+		if (!(w_ray->distance.x))
+		{
+			w_ray->proc_x.y += CELL;
+			w_ray->proc_x.x = w_ray->proc_x.y / w_ray->tanner;
+		}
+		if (!(w_ray->distance.y))
+		{
+			w_ray->proc_y.x += CELL;
+			w_ray->proc_y.y = w_ray->proc_y.x * w_ray->tanner;
+		}
+	}
+}
+
+#define PROCX_Y w_ray.inmap.y + (w_ray.direction.y * (w_ray.off.y + w_ray.proc_x.y) / CELL)
+#define PROCX_X w_ray.inmap.x + (w_ray.direction.x * (w_ray.off.x + w_ray.proc_x.x) / CELL)
+#define PROCY_Y w_ray.inmap.y + (w_ray.direction.y * (w_ray.off.y + w_ray.proc_y.y) / CELL)
+#define PROCY_X w_ray.inmap.x + (w_ray.direction.x * (w_ray.off.x + w_ray.proc_y.x) / CELL)
+
 t_vector_2d			detect_wall(t_wolf *wolf, t_wall *wall, double c_ray, int x)
 {
 	t_w3dray		w_ray;
 
-	init_ray(wolf, &w_ray, c_ray, x);
+	init_ray(wolf, &w_ray, c_ray);
+	if (wall->inmap.x < 0 && wall->inmap.y < 0)
+		wall->start = x;
 	while (w_ray.distance.x == 0 || w_ray.distance.y == 0)
 	{
-		if ((wolf->map.map[w_ray.inmap.y + (w_ray.direction.y * w_ray.proc_x.y / CELL)][w_ray.inmap.x + (w_ray.direction.x * w_ray.proc_x.x / CELL)] != '0') &&
-	(wolf->map.map[w_ray.inmap.y + (w_ray.direction.y * w_ray.proc_x.y / CELL)][w_ray.inmap.x + (w_ray.direction.x * w_ray.proc_x.x / CELL)] != 'S'))
-			w_ray.distance.x = get_dist(w_ray.proc_x);
-		if ((wolf->map.map[w_ray.inmap.y + (w_ray.direction.y * w_ray.proc_y.y / CELL)][w_ray.inmap.x + (w_ray.direction.x * w_ray.proc_y.x / CELL)] != '0') &&
-	(wolf->map.map[w_ray.inmap.y + (w_ray.direction.y * w_ray.proc_y.y / CELL)][w_ray.inmap.x + (w_ray.direction.x * w_ray.proc_y.x / CELL)] != 'S'))
-			w_ray.distance.y = get_dist(w_ray.proc_y);
+		printf("procx %d %d| procy %d %d || c_Ray %f\n", PROCX_Y, PROCX_X, PROCY_Y, PROCY_X, c_ray);
+		if (PROCX_Y < wolf->map.size.y && PROCX_X < wolf->map.size.x)
+			if ((wolf->map.map[PROCX_Y][PROCX_X] != '0') &&
+			(wolf->map.map[PROCX_Y][PROCX_X] != 'S'))
+				w_ray.distance.x = get_dist(&(w_ray.proc_x));
+		if (PROCY_Y < wolf->map.size.y && PROCY_X < wolf->map.size.x)
+			if ((wolf->map.map[PROCY_Y][PROCY_X] != '0') &&
+			(wolf->map.map[PROCY_Y][PROCY_X] != 'S'))
+				w_ray.distance.y = get_dist(&(w_ray.proc_y));
+		printf("preteub\n");
+		launch_ray(&w_ray);
+		printf("teub %d %D\n", w_ray.distance.x, w_ray.distance.y);
 	}
-	w_ray.inmap.x = (w_ray.distance.x < w_ray.distance.y) ? w_ray.inmap.x + (w_ray.direction.x * w_ray.proc_x.x / CELL) :
-	w_ray.inmap.x + (w_ray.direction.x * w_ray.proc_y.x / CELL);
-	w_ray.inmap.y = (w_ray.distance.x < w_ray.distance.y) ? w_ray.inmap.y + (w_ray.direction.y * w_ray.proc_x.y / CELL) :
-	w_ray.inmap.y + (w_ray.direction.y * w_ray.proc_y.y / CELL);
+//	printf("procx %d %d| procy %d %d\n", PROCX_Y, PROCX_X, PROCY_Y, PROCY_X);
+//	printf("x : %d || proc for x %d %d || for y %d %d\n", x, w_ray.proc_x.y, w_ray.proc_x.x, w_ray.proc_y.y, w_ray.proc_y.x);
+	w_ray.inmap.x = (w_ray.distance.x < w_ray.distance.y) ? PROCX_X : PROCY_X;
+
+	w_ray.inmap.y = (w_ray.distance.x < w_ray.distance.y) ? PROCX_Y : PROCY_Y;
+	if (wall->inmap.x >= 0 && wall->inmap.y >= 0)
+	{
+		if (compare_vector_2d(w_ray.inmap, wall->inmap))
+			wall->end = x;
+		else
+			wall->col = (w_ray.distance.x < w_ray.distance.y) ? CELL / w_ray.distance.x * wolf->map.cam.screendist : CELL / w_ray.distance.y * wolf->map.cam.screendist;
+	}
+	printf("dist x y %d %d\n", w_ray.distance.x, w_ray.distance.y);
 	return (w_ray.inmap);
 }
 
@@ -132,24 +192,31 @@ void				w3d_draw(t_wolf *wolf)
 	if (init_walls(&walls))
 		free_wolf(wolf, 1);
 	x = -1;
-	start = walls->wall;
+	start = walls.wall;
 	rays = wolf->map.cam.range[0];
 	inc = wolf->map.cam.fov / WIN_WD;
 	while (++x <= WIN_WD) // raycast loop
 	{
-		if (walls->wall->start < 0)
-			walls->wall->inmap = detect_wall(wolf, walls->wall, rays, x);
-		else if (compare_vector_2d(detect_wall(wolf, walls->wall, rays, x), walls->wall.inmap))
+		printf("a\n");
+		if (walls.wall->start < 0)
 		{
-			if (!(walls->wall->next = (t_wall*)malloc(sizeof(t_wall))))
-				free_wolf(wolf, 1);
-			walls->wall = walls->wall->next;
-			init_wall(walls->wall);
-			walls->wall->inmap = detect_wall(wolf, walls->wall, rays, x);
+			walls.wall->inmap = detect_wall(wolf, walls.wall, rays, x);
 		}
+		else if (walls.wall->end >= 0)
+		{
+			printf("b\n");
+			if (!(walls.wall->next = (t_wall*)malloc(sizeof(t_wall))))
+				free_wolf(wolf, 1);
+			walls.wall = walls.wall->next;
+			init_wall(walls.wall);
+		}
+		if (walls.wall != NULL)
+			walls.wall->inmap = detect_wall(wolf, walls.wall, rays, x);
+		printf("%d || %d %d || %d\n", x, walls.wall->inmap.y, walls.wall->inmap.x, walls.wall->col);
 		rays += inc;
+		printf("g\n");
 	}
-	walls->wall = start;
+	walls.wall = start;
 }
 
 /*
@@ -277,13 +344,6 @@ void			launch_ray(t_wall *wall, t_w3dmap *map, double ray, int i)
 //	exit(1);
 }
 
-int				compare_vector_2d(t_vector_2d v1, t_vector_2d v2)
-{
-	if (v1.x == v2.x && v1.y == v2.y)
-		return (0);
-	return (1);
-}
-
 int				*realloc_dup(int *tab, int len)
 {
 	int			*new;
@@ -345,10 +405,6 @@ int				launch_rays(t_wall *wall, t_wolf *wolf, double *rays, double inc)
 	return (i - 1);
 }
 
-/* init_wall function
-** initializes the wall structure for the drawing
- */
-/*
 void		init_wall(t_wall *wall)
 {
 	wall->left.start = -1;
@@ -369,10 +425,7 @@ SDL_Surface		*pick_wall(int i, SDL_Surface **walls)
 {
 	return (walls[i]);
 }
-/* w3d_draw function
-** entry point of the drawing module
- */
-/*
+
 void		w3d_draw(t_wolf *wolf)
 {
 	double	rays;

@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:37:54 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/14 13:31:06 by adleau           ###   ########.fr       */
+/*   Updated: 2018/02/14 17:46:38 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef struct		s_wall
 	int				l_off; // left offset : (processed.first * xmaxwall) / processed.size
 	int				first_proc; // index of the cell hit < CELL
 	int				processed_size; // size from first_proc to end of the wall (CELL - first_proc)
+	int				col; // used to export the ht of the collumn
 	t_vector_2d		direction; // used to pick the wall
 	t_vector_2d		inmap;
 	struct s_wall	*next;
@@ -41,9 +42,3 @@ typedef struct		s_walls
 void			draw_wall(SDL_Surface *surf, SDL_Surface *src, int x_screen, t_wall *wall);
 
 #endif
-
-
-
-
-
-
