@@ -6,7 +6,7 @@
 #    By: adleau <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/17 12:44:17 by adleau            #+#    #+#              #
-#    Updated: 2018/02/15 11:34:50 by adleau           ###   ########.fr        #
+#    Updated: 2018/02/14 17:23:22 by adleau           ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -39,7 +39,6 @@ SRC =   $(SRCPATH)main.c \
 		$(SRCPATH)mainmenu.c \
 		$(SRCPATH)full_run.c \
 		$(SRCPATH)mandatory_part/wolf.c \
-		$(SRCPATH)mandatory_part/walls.c \
 		$(SRCPATH)mandatory_part/wolf_init.c \
 		$(SRCPATH)mandatory_part/wolf_parse.c \
 		$(SRCPATH)mandatory_part/wolf_loop.c \

@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:36:41 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/15 12:16:04 by adleau           ###   ########.fr       */
+/*   Updated: 2018/02/12 14:49:24 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,37 +35,48 @@ Uint32			get_color_from_tex(SDL_Surface *src, t_wall *wall, int x, int y)
 	Uint32		*pxmem;
 
 	color = 0;
-	ratio.x = src->w / (wall->end - wall->start + wall->l_off);
-	ratio.y = src->h / y;
-	pxmem = (Uint32*)src->pixels + (Uint32)(((y * ratio.y * (src->pitch / src->format->BytesPerPixel)) + (wall->end - x + wall->l_off) * ratio.x * src->format->BytesPerPixel));
+	ratio.x = src->w / wall->right.end;
+	ratio.y = src->h / wall->collumns[wall->current];
+	pxmem = (Uint32*)src->pixels + (Uint32)(((wall->collumns[wall->current] - y) *
+	ratio.y * (src->pitch / src->format->BytesPerPixel)) + (wall->right.end - x)
+	* ratio.x * src->format->BytesPerPixel);
 	color = *pxmem;
 	return (color);
 }
 
-void			draw_collumn(SDL_Surface *surf, SDL_Surface __attribute__((unused))*src, int x, int *collumns, t_wall __attribute__((unused))*wall)
+void			draw_collumn(SDL_Surface *surf, SDL_Surface __attribute__((unused))*src, int x_screen, t_wall *wall)
 {
 	int			y;
 	int			y_onscreen;
 
 	y = -1;
-	y_onscreen = WIN_HT / 2 - collumns[x] / 2;
-	while (++y < collumns[x])
+	y_onscreen = WIN_HT / 2 - wall->collumns[wall->current] / 2;
+	while (++y < wall->collumns[wall->current])
 	{
 //		printf("%d %d\n", y + y_onscreen, x_screen);
-		draw_px(surf, x, y + y_onscreen, 0xFFFFFF);//get_color_from_tex(src, wall, x, collumns[x]));
+		draw_px(surf, x_screen, y + y_onscreen, 0xFFFFFF);//get_color_from_tex(src, wall, wall->current, y));
 //		printf("maerde %d || %d\n", x_screen,  y + y_onscreen);
 	}
 //	printf("b\n");
 }
 
-void			draw_wall(SDL_Surface *surf, SDL_Surface *src, int *collumns, t_wall *wall)
+void			draw_wall(SDL_Surface *surf, SDL_Surface *src, int x_screen, t_wall *wall)
 {
-	int			x;
+	int			off;
 
-	x = wall->start - 1;
-	while (++x < wall->end)
+//	printf("AAAAAA\n");
+	wall->current = -1;
+	off = wall->left.end;
+	while (++wall->current < wall->right.end)
 	{
-		printf("collumn %d\n", collumns[x]);
-		draw_collumn(surf, src, x, collumns, wall);
+		if (wall->current >= wall->left.end && wall->current < wall->right.start)
+		{
+//			printf("oui? xscreen %d | %d ||| %d col %d ", x_screen + (wall->current - off), wall->current, wall->right.end, wall->collumns[wall->current]);
+			if (wall->collumns[wall->current] > 0 && wall->collumns[wall->current] <= WIN_HT)
+				draw_collumn(surf, src, x_screen + (wall->current - off), wall);
+//			printf("\n");
+//			printf("non? xscreen %d | %d ||| %d\n", x_screen + (wall->current - off), wall->current, wall->right.end);
+//			exit(1);
+		}
 	}
 }
