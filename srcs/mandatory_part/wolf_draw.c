@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:28:28 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/14 18:59:46 by adleau           ###   ########.fr       */
+/*   Updated: 2018/02/14 21:45:36 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,11 @@
 #include <mandatory_part/w3d_calc.h>
 #include <helpers/cleanup.h>
 #include <mandatory_part/w3d_rays.h>
+
+#define PPROCX_Y w_ray->inmap.y + (w_ray->direction.y * (w_ray->off.y + w_ray->proc_x.y) / CELL)
+#define PPROCX_X w_ray->inmap.x + (w_ray->direction.x * (w_ray->off.x + w_ray->proc_x.x) / CELL)
+#define PPROCY_Y w_ray->inmap.y + (w_ray->direction.y * (w_ray->off.y + w_ray->proc_y.y) / CELL)
+#define PPROCY_X w_ray->inmap.x + (w_ray->direction.x * (w_ray->off.x + w_ray->proc_y.x) / CELL)
 
 int				compare_vector_2d(t_vector_2d v1, t_vector_2d v2)
 {
@@ -114,28 +119,40 @@ int					get_dist(t_vector_2d *proc)
 	return (sqrt(pow(proc->x, 2) + pow(proc->y, 2)));
 }
 
-void				launch_ray(t_w3dray *w_ray)
+void				launch_ray(t_w3dray *w_ray, t_vector_2d *size)
 {
 	if (w_ray->proc_x.x == 0 && w_ray->proc_y.y == 0)
 	{
 		w_ray->proc_x.y = CELL - w_ray->off.y;
-		w_ray->proc_x.x = w_ray->proc_x.y / w_ray->tanner;
+		if (PPROCX_X < size->x)
+			w_ray->proc_x.x = w_ray->proc_x.y / w_ray->tanner;
 		w_ray->proc_y.x = CELL - w_ray->off.x;
-		w_ray->proc_y.y = w_ray->proc_y.x * w_ray->tanner;
+		if (PPROCY_Y < size->y - 1)
+			w_ray->proc_y.y = w_ray->proc_y.x * w_ray->tanner;
 	}
 	else
 	{
 		if (!(w_ray->distance.x))
 		{
 			w_ray->proc_x.y += CELL;
-			w_ray->proc_x.x = w_ray->proc_x.y / w_ray->tanner;
+			if (PPROCX_X < size->x)
+				w_ray->proc_x.x = w_ray->proc_x.y / w_ray->tanner;
 		}
 		if (!(w_ray->distance.y))
 		{
 			w_ray->proc_y.x += CELL;
-			w_ray->proc_y.y = w_ray->proc_y.x * w_ray->tanner;
+			if (PPROCY_Y < size->y - 1)
+				w_ray->proc_y.y = w_ray->proc_y.x * w_ray->tanner;
 		}
 	}
+}
+
+void				handle_overflow(t_w3dray *w_ray, t_vector_2d size)
+{
+	while (PPROCX_X >= size.x || PPROCX_X < 0)
+		w_ray->proc_x.x -= CELL;
+	while (PPROCY_Y >= size.y || PPROCY_Y < 0)
+		w_ray->proc_y.y -= CELL;
 }
 
 #define PROCX_Y w_ray.inmap.y + (w_ray.direction.y * (w_ray.off.y + w_ray.proc_x.y) / CELL)
@@ -150,20 +167,24 @@ t_vector_2d			detect_wall(t_wolf *wolf, t_wall *wall, double c_ray, int x)
 	init_ray(wolf, &w_ray, c_ray);
 	if (wall->inmap.x < 0 && wall->inmap.y < 0)
 		wall->start = x;
-	while (w_ray.distance.x == 0 || w_ray.distance.y == 0)
+	while (w_ray.angle != 90 && (w_ray.distance.x == 0 || w_ray.distance.y == 0))
 	{
 		printf("procx %d %d| procy %d %d || c_Ray %f\n", PROCX_Y, PROCX_X, PROCY_Y, PROCY_X, c_ray);
-		if (PROCX_Y < wolf->map.size.y && PROCX_X < wolf->map.size.x)
+		if (PROCX_Y >= 0 && PROCX_X >= 0 && PROCX_Y < wolf->map.size.y && PROCX_X < wolf->map.size.x)
 			if ((wolf->map.map[PROCX_Y][PROCX_X] != '0') &&
 			(wolf->map.map[PROCX_Y][PROCX_X] != 'S'))
 				w_ray.distance.x = get_dist(&(w_ray.proc_x));
-		if (PROCY_Y < wolf->map.size.y && PROCY_X < wolf->map.size.x)
+		if (PROCY_Y >= 0 && PROCY_X >= 0 && PROCY_Y < wolf->map.size.y && PROCY_X < wolf->map.size.x)
 			if ((wolf->map.map[PROCY_Y][PROCY_X] != '0') &&
 			(wolf->map.map[PROCY_Y][PROCY_X] != 'S'))
 				w_ray.distance.y = get_dist(&(w_ray.proc_y));
+		handle_overflow(&w_ray, wolf->map.size);
 		printf("preteub\n");
-		launch_ray(&w_ray);
+		launch_ray(&w_ray, &(wolf->map.size));
 		printf("teub %d %D\n", w_ray.distance.x, w_ray.distance.y);
+//		if (c_ray > 173.67 && w_ray.distance.x > 0)
+		if (PROCY_Y < 0 || PROCY_X < 0)
+			exit(1);
 	}
 //	printf("procx %d %d| procy %d %d\n", PROCX_Y, PROCX_X, PROCY_Y, PROCY_X);
 //	printf("x : %d || proc for x %d %d || for y %d %d\n", x, w_ray.proc_x.y, w_ray.proc_x.x, w_ray.proc_y.y, w_ray.proc_y.x);
