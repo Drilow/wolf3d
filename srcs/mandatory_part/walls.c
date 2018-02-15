@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:36:41 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/15 13:55:08 by adleau           ###   ########.fr       */
+/*   Updated: 2018/02/15 17:42:39 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,10 @@ void			draw_collumn(SDL_Surface *surf, SDL_Surface __attribute__((unused))*src, 
 	int			y_onscreen;
 
 	y = -1;
-	if (collumns[x] >= WIN_HT)
-		collumns[x] = WIN_HT - 1;
 	y_onscreen = WIN_HT / 2 - collumns[x] / 2;
-	while (++y <= collumns[x])
+	if (collumns[x] >= WIN_HT)
+		y_onscreen = 0;
+	while (++y <= WIN_HT && y <= collumns[x])
 	{
 //		printf("%d %d\n", y + y_onscreen, x_screen);
 		draw_px(surf, x, y + y_onscreen, 0xFFFFFF);//get_color_from_tex(src, wall, x, collumns[x]));
@@ -65,9 +65,12 @@ void			draw_wall(SDL_Surface *surf, SDL_Surface *src, int *collumns, t_wall *wal
 	int			x;
 
 	x = wall->start - 1;
-	while (++x < wall->end)
+	while (++x <= wall->end)
 	{
+//		printf("dollumn %d || %d %d\n", collumns[x], wall->start, wall->end);
+//		if (wall->start == -1 && wall->end == 1280)
+//			exit(1);
 		draw_collumn(surf, src, x, collumns, wall);
-		printf("collumn %d || %d %d\n", collumns[x], wall->start, wall->end);
+//		printf("collumn %d || %d %d\n", collumns[x], wall->start, wall->end);
 	}
 }

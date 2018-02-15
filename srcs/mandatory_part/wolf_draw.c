@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:28:28 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/15 14:01:31 by adleau           ###   ########.fr       */
+/*   Updated: 2018/02/15 17:44:22 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int					init_walls(t_walls *walls)
 	walls->collumns = NULL;
 	if (!(walls->collumns = (int*)malloc(sizeof(int) * (WIN_WD + 1))))
 		return (1);
-	ft_bzero((void*)walls->collumns, WIN_WD + 1);
+	ft_bzero(walls->collumns, WIN_WD + 1);
 	walls->wall = NULL;
 	if (!(walls->wall = (t_wall*)malloc(sizeof(t_wall))))
 		return (1);
@@ -190,7 +190,7 @@ t_vector_2d			detect_wall(t_wolf *wolf, t_wall *wall, double c_ray, int x)
 	init_ray(wolf, &w_ray, c_ray);
 	if (wall->inmap.x < 0 && wall->inmap.y < 0)
 		wall->start = x;
-	while (w_ray.angle != 90 && (w_ray.distance.x == 0 || w_ray.distance.y == 0))
+	while ((w_ray.distance.x == 0 || w_ray.distance.y == 0))
 	{
 		if (PROCX_Y >= 0 && PROCX_X >= 0 && PROCX_Y < wolf->map.size.y && PROCX_X < wolf->map.size.x)
 			if ((wolf->map.map[PROCX_Y][PROCX_X] != '0') &&
@@ -217,12 +217,9 @@ t_vector_2d			detect_wall(t_wolf *wolf, t_wall *wall, double c_ray, int x)
 			wall->direction.x = w_ray.direction.x;
 			wall->direction.y = w_ray.direction.y;
 		}
-		else
-		{
 //			printf("dist %d %d\n", (int)((CELL / (double)w_ray.distance.x) * wolf->map.cam.screendist), w_ray.distance.y);
-			wall->col = (w_ray.distance.x < w_ray.distance.y) ? (int)((CELL / (double)w_ray.distance.x) * wolf->map.cam.screendist) : (int)((CELL / (double)w_ray.distance.y) * wolf->map.cam.screendist); // wrong formula it seems
-			printf("wall %d\n", wall->col);
-		}
+			wall->col = (w_ray.distance.x < w_ray.distance.y) ? (int)round((CELL / (double)w_ray.distance.x) * wolf->map.cam.screendist) : (int)round((CELL / (double)w_ray.distance.y) * wolf->map.cam.screendist); // wrong formula it seems
+//			printf("wall %d\n", wall->col);
 	}
 	return (w_ray.inmap);
 }
@@ -238,33 +235,34 @@ void				w3d_draw(t_wolf *wolf)
 	if (init_walls(&walls))
 		free_wolf(wolf, 1);
 	x = -1;
-	start = walls.wall;
+	start = NULL;
 	rays = wolf->map.cam.range[0];
 	inc = wolf->map.cam.fov / WIN_WD;
 	while (++x <= WIN_WD) // raycast loop
 	{
-		if (walls.wall->start < 0)
-		{
-			walls.wall->inmap = detect_wall(wolf, walls.wall, rays, x);
-		}
+//			walls.wall->inmap = detect_wall(wolf, walls.wall, rays, x);
+		walls.wall->inmap = detect_wall(wolf, walls.wall, rays, x);
+		walls.collumns[x] = walls.wall->col;
+		if (!start)
+			start = walls.wall;
 		else if (walls.wall->end >= 0)
 		{
+			walls.collumns[walls.wall->start] = walls.collumns[walls.wall->start + 1];
+//			walls.collumns[x + 1] = walls.wall->col;
 			if (!(walls.wall->next = (t_wall*)malloc(sizeof(t_wall))))
 				free_wolf(wolf, 1);
 			walls.wall = walls.wall->next;
 			init_wall(walls.wall);
 		}
-//		if (walls.wall != NULL)
-		walls.wall->inmap = detect_wall(wolf, walls.wall, rays, x);
-		walls.collumns[x] = walls.wall->col;
 		rays += inc;
 	}
 	walls.wall = start;
 	while (walls.wall)
 	{
-		printf("prout %d %d\n", walls.wall->end,  walls.collumns[walls.wall->end - 1]);
+		printf("prout %p %d %d | %d %d\n", walls.wall, walls.wall->start, walls.wall->end,  walls.collumns[walls.wall->start], walls.collumns[walls.wall->end]);
 		draw_wall(wolf->wrap->wolf, pick_wall(wolf->map.walls, walls.wall->direction), walls.collumns, walls.wall);
 		walls.wall = walls.wall->next;
+//		break ;
 	}
 	printf("out\n");
 	if (!(wolf->wrap->renderer) && !wolf->wrap->tex)
