@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:37:54 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/15 11:36:37 by adleau           ###   ########.fr       */
+/*   Updated: 2018/02/15 13:32:24 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ typedef struct		s_walls
 	t_wall			*wall;
 }					t_walls;
 
+void			draw_px(SDL_Surface *surf, int x, int y, int color);
 void			draw_wall(SDL_Surface *surf, SDL_Surface *src, int *collumns, t_wall *wall);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:21:13 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/15 13:50:46 by adleau           ###   ########.fr       */
+/*   Updated: 2018/02/15 13:49:16 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,5 +40,18 @@ void		mandatory_part(t_sdl_wrapper *wrap, char *path)
 		wolf.wrap = wrap;
 	printf("rien\n");
 	init_wolf(&wolf, wolf.wrap, path);
+	if (!(wolf.wrap->renderer) && !wolf.wrap->tex)
+	{
+		if (!(wolf.wrap->renderer = SDL_CreateRenderer(wolf.wrap->screen, -1, SDL_RENDERER_ACCELERATED)))
+		{
+			printf("%s\n", SDL_GetError());
+			exit(1);
+		}
+		if (!(wolf.wrap->tex = SDL_CreateTextureFromSurface(wolf.wrap->renderer, wolf.wrap->wolf)))
+		{
+			printf("%s\n", SDL_GetError());
+			exit(1);
+		}
+	}
 	wolf_loop(&wolf);
 }

@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:28:28 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/15 12:16:50 by adleau           ###   ########.fr       */
+/*   Updated: 2018/02/15 14:01:31 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,11 +194,11 @@ t_vector_2d			detect_wall(t_wolf *wolf, t_wall *wall, double c_ray, int x)
 	{
 		if (PROCX_Y >= 0 && PROCX_X >= 0 && PROCX_Y < wolf->map.size.y && PROCX_X < wolf->map.size.x)
 			if ((wolf->map.map[PROCX_Y][PROCX_X] != '0') &&
-			(wolf->map.map[PROCX_Y][PROCX_X] != 'S'))
+				(wolf->map.map[PROCX_Y][PROCX_X] != 'S'))
 				w_ray.distance.x = get_dist(&(w_ray.proc_x));
 		if (PROCY_Y >= 0 && PROCY_X >= 0 && PROCY_Y < wolf->map.size.y && PROCY_X < wolf->map.size.x)
 			if ((wolf->map.map[PROCY_Y][PROCY_X] != '0') &&
-			(wolf->map.map[PROCY_Y][PROCY_X] != 'S'))
+				(wolf->map.map[PROCY_Y][PROCY_X] != 'S'))
 				w_ray.distance.y = get_dist(&(w_ray.proc_y));
 		handle_overflow(&w_ray, wolf->map.size);
 		launch_ray(&w_ray, &(wolf->map.size));
@@ -209,7 +209,7 @@ t_vector_2d			detect_wall(t_wolf *wolf, t_wall *wall, double c_ray, int x)
 	{
 		if (wall->start == x)
 			wall->first_proc = (w_ray.distance.x < w_ray.distance.y) ? w_ray.proc_x.x : w_ray.proc_y.y;
-		if (compare_vector_2d(w_ray.inmap, wall->inmap))
+		if (compare_vector_2d(w_ray.inmap, wall->inmap) || x == WIN_WD)
 		{
 			wall->end = x;
 			wall->processed_size = CELL - wall->first_proc;
@@ -218,8 +218,12 @@ t_vector_2d			detect_wall(t_wolf *wolf, t_wall *wall, double c_ray, int x)
 			wall->direction.y = w_ray.direction.y;
 		}
 		else
-			wall->col = (w_ray.distance.x < w_ray.distance.y) ? CELL / w_ray.distance.x * wolf->map.cam.screendist : CELL / w_ray.distance.y * wolf->map.cam.screendist; // wrong formula it seems
-}
+		{
+//			printf("dist %d %d\n", (int)((CELL / (double)w_ray.distance.x) * wolf->map.cam.screendist), w_ray.distance.y);
+			wall->col = (w_ray.distance.x < w_ray.distance.y) ? (int)((CELL / (double)w_ray.distance.x) * wolf->map.cam.screendist) : (int)((CELL / (double)w_ray.distance.y) * wolf->map.cam.screendist); // wrong formula it seems
+			printf("wall %d\n", wall->col);
+		}
+	}
 	return (w_ray.inmap);
 }
 
@@ -250,8 +254,8 @@ void				w3d_draw(t_wolf *wolf)
 			walls.wall = walls.wall->next;
 			init_wall(walls.wall);
 		}
-		if (walls.wall != NULL)
-			walls.wall->inmap = detect_wall(wolf, walls.wall, rays, x);
+//		if (walls.wall != NULL)
+		walls.wall->inmap = detect_wall(wolf, walls.wall, rays, x);
 		walls.collumns[x] = walls.wall->col;
 		rays += inc;
 	}
@@ -263,5 +267,21 @@ void				w3d_draw(t_wolf *wolf)
 		walls.wall = walls.wall->next;
 	}
 	printf("out\n");
-	exit(1);
+	if (!(wolf->wrap->renderer) && !wolf->wrap->tex)
+	{
+		if (!(wolf->wrap->renderer = SDL_CreateRenderer(wolf->wrap->screen, -1, SDL_RENDERER_ACCELERATED)))
+		{
+			printf("%s\n", SDL_GetError());
+			exit(1);
+		}
+		if (!(wolf->wrap->tex = SDL_CreateTextureFromSurface(wolf->wrap->renderer, wolf->wrap->wolf)))
+		{
+			printf("%s\n", SDL_GetError());
+			exit(1);
+		}
+	}
+	SDL_RenderClear(wolf->wrap->renderer);
+	SDL_RenderCopy(wolf->wrap->renderer, wolf->wrap->tex, NULL, NULL);
+	SDL_RenderPresent(wolf->wrap->renderer);
+//	exit(1);
 }
