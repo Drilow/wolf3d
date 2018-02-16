@@ -30,7 +30,7 @@ void		keyup_events_w3d(t_wolf *wolf)
 //		printf("%f\n", wolf->map.cam.orientation);
 		if (wolf->map.cam.orientation >= 360)
 			wolf->map.cam.orientation -= 360;
-			w3d_draw(wolf);
+		w3d_draw(wolf);
 	}
 }
 
@@ -48,6 +48,7 @@ void		wolf_loop(t_wolf *wolf)
 	{
 		while (SDL_PollEvent(&(EVENT_PTR)))
 		{
+			
 			w3d_draw(wolf);
 			if (EVENT_PTR.type == SDL_QUIT)
 				exit(0);

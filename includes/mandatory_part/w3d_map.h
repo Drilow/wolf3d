@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 09:52:45 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/06 08:14:01 by adleau           ###   ########.fr       */
+/*   Updated: 2018/02/16 09:00:37 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,7 @@ typedef struct			s_w3dmap
 	t_w3d_camera		cam;
 	SDL_Surface			**walls;
 }						t_w3dmap;
+
+void					init_w3dcam(t_w3d_camera *cam);
 
 #endif
