@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:24:39 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/16 13:34:15 by adleau           ###   ########.fr       */
+/*   Updated: 2018/02/16 09:00:13 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,13 @@ void		init_w3dcam(t_w3d_camera *cam)
 {
 	cam->fov = 60;
 	cam->screendist = WIN_WD / 2 / tan(cam->fov / 2 * M_PI / 180);
-	cam->angle = get_angle(cam->orientation);
+	printf("init w3dcam %f\n", cam->orientation);
 	cam->range[0] = cam->orientation - cam->fov / 2;
 	cam->range[1] = cam->orientation + cam->fov / 2;
 	cam->direction.x = 0;
 	cam->direction.y = 0;
-	get_direction(&(cam->direction), cam->orientation);
+	cam->player.x = CELL / 2;
+	cam->player.y = CELL / 2;
 }
 
 void		init_w3dparse(t_wolf *wolf, char *path)
@@ -53,8 +54,6 @@ void		init_w3dmap(t_wolf *wolf, t_w3dmap *map)
 	map->pos.y = -1;
 	if (!(map->walls = (SDL_Surface**)malloc(sizeof(SDL_Surface*) * 4)))
 		free_wolf(wolf, 1);
-	map->cam.player.x = CELL / 2;
-	map->cam.player.y = CELL / 2;
 }
 
 /* init_wolf function

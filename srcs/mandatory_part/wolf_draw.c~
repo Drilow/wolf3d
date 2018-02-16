@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:28:28 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/16 15:07:44 by adleau           ###   ########.fr       */
+/*   Updated: 2018/02/16 13:31:47 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -267,7 +267,7 @@ void				w3d_draw(t_wolf *wolf)
 		draw_wall(wolf->wrap->wolf, pick_wall(wolf->map.walls, walls.wall->direction), walls.collumns, walls.wall);
 		walls.wall = walls.wall->next;
 	}
-	if (!(wolf->wrap->renderer))
+	if (!(wolf->wrap->renderer))// && !wolf->wrap->tex)
 	{
 		if (!(wolf->wrap->renderer = SDL_CreateRenderer(wolf->wrap->screen, -1, SDL_RENDERER_ACCELERATED)))
 		{
