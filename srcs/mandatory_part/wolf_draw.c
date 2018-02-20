@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:28:28 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/16 15:07:44 by adleau           ###   ########.fr       */
+/*   Updated: 2018/02/17 17:31:57 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,23 +145,25 @@ void				launch_ray(t_w3dray *w_ray, t_vector_2d *size)
 	{
 		w_ray->proc_x.y = CELL - w_ray->off.y;
 		if (PPROCX_X < size->x)
-			w_ray->proc_x.x = w_ray->proc_x.y / w_ray->tanner;
+			w_ray->proc_x.x = (int)((double)w_ray->proc_x.y / w_ray->tanner);
 		w_ray->proc_y.x = CELL - w_ray->off.x;
-		if (PPROCY_Y < size->y - 1)
-			w_ray->proc_y.y = w_ray->proc_y.x * w_ray->tanner;
+		if (PPROCY_Y < size->y)
+			w_ray->proc_y.y = (int)((double)w_ray->proc_y.x * w_ray->tanner);
+		printf("dokodo %d %d ||| %d %d\n", PPROCX_X, PPROCY_Y, w_ray->proc_x.x, w_ray->proc_y.y);
 	}
 	else
 	{
+		printf("DOKO\n");
 		if (!(w_ray->distance.x))
 		{
 			w_ray->proc_x.y += CELL;
-			if (PPROCX_X < size->x)
+			if (PPROCX_X && PPROCX_X < size->x)
 				w_ray->proc_x.x = w_ray->proc_x.y / w_ray->tanner;
 		}
 		if (!(w_ray->distance.y))
 		{
 			w_ray->proc_y.x += CELL;
-			if (PPROCY_Y < size->y - 1)
+			if (PPROCY_Y && PPROCY_Y < size->y)
 				w_ray->proc_y.y = w_ray->proc_y.x * w_ray->tanner;
 		}
 	}
@@ -193,15 +195,21 @@ t_vector_2d			detect_wall(t_wolf *wolf, t_wall *wall, double c_ray, int x)
 	while ((w_ray.distance.x == 0 || w_ray.distance.y == 0))
 	{
 		if (PROCX_Y >= 0 && PROCX_X >= 0 && PROCX_Y < wolf->map.size.y && PROCX_X < wolf->map.size.x)
+		{
+			printf("couille, %d, %d %f %f || PROCX %d %d || PROCY %d %d || %c\n", w_ray.distance.x, w_ray.distance.y, c_ray, w_ray.angle, PROCX_Y, PROCX_X, PROCY_Y, PROCY_X, wolf->map.map[PROCX_Y][PROCX_X]);//, wolf->map.map[PROCY_Y][PROCY_X]);
 			if ((wolf->map.map[PROCX_Y][PROCX_X] != '0') &&
 				(wolf->map.map[PROCX_Y][PROCX_X] != 'S'))
 				w_ray.distance.x = get_dist(&(w_ray.proc_x));
+		}
 		if (PROCY_Y >= 0 && PROCY_X >= 0 && PROCY_Y < wolf->map.size.y && PROCY_X < wolf->map.size.x)
+		{
 			if ((wolf->map.map[PROCY_Y][PROCY_X] != '0') &&
 				(wolf->map.map[PROCY_Y][PROCY_X] != 'S'))
 				w_ray.distance.y = get_dist(&(w_ray.proc_y));
+		}
 		handle_overflow(&w_ray, wolf->map.size);
 		launch_ray(&w_ray, &(wolf->map.size));
+		printf("bite, %d, %d %f %f || PROCX %d %d || PROCY %d %d || \n", w_ray.distance.x, w_ray.distance.y, c_ray, w_ray.angle, PROCX_Y, PROCX_X, PROCY_Y, PROCY_X);// wolf->map.map[PROCX_Y][PROCX_X], wolf->map.map[PROCY_Y][PROCY_X]);
 	}
 	w_ray.inmap.x = (w_ray.distance.x < w_ray.distance.y) ? PROCX_X : PROCY_X;
 	w_ray.inmap.y = (w_ray.distance.x < w_ray.distance.y) ? PROCX_Y : PROCY_Y;
@@ -218,7 +226,7 @@ t_vector_2d			detect_wall(t_wolf *wolf, t_wall *wall, double c_ray, int x)
 			wall->direction.y = w_ray.direction.y;
 		}
 //			printf("dist %d %d\n", (int)((CELL / (double)w_ray.distance.x) * wolf->map.cam.screendist), w_ray.distance.y);
-			wall->col = (w_ray.distance.x < w_ray.distance.y) ? (int)round((CELL / (double)w_ray.distance.x) * wolf->map.cam.screendist * 3 / 4) : (int)round((CELL / (double)w_ray.distance.y) * wolf->map.cam.screendist * 3 / 4); // wrong formula it seems
+		wall->col = (w_ray.distance.x < w_ray.distance.y) ? (int)round((CELL / (double)w_ray.distance.x) * wolf->map.cam.screendist * 3 / 4) : (int)round((CELL / (double)w_ray.distance.y) * wolf->map.cam.screendist * 3 / 4); // wrong formula it seems
 	}
 	return (w_ray.inmap);
 }
@@ -244,8 +252,16 @@ void				w3d_draw(t_wolf *wolf)
 	}
 	rays = wolf->map.cam.range[0];
 	inc = wolf->map.cam.fov / WIN_WD;
+	printf("working\n");
 	while (++x <= WIN_WD) // raycast loop
 	{
+		if (rays >= 360)
+			rays -= 360;
+		if (rays < 0)
+			rays += 360;
+		if (rays == INFINITY)
+			exit(1);
+		printf("%f\n", rays);
 		walls.wall->inmap = detect_wall(wolf, walls.wall, rays, x);
 		walls.collumns[x] = walls.wall->col;
 		if (!start)

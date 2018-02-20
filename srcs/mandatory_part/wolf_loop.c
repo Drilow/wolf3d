@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:27:33 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/16 13:42:02 by adleau           ###   ########.fr       */
+/*   Updated: 2018/02/18 13:37:04 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,20 +45,20 @@ void		keyup_events_w3d(t_wolf *wolf)
 		tmpy = wolf->map.cam.player.y;
 		wolf->map.cam.player.x += (wolf->map.cam.direction.x * 10 * (cos(wolf->map.cam.angle * M_PI / 180)));
 		wolf->map.cam.player.y += (wolf->map.cam.direction.y * 10 * sin(wolf->map.cam.angle * M_PI / 180));
-		if (wolf->map.cam.player.x >= CELL || wolf->map.cam.player.x < 0)
+		if (wolf->map.cam.player.x >= CELL - 20 || wolf->map.cam.player.x < 20)
 		{
 			if (wolf->map.map[wolf->map.pos.y][wolf->map.pos.x + (wolf->map.cam.direction.x)] == '1')
-				wolf->map.cam.player.x = tmpx;
+				return ;//wolf->map.cam.player.x = tmpx;
 			else
 			{
 				wolf->map.pos.x += wolf->map.cam.direction.x;
 				wolf->map.cam.player.x = (wolf->map.cam.direction.x > 0) ? 0 : CELL;
 			}
 		}
-		if (wolf->map.cam.player.y >= CELL  || wolf->map.cam.player.y < 0)
+		if (wolf->map.cam.player.y >= CELL - 20 || wolf->map.cam.player.y < 20)
 		{
 			if (wolf->map.map[wolf->map.pos.y + wolf->map.cam.direction.y][wolf->map.pos.x] == '1')
-				wolf->map.cam.player.y = tmpy;
+				return ;//wolf->map.cam.player.y = tmpy;
 			else
 			{
 				wolf->map.pos.y += wolf->map.cam.direction.y;
