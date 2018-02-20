@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:28:28 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/20 15:47:41 by adleau           ###   ########.fr       */
+/*   Updated: 2018/02/17 17:31:57 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,7 +196,7 @@ t_vector_2d			detect_wall(t_wolf *wolf, t_wall *wall, double c_ray, int x)
 	{
 		if (PROCX_Y >= 0 && PROCX_X >= 0 && PROCX_Y < wolf->map.size.y && PROCX_X < wolf->map.size.x)
 		{
-//			printf("couille, %d, %d %f %f || PROCX %d %d || PROCY %d %d || %c\n", w_ray.distance.x, w_ray.distance.y, c_ray, w_ray.angle, PROCX_Y, PROCX_X, PROCY_Y, PROCY_X, wolf->map.map[PROCX_Y][PROCX_X]);//, wolf->map.map[PROCY_Y][PROCY_X]);
+			printf("couille, %d, %d %f %f || PROCX %d %d || PROCY %d %d || %c\n", w_ray.distance.x, w_ray.distance.y, c_ray, w_ray.angle, PROCX_Y, PROCX_X, PROCY_Y, PROCY_X, wolf->map.map[PROCX_Y][PROCX_X]);//, wolf->map.map[PROCY_Y][PROCY_X]);
 			if ((wolf->map.map[PROCX_Y][PROCX_X] != '0') &&
 				(wolf->map.map[PROCX_Y][PROCX_X] != 'S'))
 				w_ray.distance.x = get_dist(&(w_ray.proc_x));
@@ -209,7 +209,7 @@ t_vector_2d			detect_wall(t_wolf *wolf, t_wall *wall, double c_ray, int x)
 		}
 		handle_overflow(&w_ray, wolf->map.size);
 		launch_ray(&w_ray, &(wolf->map.size));
-//		printf("bite, %d, %d %f %f || PROCX %d %d || PROCY %d %d || \n", w_ray.distance.x, w_ray.distance.y, c_ray, w_ray.angle, PROCX_Y, PROCX_X, PROCY_Y, PROCY_X);// wolf->map.map[PROCX_Y][PROCX_X], wolf->map.map[PROCY_Y][PROCY_X]);
+		printf("bite, %d, %d %f %f || PROCX %d %d || PROCY %d %d || \n", w_ray.distance.x, w_ray.distance.y, c_ray, w_ray.angle, PROCX_Y, PROCX_X, PROCY_Y, PROCY_X);// wolf->map.map[PROCX_Y][PROCX_X], wolf->map.map[PROCY_Y][PROCY_X]);
 	}
 	w_ray.inmap.x = (w_ray.distance.x < w_ray.distance.y) ? PROCX_X : PROCY_X;
 	w_ray.inmap.y = (w_ray.distance.x < w_ray.distance.y) ? PROCX_Y : PROCY_Y;
