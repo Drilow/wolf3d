@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:36:41 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/21 15:00:31 by adleau           ###   ########.fr       */
+/*   Updated: 2018/02/21 18:14:52 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,17 @@ Uint32			get_color_from_tex(SDL_Surface *src, t_wall *wall, int x, int y)
 	Uint32		color;
 	Uint32		*pxmem;
 
-	printf("a\n");
+	if (wall->end - wall->start  == 0)
+		return (0);
+//		printf("col wall->end %d wall->start %d wall->l_off %d wall->first_proc %d|| x : %d y : %d\n", wall->end, wall->start, wall->l_off, wall->first_proc, x, y);
 	color = 0;
-	ratio.x = src->w / (wall->end - wall->start/* + wall->l_off*/);
+	ratio.x = src->w / (wall->end - wall->start);
 	ratio.y = src->h / y;
-	pxmem = (Uint32*)src->pixels + (Uint32)(((y * ratio.y * (src->pitch / src->format->BytesPerPixel)) + (wall->end - x /*+ wall->l_off*/) * ratio.x * src->format->BytesPerPixel));
+	wall->l_off = src->w * wall->first_proc / CELL;
+//	printf("src->format->BytesPerPixel %d\n", src->format->BytesPerPixel);
+	pxmem = (Uint32*)src->pixels + (Uint32)(((y * ratio.y * (src->pitch / src->format->BytesPerPixel)) + (wall->l_off + wall->end - x) * ratio.x * src->format->BytesPerPixel));
 	color = *pxmem;
-	printf("col wall->end %d wall->start %d wall->l_off %f || x : %d y : %d\n", wall->end, wall->start, wall->l_off, x, y);
+//	exit(1);
 	return (color);
 }
 
@@ -75,7 +79,7 @@ void			draw_collumn(SDL_Surface *surf, SDL_Surface __attribute__((unused))*src, 
 	while (++y <= WIN_HT && y <= collumns[x])
 	{
 //		printf("%d %d\n", y + y_onscreen, x_screen);
-		draw_px(surf, x, y + y_onscreen, 0xFFFFFF);//get_color_from_tex(src, wall, x, collumns[x]));
+		draw_px(surf, x, y + y_onscreen, get_color_from_tex(src, wall, x, collumns[x]));
 //		printf("maerde %d || %d\n", x_screen,  y + y_onscreen);
 	}
 //	printf("b\n");

@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:37:54 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/21 14:55:12 by adleau           ###   ########.fr       */
+/*   Updated: 2018/02/21 18:04:51 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ typedef struct		s_wall
 {
 	int				start; // 0 for first wall, whatever next
 	int				end; // tab index
-	double			l_off; // left offset : (processed.first * xmaxwall) / processed.size
+	int				l_off; // left offset : (processed.first * xmaxwall) / processed.size
 	int				first_proc; // index of the cell hit < CELL
 	int				processed_size; // size from first_proc to end of the wall (CELL - first_proc)
 	int				col; // used to export the ht of the collumn
