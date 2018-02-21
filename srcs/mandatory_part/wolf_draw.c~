@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:28:28 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/21 14:57:04 by adleau           ###   ########.fr       */
+/*   Updated: 2018/02/20 15:47:41 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,25 +141,19 @@ int					get_dist(t_vector_2d *proc)
 
 void				launch_ray(t_w3dray *w_ray, t_vector_2d *size)
 {
-	if (!(w_ray->hit.x) && !(w_ray->hit.y))
+	if (w_ray->proc_x.x == 0 && w_ray->proc_y.y == 0)
 	{
 		w_ray->proc_x.y = CELL - w_ray->off.y;
-		if (PPROCX_X >= 0 && PPROCX_X < size->x)
-		{
+		if (PPROCX_X < size->x)
 			w_ray->proc_x.x = (int)((double)w_ray->proc_x.y / w_ray->tanner);
-			w_ray->hit.x = 1;
-		}
 		w_ray->proc_y.x = CELL - w_ray->off.x;
-		if (PPROCY_Y >= 0 && PPROCY_Y < size->y)
-		{
+		if (PPROCY_Y < size->y)
 			w_ray->proc_y.y = (int)((double)w_ray->proc_y.x * w_ray->tanner);
-			w_ray->hit.y = 1;
-		}
 		printf("dokodo %d %d ||| %d %d\n", PPROCX_X, PPROCY_Y, w_ray->proc_x.x, w_ray->proc_y.y);
 	}
 	else
 	{
-		printf("DOKO %d %d ||| %d %d\n", PPROCX_X, PPROCY_Y, w_ray->proc_x.x, w_ray->proc_y.y);
+		printf("DOKO\n");
 		if (!(w_ray->distance.x))
 		{
 			w_ray->proc_x.y += CELL;
@@ -227,12 +221,12 @@ t_vector_2d			detect_wall(t_wolf *wolf, t_wall *wall, double c_ray, int x)
 		{
 			wall->end = x;
 			wall->processed_size = CELL - wall->first_proc;
-			wall->l_off = (double)(wall->first_proc * CELL) / wall->processed_size;
+			wall->l_off = (wall->first_proc * CELL) / wall->processed_size;
 			wall->direction.x = w_ray.direction.x;
 			wall->direction.y = w_ray.direction.y;
 		}
 //			printf("dist %d %d\n", (int)((CELL / (double)w_ray.distance.x) * wolf->map.cam.screendist), w_ray.distance.y);
-		wall->col = (w_ray.distance.x < w_ray.distance.y) ? (int)round((CELL / (double)w_ray.distance.x) * wolf->map.cam.screendist * 2 / 3) : (int)round((CELL / (double)w_ray.distance.y) * wolf->map.cam.screendist * 2 / 3); // wrong formula it seems
+		wall->col = (w_ray.distance.x < w_ray.distance.y) ? (int)round((CELL / (double)w_ray.distance.x) * wolf->map.cam.screendist * 3 / 4) : (int)round((CELL / (double)w_ray.distance.y) * wolf->map.cam.screendist * 3 / 4); // wrong formula it seems
 	}
 	return (w_ray.inmap);
 }

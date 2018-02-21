@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:27:33 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/21 14:45:35 by adleau           ###   ########.fr       */
+/*   Updated: 2018/02/20 16:55:02 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,36 +23,28 @@ void		keyup_up(t_wolf *wolf)
 
 	tmpx = wolf->map.cam.player.x;
 	tmpy = wolf->map.cam.player.y;
-//	if (wolf->map.map[wolf->map.pos.y][wolf->map.pos.x + wolf->map.cam.direction.x] != '1')
-	wolf->map.cam.player.x += (wolf->map.cam.direction.x * 10 * (cos(wolf->map.cam.angle * M_PI / 180)));
-/*	else
-	return ;
+	if (wolf->map.map[wolf->map.pos.y][wolf->map.pos.x + wolf->map.cam.direction.x] != '1')
+		wolf->map.cam.player.x += (wolf->map.cam.direction.x * 10 * (cos(wolf->map.cam.angle * M_PI / 180)));
+	else
+		return ;
 	if (wolf->map.map[wolf->map.pos.y + wolf->map.cam.direction.y][wolf->map.pos.x] != '1')
-*/		wolf->map.cam.player.y += (wolf->map.cam.direction.y * 10 * sin(wolf->map.cam.angle * M_PI / 180));
-//	else
-//		return ;
-	if (wolf->map.cam.player.x >= CELL - 1 || wolf->map.cam.player.x < 1)
+		wolf->map.cam.player.y += (wolf->map.cam.direction.y * 10 * sin(wolf->map.cam.angle * M_PI / 180));
+	else
+		return ;
+	if (wolf->map.cam.player.x >= CELL - 20 || wolf->map.cam.player.x < 20)
 	{
 		if (wolf->map.map[wolf->map.pos.y][wolf->map.pos.x + (wolf->map.cam.direction.x)] == '1')
-		{
-			wolf->map.cam.player.x = tmpx;
-			wolf->map.cam.player.y = tmpy;
-			return ;
-		}
+			return ;//wolf->map.cam.player.x = tmpx;
 		else
 		{
 			wolf->map.pos.x += wolf->map.cam.direction.x;
 			wolf->map.cam.player.x = (wolf->map.cam.direction.x > 0) ? 0 : CELL;
 		}
 	}
-	if (wolf->map.cam.player.y >= CELL - 1 || wolf->map.cam.player.y < 1)
+	if (wolf->map.cam.player.y >= CELL - 20 || wolf->map.cam.player.y < 20)
 	{
 		if (wolf->map.map[wolf->map.pos.y + wolf->map.cam.direction.y][wolf->map.pos.x] == '1')
-		{
-			wolf->map.cam.player.x = tmpx;
-			wolf->map.cam.player.y = tmpy;
-			return ;
-		}
+			return ; //wolf->map.cam.player.y = tmpy;
 		else
 		{
 			wolf->map.pos.y += wolf->map.cam.direction.y;

@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:36:41 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/21 15:00:31 by adleau           ###   ########.fr       */
+/*   Updated: 2018/02/16 11:44:05 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,11 @@ Uint32			get_color_from_tex(SDL_Surface *src, t_wall *wall, int x, int y)
 	Uint32		color;
 	Uint32		*pxmem;
 
-	printf("a\n");
 	color = 0;
-	ratio.x = src->w / (wall->end - wall->start/* + wall->l_off*/);
+	ratio.x = src->w / (wall->end - wall->start + wall->l_off);
 	ratio.y = src->h / y;
-	pxmem = (Uint32*)src->pixels + (Uint32)(((y * ratio.y * (src->pitch / src->format->BytesPerPixel)) + (wall->end - x /*+ wall->l_off*/) * ratio.x * src->format->BytesPerPixel));
+	pxmem = (Uint32*)src->pixels + (Uint32)(((y * ratio.y * (src->pitch / src->format->BytesPerPixel)) + (wall->end - x + wall->l_off) * ratio.x * src->format->BytesPerPixel));
 	color = *pxmem;
-	printf("col wall->end %d wall->start %d wall->l_off %f || x : %d y : %d\n", wall->end, wall->start, wall->l_off, x, y);
 	return (color);
 }
 
