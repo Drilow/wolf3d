@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:36:41 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/22 14:42:04 by adleau           ###   ########.fr       */
+/*   Updated: 2018/02/22 15:47:47 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void			draw_px(SDL_Surface *surf, int x, int y, int color)
 	*pxmem = col;
 }
 
-Uint32			get_color_from_tex(SDL_Surface *src, t_wall *wall, int x, int y)
+Uint32			get_color_from_tex(SDL_Surface *src, t_wall *wall, int x, int y, int size)
 {
 	t_vector_2d	ratio;
 	Uint32		color;
@@ -61,12 +61,15 @@ Uint32			get_color_from_tex(SDL_Surface *src, t_wall *wall, int x, int y)
 	}
 	color = 0;
 	ratio.x = src->w / (wall->end - wall->start);
-	ratio.y = src->h / y;
-	wall->l_off = src->w * ((double)wall->first_proc / CELL);
-//	printf("src->format->BytesPerPixel %d\n", src->format->BytesPerPixel);
-	pxmem = (Uint32*)src->pixels + (Uint32)(((y * ratio.y * (src->pitch / src->format->BytesPerPixel)) + (wall->l_off + wall->end - x) * ratio.x * src->format->BytesPerPixel));
-	color = *pxmem;
+	ratio.y = src->h / size;
+	wall->l_off = src->w - src->w * ((double)wall->first_proc / CELL);
+//	printf("%d %d || %d\n", ratio.y, ratio.x, (((size - y) * ratio.y * (src->pitch / src->format->BytesPerPixel)) + ((wall->end - x) * ratio.x * src->format->BytesPerPixel)));
 //	exit(1);
+//	printf("src->format->BytesPerPixel %d || %d %d || wall start %d end %d\n", src->format->BytesPerPixel, wall->l_off, wall->first_proc, wall->start, wall->end);
+	pxmem = (Uint32*)src->pixels + (Uint32)(((size - y) * ratio.y * (src->pitch / src->format->BytesPerPixel)) + ((wall->end - x) * ratio.x * src->format->BytesPerPixel));
+//	printf("test\n");
+//(((y * ratio.y * (src->pitch / src->format->BytesPerPixel)) + (wall->l_off * (src->pitch * src->format->BytesPerPixel)) + (wall->l_off + wall->end - x) * ratio.x * src->format->BytesPerPixel));
+	color = *pxmem;
 	return (color);
 }
 
@@ -84,10 +87,10 @@ void			draw_collumn(SDL_Surface *surf, SDL_Surface __attribute__((unused))*src, 
 //		printf("%d %d\n", y + y_onscreen, x_screen);
 		if (y + y_onscreen >= WIN_HT)
 		{
-			printf("x %d, y %d, %f\n", x, y + y_onscreen, wall->orientation);
+			printf("x %d, y onscreen %d both %d, %f\n", x, y_onscreen, y + y_onscreen, wall->orientation);
 		}
-		draw_px(surf, x, y + y_onscreen, 0xFFFFFF); //get_color_from_tex(src, wall, x, collumns[x]));
-//		printf("maerde %d || %d\n", x_screen,  y + y_onscreen);
+		draw_px(surf, x, y + y_onscreen, get_color_from_tex(src, wall, x, y, collumns[x]));
+//		printf("maerde\n");
 	}
 //	printf("b\n");
 }

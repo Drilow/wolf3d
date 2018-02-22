@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:28:28 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/22 15:16:29 by adleau           ###   ########.fr       */
+/*   Updated: 2018/02/22 16:53:21 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,20 +78,16 @@ double			get_angle(double d)
 	return (r);
 }
 
-SDL_Surface		*pick_wall(SDL_Surface **walls, t_vector_2d dir)
+SDL_Surface		*pick_wall(SDL_Surface **walls, t_wall *wall, t_vector_2d pos)
 {
-	int			i;
-
-	i = 0;
-	if (dir.x == -1 && dir.y == -1)
-		i = 0;
-	if (dir.x == -1 && dir.y == 1)
-		i = 1;
-	if (dir.x == 1 && dir.y == -1)
-		i = 2;
-	if (dir.x == 1 && dir.y == 1)
-		i = 3;
-	return (walls[i]);
+	printf("wall inmap %d %d || pos %d %d || wall start %d end %d\n", wall->inmap.y, wall->inmap.x, pos.y, pos.x, wall->start, wall->end);
+	if (wall->inmap.x >= pos.x)
+		return (walls[0]);
+	else if (wall->inmap.x < pos.x)
+		return (walls[1]);
+	else if (wall->inmap.y >= pos.y)
+		return (walls[2]);
+	return (walls[3]);
 }
 
 void			get_direction(t_vector_2d *direction, double ray)
@@ -297,7 +293,7 @@ void				w3d_draw(t_wolf *wolf)
 	{
 //		printf("prout %p %d %d | %d %d\n", walls.wall, walls.wall->start, walls.wall->end,  walls.collumns[walls.wall->start], walls.collumns[walls.wall->end]);
 		if (walls.wall->start - walls.wall->end != 0)
-			draw_wall(wolf->wrap->wolf, pick_wall(wolf->map.walls, walls.wall->direction), walls.collumns, walls.wall);
+			draw_wall(wolf->wrap->wolf, pick_wall(wolf->map.walls, walls.wall, wolf->map.pos), walls.collumns, walls.wall);
 		walls.wall = walls.wall->next;
 	}
 	if (!(wolf->wrap->renderer))
