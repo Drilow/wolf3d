@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:28:28 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/22 15:16:29 by adleau           ###   ########.fr       */
+/*   Updated: 2018/02/21 18:12:19 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -274,12 +274,6 @@ void				w3d_draw(t_wolf *wolf)
 //		printf("%f\n", rays);
 		walls.wall->inmap = detect_wall(wolf, walls.wall, rays, x);
 		walls.collumns[x] = walls.wall->col;
-		walls.wall->orientation = wolf->map.cam.orientation;
-		if (rays == 90)
-		{
-			if(x)
-				walls.collumns[x] = walls.collumns[x - 1];
-		}
 		if (!start)
 			start = walls.wall;
 		else if (walls.wall->end >= 0)
@@ -296,8 +290,7 @@ void				w3d_draw(t_wolf *wolf)
 	while (walls.wall->next)
 	{
 //		printf("prout %p %d %d | %d %d\n", walls.wall, walls.wall->start, walls.wall->end,  walls.collumns[walls.wall->start], walls.collumns[walls.wall->end]);
-		if (walls.wall->start - walls.wall->end != 0)
-			draw_wall(wolf->wrap->wolf, pick_wall(wolf->map.walls, walls.wall->direction), walls.collumns, walls.wall);
+		draw_wall(wolf->wrap->wolf, pick_wall(wolf->map.walls, walls.wall->direction), walls.collumns, walls.wall);
 		walls.wall = walls.wall->next;
 	}
 	if (!(wolf->wrap->renderer))
