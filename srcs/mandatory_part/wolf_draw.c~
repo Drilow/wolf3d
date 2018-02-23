@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:28:28 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/23 20:55:22 by adleau           ###   ########.fr       */
+/*   Updated: 2018/02/23 18:27:39 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -263,7 +263,7 @@ t_vector_2d			detect_wall(t_wolf *wolf, t_wall *wall, double c_ray, int x)
 			if (x > 0)
 			exit(1);
 		}
-		if ((compare_vector_2d(w_ray.inmap, wall->inmap) || (wall->flag != -1 && wall->detected != -1 && wall->flag != wall->detected)) || x == WIN_WD)
+		if ((compare_vector_2d(w_ray.inmap, wall->inmap) || wall->flag != wall->detected) || x == WIN_WD)
 		{
 			wall->end = x;
 			wall->processed_size = CELL - (wall->first_proc % CELL);
@@ -271,7 +271,7 @@ t_vector_2d			detect_wall(t_wolf *wolf, t_wall *wall, double c_ray, int x)
 			wall->direction.y = w_ray.direction.y;
 		}
 //			printf("dist %d %d\n", (int)((CELL / (double)w_ray.distance.x) * wolf->map.cam.screendist), w_ray.distance.y);
-		wall->col = (w_ray.distance.x < w_ray.distance.y) ? (int)round((CELL / (double)w_ray.distance.x) * wolf->map.cam.screendist * 2 / 3) : (int)round((CELL / (double)w_ray.distance.y) * wolf->map.cam.screendist * 2 / 3); // fisheeyetofix
+		wall->col = (w_ray.distance.x < w_ray.distance.y) ? (int)round((CELL / (double)w_ray.distance.x) * wolf->map.cam.screendist * 2 / 3) : (int)round((CELL / (double)w_ray.distance.y) * wolf->map.cam.screendist * 2 / 3); // wrong formula it seems
 	}
 	return (w_ray.inmap);
 }
