@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wolf_init.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:24:39 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/16 13:34:15 by adleau           ###   ########.fr       */
+/*   Updated: 2018/02/23 16:11:03 by mabessir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void		init_w3dparse(t_wolf *wolf, char *path)
 	wolf->parse.beenread = -1;
 	wolf->parse.linesread = -1;
 	wolf->parse.done = 0;
+	wolf->identifier = 0;
 }
 
 void		init_w3dmap(t_wolf *wolf, t_w3dmap *map)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wolf_parse.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:23:53 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/09 12:49:56 by adleau           ###   ########.fr       */
+/*   Updated: 2018/02/23 17:11:45 by mabessir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,16 @@
 ** into the map structure, returns 1 if done
  */
 
+void			get_infos(SDL_Surface **walls, char *line, t_wolf *wolf, int i)
+{
+	if (!(walls[i] = SDL_CreateRGBSurfaceWithFormat(0, WIN_WD, WIN_HT, 32, SDL_PIXELFORMAT_RGBA32)))
+		free_wolf(wolf, 1);
+	if (!(walls[i] = IMG_Load(trimquote(ft_strdup(ft_strchr(line, '\"') + 1)))))
+			free_wolf(wolf, 1);
+	ft_putnbr(i);
+	wolf->identifier++;
+}
+
 int				get_map_infos(t_wolf *wolf, t_w3dmap *map, char *line)
 {
 	int			i;
@@ -35,34 +45,15 @@ int				get_map_infos(t_wolf *wolf, t_w3dmap *map, char *line)
 		map->size.x = ft_atoi(line + ft_strlen("X: "));
 	else if (!ft_strncmp(line, "Y: ", ft_strlen("Y: ")))
 		map->size.y = ft_atoi(line + ft_strlen("Y: "));
+//	else if (ft_strlen(line) > 6 && (ft_strcmp(line, "CameraDirection") != 0))
 	else if (!ft_strncmp(line, "WEST_WALL", ft_strlen("WEST_WALL")))
-	{
-		if (!(map->walls[0] = SDL_CreateRGBSurfaceWithFormat(0, WIN_WD, WIN_HT, 32, SDL_PIXELFORMAT_RGBA32)))
-			free_wolf(wolf, 1);
-		if (!(map->walls[0] = IMG_Load(trimquote(ft_strdup(ft_strchr(line, '\"') + 1)))))
-			exit(1);
-	}
+		get_infos(map->walls, line, wolf, wolf->identifier);
 	else if (!ft_strncmp(line, "EAST_WALL", ft_strlen("EAST_WALL")))
-	{
-		if (!(map->walls[1] = SDL_CreateRGBSurfaceWithFormat(0, WIN_WD, WIN_HT, 32, SDL_PIXELFORMAT_RGBA32)))
-			free_wolf(wolf, 1);
-		if (!(map->walls[1] = IMG_Load(trimquote(ft_strdup(ft_strchr(line, '\"') + 1)))))
-			exit(1);
-	}
+		get_infos(map->walls, line, wolf, wolf->identifier);
 	else if (!ft_strncmp(line, "NORTH_WALL", ft_strlen("NORTH_WALL")))
-	{
-		if (!(map->walls[2] = SDL_CreateRGBSurfaceWithFormat(0, WIN_WD, WIN_HT, 32, SDL_PIXELFORMAT_RGBA32)))
-			free_wolf(wolf, 1);
-		if (!(map->walls[2] = IMG_Load(trimquote(ft_strdup(ft_strchr(line, '\"') + 1)))))
-			exit(1);
-	}
+		get_infos(map->walls, line, wolf, wolf->identifier);
 	else if (!ft_strncmp(line, "SOUTH_WALL", ft_strlen("SOUTH_WALL")))
-	{
-		if (!(map->walls[3] = SDL_CreateRGBSurfaceWithFormat(0, WIN_WD, WIN_HT, 32, SDL_PIXELFORMAT_RGBA32)))
-			free_wolf(wolf, 1);
-		if (!(map->walls[3] = IMG_Load(trimquote(ft_strdup(ft_strchr(line, '\"') + 1)))))
-			exit(1);
-	}
+		get_infos(map->walls, line, wolf, wolf->identifier);
 	if (map->size.x != 0 && map->size.y != 0 && !map->map)
 	{
 		if (!(map->map = (char**)malloc(sizeof(char*) * (map->size.y + 1))))
@@ -76,9 +67,7 @@ int				get_map_infos(t_wolf *wolf, t_w3dmap *map, char *line)
 		}
 	}
 	if (!ft_strncmp(line, "CameraDirection:", ft_strlen("CameraDirection:")))
-	{
 		map->cam.orientation = ft_atoi(line + ft_strlen("CameraDirection:"));
-	}
 	return (0);
 }
 
