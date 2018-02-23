@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:28:28 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/23 18:27:39 by adleau           ###   ########.fr       */
+/*   Updated: 2018/02/23 16:22:07 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,46 +83,14 @@ double			get_angle(double d)
 
 SDL_Surface		*pick_wall(SDL_Surface **walls, t_wall *wall, t_vector_2d pos)
 {
-	int			i;
-
-	i = 0;
-	printf("wall inmap %d %d || pos %d %d || wall start %d end %d || orientation : %f || direction %d %d || flag %d\n", wall->inmap.y, wall->inmap.x, pos.y, pos.x, wall->start, wall->end, wall->orientation, wall->direction.y, wall->direction.x, wall->detected);
-	if (wall->direction.x == -1 && wall->direction.y == -1)
-	{
-		if (wall->detected)
-			i = 0;
-		else
-			i = 1;
-	}
-	else if (wall->direction.x == -1 && wall->direction.y == 1)
-	{
-		if (wall->detected)
-			i = 2;
-		else
-			i = 3;
-	}
-	else if (wall->direction.x == 1 && wall->direction.y == -1)
-	{
-		if (wall->detected)
-			i = 0;
-		else
-			i = 1;
-	}
-	else if (wall->direction.x == 1 && wall->direction.y == 1)
-	{
-		if (wall->detected)
-			i = 2;
-		else
-			i = 3;
-	}
-/*	if ((wall->direction.x == -1 || wall->direction.y == -1) && wall->detected == 1)
-		i = 1;
-	else if ((wall->direction.x == -1 || wall->direction.y == -1) && wall->detected == 0)
-		i = 2;
-	else if ((wall->direction.x == 1 || wall->direction.y == 1) && wall->detected == 1)
-		i = 3;
-*/
-	return (walls[i]);
+	printf("wall inmap %d %d || pos %d %d || wall start %d end %d || orientation : %f || direction %d %d || flag %d\n", wall->inmap.y, wall->inmap.x, pos.y, pos.x, wall->start, wall->end, wall->orientation, wall->direction.y, wall->direction.x, wall->flag);
+	if (wall->direction.x == -1 && wall->detected == 1)
+		return (walls[0]);
+	else if (wall->direction.x == -1 && wall->detected == 0)
+		return (walls[1]);
+	else if (wall->direction.x == 1  && wall->detected == 1)
+		return (walls[2]);
+	return (walls[3]);
 }
 
 void			get_direction(t_vector_2d *direction, double ray)
