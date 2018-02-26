@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:28:28 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/23 20:55:22 by adleau           ###   ########.fr       */
+/*   Updated: 2018/02/24 11:09:39 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,35 @@ SDL_Surface		*pick_wall(SDL_Surface **walls, t_wall *wall, t_vector_2d pos)
 
 	i = 0;
 	printf("wall inmap %d %d || pos %d %d || wall start %d end %d || orientation : %f || direction %d %d || flag %d\n", wall->inmap.y, wall->inmap.x, pos.y, pos.x, wall->start, wall->end, wall->orientation, wall->direction.y, wall->direction.x, wall->detected);
-	if (wall->direction.x == -1 && wall->direction.y == -1)
+	if ((wall->direction.x == -1 || wall->inmap.x == pos.x) && (wall->direction.y == -1 || wall->inmap.y == pos.y))
+	{
+		if (wall->detected)
+			i = 3;
+		else
+			i = 0;
+	}
+	else if ((wall->direction.x == -1 || wall->inmap.x == pos.x) && wall->direction.y == 1)
+	{
+		if (wall->detected)
+			i = 3;
+		else
+			i = 2;
+	}
+	else if (wall->direction.x == 1 && (wall->direction.y == -1 || wall->inmap.y == pos.y))
+	{
+		if (wall->detected)
+			i = 1;
+		else
+			i = 0;
+	}
+	else if (wall->direction.x == 1 && wall->direction.y == 1)
+	{
+		if (wall->detected)
+			i = 1;
+		else
+			i = 2;
+	}
+/*	if (wall->direction.x == -1 && wall->direction.y == -1)
 	{
 		if (wall->detected)
 			i = 0;
@@ -114,7 +142,7 @@ SDL_Surface		*pick_wall(SDL_Surface **walls, t_wall *wall, t_vector_2d pos)
 			i = 2;
 		else
 			i = 3;
-	}
+	}*/
 /*	if ((wall->direction.x == -1 || wall->direction.y == -1) && wall->detected == 1)
 		i = 1;
 	else if ((wall->direction.x == -1 || wall->direction.y == -1) && wall->detected == 0)
@@ -310,7 +338,6 @@ void				w3d_draw(t_wolf *wolf)
 //		printf("%f\n", rays);
 		walls.wall->inmap = detect_wall(wolf, walls.wall, rays, x);
 		walls.collumns[x] = walls.wall->col;
-		walls.wall->orientation = rays;
 		if (rays == 90)
 		{
 			if(x)
@@ -321,6 +348,7 @@ void				w3d_draw(t_wolf *wolf)
 		else if (walls.wall->end >= 0)
 		{
 			walls.collumns[walls.wall->start] = walls.collumns[walls.wall->start + 1];
+			walls.wall->orientation = wolf->map.cam.orientation;// - ((walls.wall->end - walls.wall->start) * inc / 2);
 			if (!(walls.wall->next = (t_wall*)malloc(sizeof(t_wall))))
 				free_wolf(wolf, 1);
 			walls.wall = walls.wall->next;
