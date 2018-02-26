@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:36:41 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/26 16:36:59 by adleau           ###   ########.fr       */
+/*   Updated: 2018/02/26 17:33:39 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,6 @@ Uint32			get_color_from_tex(SDL_Surface *src, t_wall *wall, int x, int y, int si
 //		printf("start %d end %d || processed size %d || first proc %d\n", wall->start, wall->end, wall->processed_size, wall->first_proc);
 		if (wall->first_proc < 0)
 			wall->l_off = 0;
-		if (wall->l_off < 0)
-			exit(1);
 	}
 //	printf("%d %d || %d\n", ratio.y, ratio.x, (((size - y) * ratio.y * (src->pitch / src->format->BytesPerPixel)) + ((wall->end - x) * ratio.x * src->format->BytesPerPixel)));
 //	exit(1);
@@ -92,21 +90,16 @@ void			draw_collumn(SDL_Surface *surf, SDL_Surface __attribute__((unused))*src, 
 	int			y;
 	int			y_onscreen;
 
+	if (x > 0 && collumns[x] <= 0)
+		collumns[x] = collumns[x - 1];
+	else if (x == 0 && collumns[x] <= 0)
+		collumns[x] = collumns[x + 1];
 	y = -1;
 	y_onscreen = WIN_HT / 2 - collumns[x] / 2;
 	if (collumns[x] >= WIN_HT)
 		y_onscreen = 0;
 	while (++y <= WIN_HT && y <= collumns[x])
-	{
-//		printf("%d %d\n", y + y_onscreen, x_screen);
-/*		if (y + y_onscreen >= WIN_HT)
-		{
-			printf("x %d, y onscreen %d both %d, %f\n", x, y_onscreen, y + y_onscreen, wall->orientation);
-			}*/
 		draw_px(surf, x, y + y_onscreen, get_color_from_tex(src, wall, x, y, collumns[x]));
-//		printf("maerde\n");
-	}
-//	printf("b\n");
 }
 
 void			draw_wall(SDL_Surface *surf, SDL_Surface *src, int *collumns, t_wall *wall)

@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:28:28 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/26 16:16:34 by adleau           ###   ########.fr       */
+/*   Updated: 2018/02/26 17:28:37 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -271,7 +271,7 @@ void				w3d_draw(t_wolf *wolf)
 	rays = wolf->map.cam.range[0];
 	walls.wall->inmap = detect_wall(wolf, walls.wall, rays, 0);
 	inc = wolf->map.cam.fov / WIN_WD;
-//	printf("working\n");
+	printf("working %f\n", wolf->map.cam.orientation);
 	while (++x <= WIN_WD) // raycast loop
 	{
 		if (rays >= 360)
@@ -281,21 +281,24 @@ void				w3d_draw(t_wolf *wolf)
 		if (rays == INFINITY)
 			exit(1);
 //		printf("%f\n", rays);
-		walls.wall->inmap = detect_wall(wolf, walls.wall, rays, x);
-		walls.collumns[x] = walls.wall->col;
 		if (rays == 90)
 		{
-			if(x)
+			if (x)
 				walls.collumns[x] = walls.collumns[x - 1];
 			else
 				walls.collumns[x] = 0;
+			rays += inc;
+			x++;
+			continue ;
 		}
+		walls.wall->inmap = detect_wall(wolf, walls.wall, rays, x);
+		walls.collumns[x] = walls.wall->col;
 		if (!start)
 			start = walls.wall;
 		else if (walls.wall->end >= 0)
 		{
-			walls.collumns[walls.wall->start] = walls.collumns[walls.wall->start + 1];
-			walls.wall->orientation = wolf->map.cam.orientation;// - ((walls.wall->end - walls.wall->start) * inc / 2);
+			walls.collumns[walls.wall->start] = walls.collumns[walls.wall->start - 1];
+//			walls.wall->orientation = wolf->map.cam.orientation;// - ((walls.wall->end - walls.wall->start) * inc / 2);
 			if (!(walls.wall->next = (t_wall*)malloc(sizeof(t_wall))))
 				free_wolf(wolf, 1);
 			walls.wall = walls.wall->next;
