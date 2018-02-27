@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   w3d_map.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 09:52:45 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/27 15:23:20 by adleau           ###   ########.fr       */
+/*   Updated: 2018/02/27 15:35:49 by mabessir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ typedef struct			s_w3dmap
 	t_vector_2d			pos; // in map
 	t_w3d_camera		cam;
 	t_vector_2d			walltab[4]; // positions des murs dans le fichier de texture 0-5 et 0-17 recuperes dans le fichier de map
+	t_vector_2d			background;
 	SDL_Surface			*textures;
 	SDL_Surface			**walls; // removing soon
 }						t_w3dmap;
