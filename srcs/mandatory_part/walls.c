@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:36:41 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/26 17:33:39 by adleau           ###   ########.fr       */
+/*   Updated: 2018/02/27 17:56:18 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,12 @@ Uint32			get_color_from_tex(SDL_Surface *src, t_wall *wall, int x, int y, int si
 		exit(1);
 		return (0);
 	}
-//	printf("l_off %d\n", wall->l_off);
 	color = 0;
 	if (size == 0)
-		return(0);//printf("koujoukoujoukou %d %f\n", wall->start, wall->orientation);
+	{
+		printf("koujoukoujoukou %d %f\n", wall->start, wall->orientation);
+		return (0);
+	}
 	ratio.x = src->w / (wall->end - wall->start);
 	ratio.y = src->h / size;
 	wall->l_off = 0;
@@ -85,21 +87,31 @@ Uint32			get_color_from_tex(SDL_Surface *src, t_wall *wall, int x, int y, int si
 	return (color);
 }
 
+/*void			draw_collumn_tmp(SDL_Surface *surf, SDL_Surface *src, int x, int *collumns, t_wall *wall)
+{
+
+}*/
+
 void			draw_collumn(SDL_Surface *surf, SDL_Surface __attribute__((unused))*src, int x, int *collumns, t_wall __attribute__((unused))*wall)
 {
 	int			y;
 	int			y_onscreen;
 
-	if (x > 0 && collumns[x] <= 0)
-		collumns[x] = collumns[x - 1];
-	else if (x == 0 && collumns[x] <= 0)
-		collumns[x] = collumns[x + 1];
 	y = -1;
 	y_onscreen = WIN_HT / 2 - collumns[x] / 2;
 	if (collumns[x] >= WIN_HT)
 		y_onscreen = 0;
-	while (++y <= WIN_HT && y <= collumns[x])
+	while (++y + y_onscreen < -1);
+	while (++y + y_onscreen <= WIN_HT && y <= collumns[x])
+	{
+		if (x > 0 && collumns[x] <= 0)
+			collumns[x] = collumns[x - 1];
+		else if (x == 0 && collumns[x] <= 0 && collumns[x + 1] && collumns[x + 1] > 0)
+		{
+			collumns[x] = collumns[x + 1];
+		}
 		draw_px(surf, x, y + y_onscreen, get_color_from_tex(src, wall, x, y, collumns[x]));
+	}
 }
 
 void			draw_wall(SDL_Surface *surf, SDL_Surface *src, int *collumns, t_wall *wall)

@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:28:28 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/26 17:28:37 by adleau           ###   ########.fr       */
+/*   Updated: 2018/02/27 18:34:20 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,12 +81,12 @@ double			get_angle(double d)
 	return (r);
 }
 
-SDL_Surface		*pick_wall(SDL_Surface **walls, t_wall *wall)
+SDL_Surface		*pick_wall(SDL_Surface **walls, t_wall *wall, t_vector_2d pos)
 {
 	int			i;
 
 	i = 0;
-//	printf("wall inmap %d %d || pos %d %d || wall start %d end %d || orientation : %f || direction %d %d || flag %d\n", wall->inmap.y, wall->inmap.x, pos.y, pos.x, wall->start, wall->end, wall->orientation, wall->direction.y, wall->direction.x, wall->detected);
+	printf("wall inmap %d %d || pos %d %d || wall start %d end %d || orientation : %f || direction %d %d || flag %d\n", wall->inmap.y, wall->inmap.x, pos.y, pos.x, wall->start, wall->end, wall->orientation, wall->direction.y, wall->direction.x, wall->detected);
 	if (wall->direction.y == -1 && (wall->direction.x == -1 || wall->direction.x == 1) && wall->detected == 1)
 		i = 0;
 	else if (wall->direction.x == 1 && (wall->direction.y == -1 || wall->direction.y == 1) && wall->detected == 0)
@@ -225,7 +225,11 @@ t_vector_2d			detect_wall(t_wolf *wolf, t_wall *wall, double c_ray, int x)
 	}
 	w_ray.inmap.x = (w_ray.distance.x < w_ray.distance.y) ? PROCX_X : PROCY_X;
 	w_ray.inmap.y = (w_ray.distance.x < w_ray.distance.y) ? PROCX_Y : PROCY_Y;
+	wall->direction.x = w_ray.direction.x;
+	wall->direction.y = w_ray.direction.y;
 	wall->flag = (w_ray.distance.x < w_ray.distance.y) ? 1 : 0;
+	if (w_ray.distance.x == w_ray.distance.y)
+		wall->flag = wall->detected;
 //	printf("wall->inmap.x : %d, wall->inmap.y %d x : %d\n", wall->inmap.x, wall->inmap.y, x);
 	if (wall->inmap.x >= 0 && wall->inmap.y >= 0)
 	{
@@ -237,13 +241,12 @@ t_vector_2d			detect_wall(t_wolf *wolf, t_wall *wall, double c_ray, int x)
 		}
 		if ((compare_vector_2d(w_ray.inmap, wall->inmap) || (wall->flag != -1 && wall->detected != -1 && wall->flag != wall->detected)) || x == WIN_WD)
 		{
+			printf("daflag %d detected %d | w_ray.distance.x %d w_ray.distance.y %d\n", wall->flag, wall->detected, w_ray.distance.x, w_ray.distance.y);
 			wall->end = x;
 			wall->processed_size = CELL - (wall->first_proc % CELL);
-			wall->direction.x = w_ray.direction.x;
-			wall->direction.y = w_ray.direction.y;
 		}
 //			printf("dist %d %d\n", (int)((CELL / (double)w_ray.distance.x) * wolf->map.cam.screendist), w_ray.distance.y);
-		wall->col = (w_ray.distance.x < w_ray.distance.y) ? (int)round((CELL / (double)w_ray.distance.x) * wolf->map.cam.screendist * 2 / 3) : (int)round((CELL / (double)w_ray.distance.y) * wolf->map.cam.screendist * 2 / 3); // fisheeyetofix
+		wall->col = (w_ray.distance.x < w_ray.distance.y) ? (int)round((CELL / (double)w_ray.distance.x) * wolf->map.cam.screendist * 2 / 3) : (int)round((CELL / (double)w_ray.distance.y) * wolf->map.cam.screendist * 2 / 3);
 		wall->col /= cos(fabs(wolf->map.cam.orientation - c_ray) * M_PI / 180);
 	}
 	return (w_ray.inmap);
@@ -287,12 +290,17 @@ void				w3d_draw(t_wolf *wolf)
 				walls.collumns[x] = walls.collumns[x - 1];
 			else
 				walls.collumns[x] = 0;
+			printf("RIGHT x %d %d\n", x, walls.collumns[x]);
 			rays += inc;
 			x++;
-			continue ;
+			//continue ;
 		}
 		walls.wall->inmap = detect_wall(wolf, walls.wall, rays, x);
 		walls.collumns[x] = walls.wall->col;
+		if (walls.collumns[x] <= 0)
+			walls.collumns[x] = walls.collumns[x - 1];
+		if (rays == 90)
+			printf("collumns[%d] %d\n", x, walls.collumns[x]);
 		if (!start)
 			start = walls.wall;
 		else if (walls.wall->end >= 0)
@@ -306,12 +314,18 @@ void				w3d_draw(t_wolf *wolf)
 		}
 		rays += inc;
 	}
+	if (walls.wall->end == -1 && walls.wall->start != -1)
+			walls.wall->end = WIN_WD;
+//	walls.wall->next = NULL;
 	walls.wall = start;
-	while (walls.wall->next)
+	while (walls.wall)//->next)
 	{
 //		printf("prout %p %d %d | %d %d\n", walls.wall, walls.wall->start, walls.wall->end,  walls.collumns[walls.wall->start], walls.collumns[walls.wall->end]);
-		if (walls.wall->start - walls.wall->end != 0)
-			draw_wall(wolf->wrap->wolf, pick_wall(wolf->map.walls, walls.wall), walls.collumns, walls.wall);
+		if (walls.wall->start != -1 && walls.wall->end != -1 && walls.wall->start - walls.wall->end != 0)
+			draw_wall(wolf->wrap->wolf, pick_wall(wolf->map.walls, walls.wall, wolf->map.pos), walls.collumns, walls.wall);
+		else if (walls.wall->start == -1 || walls.wall->end == -1)
+			break ;
+		printf("start %d | end %d\n", walls.wall->start, walls.wall->end);
 		walls.wall = walls.wall->next;
 	}
 	if (!(wolf->wrap->renderer))

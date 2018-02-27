@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:24:39 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/16 13:34:15 by adleau           ###   ########.fr       */
+/*   Updated: 2018/02/27 17:40:03 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,18 @@ void		init_w3dmap(t_wolf *wolf, t_w3dmap *map)
 	map->pos.y = -1;
 	if (!(map->walls = (SDL_Surface**)malloc(sizeof(SDL_Surface*) * 4)))
 		free_wolf(wolf, 1);
+	if (!(map->textures = IMG_Load("assets/textures/default/1375.png")))
+		free_wolf(wolf, 1);
+	map->walltab[0].x = 0;
+	map->walltab[0].y = 0;
+	map->walltab[1].x = 2;
+	map->walltab[1].y = 2;
+	map->walltab[2].x = 2;
+	map->walltab[2].y = 5;
+	map->walltab[3].x = 4;
+	map->walltab[3].y = 3;
+	map->background.x = 0;
+	map->background.y = 5;
 	map->cam.player.x = CELL / 2;
 	map->cam.player.y = CELL / 2;
 }

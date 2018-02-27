@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:26:31 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/16 14:48:18 by adleau           ###   ########.fr       */
+/*   Updated: 2018/02/27 17:52:31 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <mandatory_part/w3d_parse.h>
 # include <mandatory_part/w3d_map.h>
 # include <mandatory_part/w3d_calc.h>
-# define CELL 100
+# define CELL 64
 
 typedef struct		s_wolf
 {
