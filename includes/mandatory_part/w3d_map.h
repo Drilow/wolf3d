@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 09:52:45 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/16 12:50:47 by adleau           ###   ########.fr       */
+/*   Updated: 2018/02/26 21:52:19 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,12 @@ typedef struct			s_w3dmap
 	t_vector_2d			size;
 	t_vector_2d			pos; // in map
 	t_w3d_camera		cam;
-	SDL_Surface			**walls;
+	int					walltab[4][2]; // positions des murs dans le fichier de texture 0-5 et 0-17 recuperes dans le fichier de map
+	SDL_Surface			*textures;
+	SDL_Surface			**walls; // removing soon
 }						t_w3dmap;
 
 void					init_w3dcam(t_w3d_camera *cam);
 double					get_angle(double d);
 void			get_direction(t_vector_2d *direction, double ray);
 #endif
-
