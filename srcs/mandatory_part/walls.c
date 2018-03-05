@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:36:41 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/27 17:56:18 by adleau           ###   ########.fr       */
+/*   Updated: 2018/03/04 17:51:39 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,51 +47,47 @@ void			draw_px(SDL_Surface *surf, int x, int y, int color)
 	*pxmem = col;
 }
 
-Uint32			get_color_from_tex(SDL_Surface *src, t_wall *wall, int x, int y, int size)
+Uint32			get_color_from_tex(t_wolf *wolf, int x, int __attribute__((unused))y, t_walls *walls)
 {
 	t_vector_2d	ratio;
 	Uint32		color;
 	Uint32		*pxmem;
 
-	if (wall->end - wall->start == 0)
-	{
-		printf("col wall->end %d wall->start %d wall->l_off %d wall->first_proc %d|| x : %d y : %d\n", wall->end, wall->start, wall->l_off, wall->first_proc, x, y);
+	if (walls->wall->end - walls->wall->start == 0)
 		exit(1);
-		return (0);
-	}
 	color = 0;
-	if (size == 0)
-	{
-		printf("koujoukoujoukou %d %f\n", wall->start, wall->orientation);
+	if (walls->collumns[x] <= 0)
 		return (0);
-	}
-	ratio.x = src->w / (wall->end - wall->start);
-	ratio.y = src->h / size;
-	wall->l_off = 0;
-	if (wall->processed_size < CELL)
-	{
-		wall->l_off = src->w * ((double)wall->first_proc / CELL);
-//		printf("%d\n", wall->l_off);
-//		printf("start %d end %d || processed size %d || first proc %d\n", wall->start, wall->end, wall->processed_size, wall->first_proc);
-		if (wall->first_proc < 0)
-			wall->l_off = 0;
-	}
-//	printf("%d %d || %d\n", ratio.y, ratio.x, (((size - y) * ratio.y * (src->pitch / src->format->BytesPerPixel)) + ((wall->end - x) * ratio.x * src->format->BytesPerPixel)));
-//	exit(1);
-//	printf("src->format->BytesPerPixel %d || %d %d || wall start %d end %d\n", src->format->BytesPerPixel, wall->l_off, wall->first_proc, wall->start, wall->end);
-	pxmem = (Uint32*)src->pixels + (Uint32)(((size - y) * ratio.y * (src->pitch / src->format->BytesPerPixel)) + ((wall->end - x) * ratio.x * src->format->BytesPerPixel));
-//	printf("test %d\n", *pxmem);
-	pxmem += (Uint32)(wall->l_off * src->format->BytesPerPixel);
-//(((y * ratio.y * (src->pitch / src->format->BytesPerPixel)) + (wall->l_off * (src->pitch * src->format->BytesPerPixel)) + (wall->l_off + wall->end - x) * ratio.x * src->format->BytesPerPixel));
+//	printf("a %d\n", walls->wall->l_off);
+	ratio.x = walls->wall->end - (x + walls->wall->first_proc);
+	ratio.y = walls->collumns[x];
+	pxmem = (Uint32*)wolf->map.textures + (Uint32)(((walls->wall->index.y * CELL * (wolf->map.textures->pitch / wolf->map.textures->format->BytesPerPixel)) + walls->wall->index.x * CELL * wolf->map.textures->format->BytesPerPixel));
+	pxmem += (Uint32)(((((double)x - walls->wall->start) * ((double)walls->wall->end - walls->wall->start)) / CELL) * wolf->wrap->wolf->format->BytesPerPixel);
+//	printf("walls->collumns[%d] : %d, y %d\n", x, walls->collumns[x], y);
+	pxmem += (Uint32)((((double)y / walls->collumns[x]) * CELL) * (wolf->map.textures->pitch / wolf->map.textures->format->BytesPerPixel));
+//	pxmem += (Uint32)(((walls->wall->l_off / WIN_HT) * (wolf->map.textures->pitch / wolf->map.textures->format->BytesPerPixel)));
+//	pxmem += (Uint32)(walls->wall->first_proc * wolf->map.textures->format->BytesPerPixel);
 	color = *pxmem;
 	return (color);
 }
 
-/*void			draw_collumn_tmp(SDL_Surface *surf, SDL_Surface *src, int x, int *collumns, t_wall *wall)
+void			draw_collumn_tmp(t_wolf *wolf, t_walls *walls, int x)
 {
+	int			y;
+	int			y_onscreen;
 
-}*/
-
+	y = -1;
+	walls->wall->l_off = 0;
+	y_onscreen = WIN_HT / 2 - walls->collumns[x] / 2;
+	while (++y + y_onscreen <= WIN_HT && y <= walls->collumns[x])
+	{
+		if (y + y_onscreen >= 0)
+			draw_px(wolf->wrap->wolf, x, y + y_onscreen, get_color_from_tex(wolf, x, y, walls));
+		else
+			walls->wall->l_off = y;
+	}
+}
+/*
 void			draw_collumn(SDL_Surface *surf, SDL_Surface __attribute__((unused))*src, int x, int *collumns, t_wall __attribute__((unused))*wall)
 {
 	int			y;
@@ -113,7 +109,18 @@ void			draw_collumn(SDL_Surface *surf, SDL_Surface __attribute__((unused))*src, 
 		draw_px(surf, x, y + y_onscreen, get_color_from_tex(src, wall, x, y, collumns[x]));
 	}
 }
+*/
+void			draw_wall_tmp(t_wolf *wolf, t_walls *walls)
+{
+	int			x;
 
+	x = walls->wall->start - 1;
+	while (++x < walls->wall->end && x < WIN_WD)
+	{
+		draw_collumn_tmp(wolf, walls, x);
+	}
+}
+/*
 void			draw_wall(SDL_Surface *surf, SDL_Surface *src, int *collumns, t_wall *wall)
 {
 	int			x;
@@ -127,4 +134,4 @@ void			draw_wall(SDL_Surface *surf, SDL_Surface *src, int *collumns, t_wall *wal
 		draw_collumn(surf, src, x, collumns, wall);
 //		printf("collumn %d || %d %d\n", collumns[x], wall->start, wall->end);
 	}
-}
+	}*/

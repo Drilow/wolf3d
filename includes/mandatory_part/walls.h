@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:37:54 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/23 14:03:43 by adleau           ###   ########.fr       */
+/*   Updated: 2018/03/04 16:44:12 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ typedef struct		s_wall
 	int				detected;
 	t_vector_2d		direction; // used to pick the wall
 	t_vector_2d		inmap;
+	t_vector_2d		index;
 	double			orientation;
 	struct s_wall	*next;
 }					t_wall;
@@ -44,6 +45,7 @@ typedef struct		s_walls
 
 void			draw_px(SDL_Surface *surf, int x, int y, int color);
 void			draw_wall(SDL_Surface *surf, SDL_Surface *src, int *collumns, t_wall *wall);
+void			draw_wall_tmp(t_wolf *wolf, t_walls *walls);
 void			draw_floor_ceiling(SDL_Surface *surf);
 
 #endif
