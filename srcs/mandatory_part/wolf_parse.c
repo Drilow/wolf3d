@@ -6,7 +6,7 @@
 /*   By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:23:53 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/23 17:11:45 by mabessir         ###   ########.fr       */
+/*   Updated: 2018/03/05 15:56:38 by mabessir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,36 +24,45 @@
 ** into the map structure, returns 1 if done
  */
 
-void			get_infos(SDL_Surface **walls, char *line, t_wolf *wolf, int i)
+ void			ft_wallstexture(t_vector_2d  walltab, int j, t_wolf *wolf, char *line)
 {
-	if (!(walls[i] = SDL_CreateRGBSurfaceWithFormat(0, WIN_WD, WIN_HT, 32, SDL_PIXELFORMAT_RGBA32)))
-		free_wolf(wolf, 1);
-	if (!(walls[i] = IMG_Load(trimquote(ft_strdup(ft_strchr(line, '\"') + 1)))))
+	int		i;
+	char	*str;
+
+	i = 1;
+	if ((str = ft_strchr(line, '[')))
+	{
+		if (ft_isdigit(str[i]) && (ft_isdigit(str[i + 1]) || str[i + 1] == ']'))
+			walltab[*j].x = atoi(str + i);
+		else
 			free_wolf(wolf, 1);
-	ft_putnbr(i);
-	wolf->identifier++;
+	}
+	if ((str = ft_strrchr(line, '[')))
+	{
+		if (ft_isdigit(str[i]) && (ft_isdigit(str[i + 1]) || str[i + 1] == ']'))
+			walltab[*j].y = atoi(str + i);
+		else
+			free_wolf(wolf, 1);
+	}
+	*j++;
 }
 
 int				get_map_infos(t_wolf *wolf, t_w3dmap *map, char *line)
 {
-	int			i;
+	int	j;
+	int	i;
 
 	i = -1;
+	j = 0;
 	if (ft_strchr(line, '}'))
 		return (1);
 	if (!ft_strncmp(line, "X: ", ft_strlen("X: ")))
 		map->size.x = ft_atoi(line + ft_strlen("X: "));
 	else if (!ft_strncmp(line, "Y: ", ft_strlen("Y: ")))
 		map->size.y = ft_atoi(line + ft_strlen("Y: "));
-//	else if (ft_strlen(line) > 6 && (ft_strcmp(line, "CameraDirection") != 0))
-	else if (!ft_strncmp(line, "WEST_WALL", ft_strlen("WEST_WALL")))
-		get_infos(map->walls, line, wolf, wolf->identifier);
-	else if (!ft_strncmp(line, "EAST_WALL", ft_strlen("EAST_WALL")))
-		get_infos(map->walls, line, wolf, wolf->identifier);
-	else if (!ft_strncmp(line, "NORTH_WALL", ft_strlen("NORTH_WALL")))
-		get_infos(map->walls, line, wolf, wolf->identifier);
-	else if (!ft_strncmp(line, "SOUTH_WALL", ft_strlen("SOUTH_WALL")))
-		get_infos(map->walls, line, wolf, wolf->identifier);
+	else if(!ft_strncmp(line, "WALL", ft_strlen("WALL")) || !ft_strncmp(line, "BACKGROUND",
+	ft_strlen("BACKGROUND")))
+		ft_wallstexture(map->walltab, &j, wolf, line);
 	if (map->size.x != 0 && map->size.y != 0 && !map->map)
 	{
 		if (!(map->map = (char**)malloc(sizeof(char*) * (map->size.y + 1))))
