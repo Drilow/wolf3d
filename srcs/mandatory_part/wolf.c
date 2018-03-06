@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:21:13 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/15 13:50:46 by adleau           ###   ########.fr       */
+/*   Updated: 2018/03/06 20:44:28 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
-#include <stdio.h>
-
 /* mandatory_part function
 ** entry point to the mandatory part
 */
@@ -29,7 +27,6 @@ void		mandatory_part(t_sdl_wrapper *wrap, char *path)
 {
 	t_wolf	wolf;
 
-	printf("absolument rien\n");
 	if (wrap == NULL)
 	{
 		if (!(wolf.wrap = (t_sdl_wrapper*)malloc(sizeof(t_sdl_wrapper))))
@@ -38,7 +35,6 @@ void		mandatory_part(t_sdl_wrapper *wrap, char *path)
 	}
 	else
 		wolf.wrap = wrap;
-	printf("rien\n");
 	init_wolf(&wolf, wolf.wrap, path);
 	wolf_loop(&wolf);
 }

@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/11 19:54:22 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/05 18:29:43 by adleau           ###   ########.fr       */
+/*   Updated: 2018/03/06 20:42:40 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,10 @@ void			init_sdl_wrap(t_sdl_wrapper *wrap)
 	wrap->screen = NULL;
 	flags = IMG_INIT_PNG;
 	initted = IMG_Init(flags);
-	if((initted&flags) != flags) {
-		printf("IMG_Init: Failed to init required jpg and png support!\n");
-		printf("IMG_Init: %s\n", IMG_GetError());
+	if((initted&flags) != flags)
+	{
+		ft_putendl_fd("IMG_Init: Failed to init required jpg and png support!\n", 2);
+		exit(1);
 	}
 	if (!(wrap->screen = SDL_CreateWindow("wolf3d", SDL_WINDOWPOS_UNDEFINED,
 										  SDL_WINDOWPOS_UNDEFINED, WIN_WD, WIN_HT, SDL_WINDOW_SHOWN)))

@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:27:33 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/27 17:47:13 by adleau           ###   ########.fr       */
+/*   Updated: 2018/03/06 20:46:47 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,8 @@ void		keyup_up(t_wolf *wolf)
 
 	tmpx = wolf->map.cam.player.x;
 	tmpy = wolf->map.cam.player.y;
-//	if (wolf->map.map[wolf->map.pos.y][wolf->map.pos.x + wolf->map.cam.direction.x] != '1')
 	wolf->map.cam.player.x += (wolf->map.cam.direction.x * 10 * (cos(wolf->map.cam.angle * M_PI / 180)));
-/*	else
-	return ;
-	if (wolf->map.map[wolf->map.pos.y + wolf->map.cam.direction.y][wolf->map.pos.x] != '1')
-*/		wolf->map.cam.player.y += (wolf->map.cam.direction.y * 10 * sin(wolf->map.cam.angle * M_PI / 180));
-//	else
-//		return ;
+	wolf->map.cam.player.y += (wolf->map.cam.direction.y * 10 * sin(wolf->map.cam.angle * M_PI / 180));
 	if (wolf->map.cam.player.x >= CELL - 1 || wolf->map.cam.player.x < 1)
 	{
 		if (wolf->map.map[wolf->map.pos.y][wolf->map.pos.x + (wolf->map.cam.direction.x)] == '1')
@@ -59,7 +53,6 @@ void		keyup_up(t_wolf *wolf)
 			wolf->map.cam.player.y = (wolf->map.cam.direction.y > 0) ? 0 : CELL;
 		}
 	}
-//	printf("dyude %d | %d %d %f %f\n", wolf->map.cam.direction.y, wolf->map.cam.player.y, wolf->map.cam.player.x, (wolf->map.cam.direction.x * sin(wolf->map.cam.angle * M_PI / 180)),wolf->map.cam.angle);
 }
 
 void		keyup_events_w3d(t_wolf *wolf)
@@ -74,20 +67,15 @@ void		keyup_events_w3d(t_wolf *wolf)
 		wolf->map.cam.orientation += 5;
 		if (wolf->map.cam.orientation >= 360)
 			wolf->map.cam.orientation -= 360;
-//		w3d_draw(wolf);
 	}
 	if (EVENT_PTR.key.keysym.sym == SDLK_LEFT)
 	{
 		wolf->map.cam.orientation -= 5;
 		if (wolf->map.cam.orientation < 0)
 			wolf->map.cam.orientation += 360;
-//		w3d_draw(wolf);
 	}
 	if (EVENT_PTR.key.keysym.sym == SDLK_UP)
 		keyup_up(wolf);
-/*	if (EVENT_PTR.key.keysym.sym == SDLK_DOWN)
-	;
-*/
 }
 
 /* wolf_loop function

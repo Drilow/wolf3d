@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:23:53 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/05 18:29:00 by adleau           ###   ########.fr       */
+/*   Updated: 2018/03/06 20:41:57 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,34 +35,6 @@ int				get_map_infos(t_wolf *wolf, t_w3dmap *map, char *line)
 		map->size.x = ft_atoi(line + ft_strlen("X: "));
 	else if (!ft_strncmp(line, "Y: ", ft_strlen("Y: ")))
 		map->size.y = ft_atoi(line + ft_strlen("Y: "));
-/*	else if (!ft_strncmp(line, "WEST_WALL", ft_strlen("WEST_WALL")))
-	{
-		if (!(map->walls[0] = SDL_CreateRGBSurfaceWithFormat(0, WIN_WD, WIN_HT, 32, SDL_PIXELFORMAT_RGBA32)))
-			free_wolf(wolf, 1);
-		if (!(map->walls[0] = IMG_Load(trimquote(ft_strdup(ft_strchr(line, '\"') + 1)))))
-			exit(1);
-	}
-	else if (!ft_strncmp(line, "EAST_WALL", ft_strlen("EAST_WALL")))
-	{
-		if (!(map->walls[1] = SDL_CreateRGBSurfaceWithFormat(0, WIN_WD, WIN_HT, 32, SDL_PIXELFORMAT_RGBA32)))
-			free_wolf(wolf, 1);
-		if (!(map->walls[1] = IMG_Load(trimquote(ft_strdup(ft_strchr(line, '\"') + 1)))))
-			exit(1);
-	}
-	else if (!ft_strncmp(line, "NORTH_WALL", ft_strlen("NORTH_WALL")))
-	{
-		if (!(map->walls[2] = SDL_CreateRGBSurfaceWithFormat(0, WIN_WD, WIN_HT, 32, SDL_PIXELFORMAT_RGBA32)))
-			free_wolf(wolf, 1);
-		if (!(map->walls[2] = IMG_Load(trimquote(ft_strdup(ft_strchr(line, '\"') + 1)))))
-			exit(1);
-	}
-	else if (!ft_strncmp(line, "SOUTH_WALL", ft_strlen("SOUTH_WALL")))
-	{
-		if (!(map->walls[3] = SDL_CreateRGBSurfaceWithFormat(0, WIN_WD, WIN_HT, 32, SDL_PIXELFORMAT_RGBA32)))
-			free_wolf(wolf, 1);
-		if (!(map->walls[3] = IMG_Load(trimquote(ft_strdup(ft_strchr(line, '\"') + 1)))))
-			exit(1);
-			}*/
 	if (map->size.x != 0 && map->size.y != 0 && !map->map)
 	{
 		if (!(map->map = (char**)malloc(sizeof(char*) * (map->size.y + 1))))
@@ -146,5 +118,4 @@ void			w3d_parse(t_wolf *wolf)
 	wolf->map.pos = get_starting(wolf->map.map);
 	wolf->parse.done = 1;
 	close(wolf->parse.fd);
-	printf("popo %f\n", wolf->map.cam.orientation);
 }

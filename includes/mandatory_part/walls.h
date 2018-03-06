@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:37:54 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/06 20:08:57 by adleau           ###   ########.fr       */
+/*   Updated: 2018/03/06 20:41:21 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,15 @@ typedef struct		s_range
 
 typedef struct		s_wall
 {
-	int				start; // 0 for first wall, whatever next
-	int				end; // tab index
-	int				l_off; // left offset : (processed.first * xmaxwall) / processed.size
-	int				first_proc; // index of the cell hit < CELL
-	int				processed_size; // size from first_proc to end of the wall (CELL - first_proc)
-	int				col; // used to export the ht of the collumn
+	int				start;
+	int				end;
+	int				l_off;
+	int				first_proc;
+	int				processed_size;
+	int				col;
 	int				flag;
 	int				detected;
-	t_vector_2d		direction; // used to pick the wall
+	t_vector_2d		direction;
 	t_vector_2d		inmap;
 	t_vector_2d		index;
 	double			orientation;
@@ -39,7 +39,7 @@ typedef struct		s_wall
 
 typedef struct		s_walls
 {
-	int				*collumns; // all the collumns displayed
+	int				*collumns;
 	t_wall			*wall;
 }					t_walls;
 

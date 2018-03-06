@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:28:28 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/06 20:08:23 by adleau           ###   ########.fr       */
+/*   Updated: 2018/03/06 20:48:43 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,12 +81,11 @@ double			get_angle(double d)
 	return (r);
 }
 
-int				pick_wall(t_wall *wall, t_vector_2d pos)
+int				pick_wall(t_wall *wall)
 {
 	int			i;
 
 	i = 0;
-	printf("wall inmap %d %d || pos %d %d || wall start %d end %d || orientation : %f || direction %d %d || flag %d\n", wall->inmap.y, wall->inmap.x, pos.y, pos.x, wall->start, wall->end, wall->orientation, wall->direction.y, wall->direction.x, wall->detected);
 	if (wall->direction.y == -1 && (wall->direction.x == -1 || wall->direction.x == 1) && wall->detected == 1)
 		i = 0;
 	else if (wall->direction.x == 1 && (wall->direction.y == -1 || wall->direction.y == 1) && wall->detected == 0)
@@ -95,7 +94,6 @@ int				pick_wall(t_wall *wall, t_vector_2d pos)
 		i = 2;
 	else if (wall->direction.x == -1 && (wall->direction.y == -1 || wall->direction.y == 1) && wall->detected == 0)
 		i = 3;
-	printf("index : %d\n", i);
 	return (i);
 }
 
@@ -160,11 +158,9 @@ void				launch_ray(t_w3dray *w_ray, t_vector_2d *size)
 			w_ray->proc_y.y = (int)((double)w_ray->proc_y.x * w_ray->tanner);
 			w_ray->hit.y = 1;
 		}
-//		printf("dokodo %d %d ||| %d %d\n", PPROCX_X, PPROCY_Y, w_ray->proc_x.x, w_ray->proc_y.y);
 	}
 	else
 	{
-//		printf("DOKO %d %d ||| %d %d\n", PPROCX_X, PPROCY_Y, w_ray->proc_x.x, w_ray->proc_y.y);
 		if (!(w_ray->distance.x))
 		{
 			w_ray->proc_x.y += CELL;
@@ -208,7 +204,6 @@ t_vector_2d			detect_wall(t_wolf *wolf, t_wall *wall, double c_ray, int x)
 	{
 		if (PROCX_Y >= 0 && PROCX_X >= 0 && PROCX_Y < wolf->map.size.y && PROCX_X < wolf->map.size.x)
 		{
-//			printf("couille, %d, %d %f %f || PROCX %d %d || PROCY %d %d || %c\n", w_ray.distance.x, w_ray.distance.y, c_ray, w_ray.angle, PROCX_Y, PROCX_X, PROCY_Y, PROCY_X, wolf->map.map[PROCX_Y][PROCX_X]);//, wolf->map.map[PROCY_Y][PROCY_X]);
 			if ((wolf->map.map[PROCX_Y][PROCX_X] != '0') &&
 				(wolf->map.map[PROCX_Y][PROCX_X] != 'S'))
 				w_ray.distance.x = get_dist(&(w_ray.proc_x));
@@ -221,7 +216,6 @@ t_vector_2d			detect_wall(t_wolf *wolf, t_wall *wall, double c_ray, int x)
 		}
 		handle_overflow(&w_ray, wolf->map.size);
 		launch_ray(&w_ray, &(wolf->map.size));
-//		printf("bite, %d, %d %f %f || PROCX %d %d || PROCY %d %d || \n", w_ray.distance.x, w_ray.distance.y, c_ray, w_ray.angle, PROCX_Y, PROCX_X, PROCY_Y, PROCY_X);// wolf->map.map[PROCX_Y][PROCX_X], wolf->map.map[PROCY_Y][PROCY_X]);
 	}
 	w_ray.inmap.x = (w_ray.distance.x < w_ray.distance.y) ? PROCX_X : PROCY_X;
 	w_ray.inmap.y = (w_ray.distance.x < w_ray.distance.y) ? PROCX_Y : PROCY_Y;
@@ -230,10 +224,8 @@ t_vector_2d			detect_wall(t_wolf *wolf, t_wall *wall, double c_ray, int x)
 	wall->flag = (w_ray.distance.x < w_ray.distance.y) ? 1 : 0;
 	if (w_ray.distance.x == w_ray.distance.y)
 		wall->flag = wall->detected;
-//	printf("wall->inmap.x : %d, wall->inmap.y %d x : %d\n", wall->inmap.x, wall->inmap.y, x);
 	if (wall->inmap.x >= 0 && wall->inmap.y >= 0)
 	{
-//		printf("%d %d\n", wall->start, x);
 		if (wall->start == x)
 		{
 			wall->first_proc = (w_ray.distance.x < w_ray.distance.y) ? w_ray.proc_x.x % CELL : w_ray.proc_y.y % CELL;
@@ -253,11 +245,7 @@ t_vector_2d			detect_wall(t_wolf *wolf, t_wall *wall, double c_ray, int x)
 			}
 		}
 		if ((compare_vector_2d(w_ray.inmap, wall->inmap) || (wall->flag != -1 && wall->detected != -1 && wall->flag != wall->detected)) || x == WIN_WD)
-		{
-			printf("daflag %d detected %d | w_ray.distance.x %d w_ray.distance.y %d || %f\n", wall->flag, wall->detected, w_ray.distance.x, w_ray.distance.y, c_ray);
 			wall->end = x;
-		}
-//			printf("dist %d %d\n", (int)((CELL / (double)w_ray.distance.x) * wolf->map.cam.screendist), w_ray.distance.y);
 		wall->col = (w_ray.distance.x < w_ray.distance.y) ? (int)round((CELL / (double)w_ray.distance.x) * wolf->map.cam.screendist * 2 / 3) : (int)round((CELL / (double)w_ray.distance.y) * wolf->map.cam.screendist * 2 / 3);
 		wall->col /= cos(fabs(wolf->map.cam.orientation - c_ray) * M_PI / 180);
 	}
@@ -286,7 +274,6 @@ void				w3d_draw(t_wolf *wolf)
 	rays = wolf->map.cam.range[0];
 	walls.wall->inmap = detect_wall(wolf, walls.wall, rays, 0);
 	inc = wolf->map.cam.fov / WIN_WD;
-	printf("working %f\n", wolf->map.cam.orientation);
 	while (++x <= WIN_WD)
 	{
 		if (rays >= 360)
@@ -295,14 +282,12 @@ void				w3d_draw(t_wolf *wolf)
 			rays += 360;
 		if (rays == INFINITY)
 			exit(1);
-//		printf("%f\n", rays);
 		if (rays == 90)
 		{
 			if (x)
 				walls.collumns[x] = walls.collumns[x - 1];
 			else
 				walls.collumns[x] = 0;
-			printf("RIGHT x %d %d\n", x, walls.collumns[x]);
 			rays += inc;
 			x++;
 		}
@@ -315,8 +300,6 @@ void				w3d_draw(t_wolf *wolf)
 		else if (walls.wall->end >= 0)
 		{
 			walls.collumns[walls.wall->start] = walls.collumns[walls.wall->start - 1];
-//			detect_wall(wolf, walls.wall, rays - inc, x);
-//			walls.wall->orientation = wolf->map.cam.orientation;// - ((walls.wall->end - walls.wall->start) * inc / 2);
 			if (!(walls.wall->next = (t_wall*)malloc(sizeof(t_wall))))
 				free_wolf(wolf, 1);
 			walls.wall = walls.wall->next;
@@ -326,34 +309,21 @@ void				w3d_draw(t_wolf *wolf)
 	}
 	if (walls.wall->end == -1 && walls.wall->start != -1)
 			walls.wall->end = WIN_WD;
-//	walls.wall->next = NULL;
 	walls.wall = start;
-	while (walls.wall)//->next)
+	while (walls.wall)
 	{
-//		printf("prout %p %d %d | %d %d\n", walls.wall, walls.wall->start, walls.wall->end,  walls.collumns[walls.wall->start], walls.collumns[walls.wall->end]);
-		walls.wall->index = wolf->map.walltab[pick_wall(walls.wall, wolf->map.pos)];
-		printf("start %d | end %d\n", walls.wall->start, walls.wall->end);
+		walls.wall->index = wolf->map.walltab[pick_wall(walls.wall)];
 		if (walls.wall->start != -1 && walls.wall->end != -1 && walls.wall->start - walls.wall->end != 0)
 			draw_wall_tmp(wolf, &walls);
 		else if (walls.wall->start == -1 || walls.wall->end == -1)
 			break ;
-		printf("FP %d\n", walls.wall->first_proc);
 		walls.wall = walls.wall->next;
 	}
-//	exit(1);
 	if (!(wolf->wrap->renderer))
-	{
 		if (!(wolf->wrap->renderer = SDL_CreateRenderer(wolf->wrap->screen, -1, SDL_RENDERER_ACCELERATED)))
-		{
-			printf("%s\n", SDL_GetError());
-			exit(1);
-		}
-	}
+			free_wolf(wolf, 1);
 	if (!(wolf->wrap->tex = SDL_CreateTextureFromSurface(wolf->wrap->renderer, wolf->wrap->wolf)))
-	{
-		printf("%s\n", SDL_GetError());
-		exit(1);
-	}
+			free_wolf(wolf, 1);
 	SDL_RenderClear(wolf->wrap->renderer);
 	SDL_RenderCopy(wolf->wrap->renderer, wolf->wrap->tex, NULL, NULL);
 	SDL_RenderPresent(wolf->wrap->renderer);

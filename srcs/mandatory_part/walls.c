@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:36:41 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/06 20:21:01 by adleau           ###   ########.fr       */
+/*   Updated: 2018/03/06 20:38:44 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,7 @@ void			draw_floor_ceiling(SDL_Surface *surf, SDL_Surface *src, t_vector_2d *inde
 		{
 			color = *((Uint32*)src->pixels + (Uint32)((((index->y * CELL + (Uint32)(y * ratioy)) * (src->pitch / src->format->BytesPerPixel)) + (index->x * CELL + (Uint32)(x * ratiox)))));
 			draw_px(surf, x, y, color);
-/*			if (y <= WIN_HT / 2)
-				draw_px(surf, x, y, 0x0000FF);
-			else
-				draw_px(surf, x, y, 0x00FF00);
-*/		}
+		}
 	}
 }
 
@@ -61,11 +57,6 @@ Uint32			get_color_from_tex(t_wolf *wolf, int x, int y, t_walls *walls)
 	double ratiox;
 	double ratioy;
 
-	if (walls->wall->first_proc < 0)
-	{
-		printf("bonjour %d\n", walls->wall->first_proc);
-		walls->wall->first_proc = 0;
-	}
 	ratiox = (double)(CELL - 1) / (walls->wall->end - walls->wall->start);
 	ratioy = (double)(CELL - 1) / (walls->collumns[x]);
 	if (walls->wall->end - walls->wall->start == 0)
@@ -81,10 +72,6 @@ Uint32			get_color_from_tex(t_wolf *wolf, int x, int y, t_walls *walls)
 			return (0);
 		}
 	}
-//	SDL_LockSurface(wolf->map.textures);
-//	printf("a %d\n", walls->wall->l_off);
-	if (x == walls->wall->start && walls->wall->first_proc != 0)
-		printf("%d\n", walls->wall->first_proc);
 	pxmem = (Uint32*)wolf->map.textures->pixels + (Uint32)((((walls->wall->index.y * CELL + (Uint32)(y * ratioy)) * (wolf->map.textures->pitch / wolf->map.textures->format->BytesPerPixel)) + (walls->wall->index.x * CELL + (Uint32)((x - walls->wall->start) * ratiox))));
 	color = *pxmem;
 	return (color);
@@ -113,22 +100,5 @@ void			draw_wall_tmp(t_wolf *wolf, t_walls *walls)
 
 	x = walls->wall->start - 1;
 	while (++x <= walls->wall->end && x < WIN_WD)
-	{
 		draw_collumn_tmp(wolf, walls, x);
-	}
 }
-/*
-void			draw_wall(SDL_Surface *surf, SDL_Surface *src, int *collumns, t_wall *wall)
-{
-	int			x;
-
-	x = wall->start - 1;
-	while (++x <= wall->end)
-	{
-//		printf("dollumn %d || %d %d\n", collumns[x], wall->start, wall->end);
-//		if (wall->start == -1 && wall->end == 1280)
-//			exit(1);
-		draw_collumn(surf, src, x, collumns, wall);
-//		printf("collumn %d || %d %d\n", collumns[x], wall->start, wall->end);
-	}
-	}*/
