@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:24:39 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/27 17:40:03 by adleau           ###   ########.fr       */
+/*   Updated: 2018/03/05 18:31:43 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void		init_w3dmap(t_wolf *wolf, t_w3dmap *map)
 	map->size.y = 0;
 	map->pos.x = -1;
 	map->pos.y = -1;
-	if (!(map->walls = (SDL_Surface**)malloc(sizeof(SDL_Surface*) * 4)))
+	if (!(map->textures = SDL_CreateRGBSurfaceWithFormat(0, WIN_WD, WIN_HT, 32, SDL_PIXELFORMAT_RGBA32)))
 		free_wolf(wolf, 1);
 	if (!(map->textures = IMG_Load("assets/textures/default/1375.png")))
 		free_wolf(wolf, 1);

@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:28:28 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/04 17:38:47 by adleau           ###   ########.fr       */
+/*   Updated: 2018/03/06 16:27:40 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int				pick_wall(t_wall *wall, t_vector_2d pos)
 		i = 2;
 	else if (wall->direction.x == -1 && (wall->direction.y == -1 || wall->direction.y == 1) && wall->detected == 0)
 		i = 3;
-//	printf("index : %d\n", i);
+	printf("index : %d\n", i);
 	return (i);
 }
 
@@ -240,7 +240,7 @@ t_vector_2d			detect_wall(t_wolf *wolf, t_wall *wall, double c_ray, int x)
 			if (w_ray.distance.x <= w_ray.distance.y)
 			{
 				if (w_ray.direction.x == -1)
-					wall->first_proc = CELL - w_ray.proc_x.x % CELL;
+					wall->first_proc = CELL - (w_ray.proc_x.x % CELL);
 				else if (w_ray.direction.x == 1)
 					wall->first_proc = w_ray.proc_x.x % CELL;
 			}
@@ -315,9 +315,9 @@ void				w3d_draw(t_wolf *wolf)
 			start = walls.wall;
 		else if (walls.wall->end >= 0)
 		{
+//			detect_wall(wolf, walls.wall, rays, x);
 			walls.collumns[walls.wall->start] = walls.collumns[walls.wall->start - 1];
 //			walls.wall->orientation = wolf->map.cam.orientation;// - ((walls.wall->end - walls.wall->start) * inc / 2);
-			detect_wall(wolf, walls.wall, rays, x);
 			if (!(walls.wall->next = (t_wall*)malloc(sizeof(t_wall))))
 				free_wolf(wolf, 1);
 			walls.wall = walls.wall->next;
@@ -340,6 +340,7 @@ void				w3d_draw(t_wolf *wolf)
 			break ;
 		walls.wall = walls.wall->next;
 	}
+//	exit(1);
 	if (!(wolf->wrap->renderer))
 	{
 		if (!(wolf->wrap->renderer = SDL_CreateRenderer(wolf->wrap->screen, -1, SDL_RENDERER_ACCELERATED)))

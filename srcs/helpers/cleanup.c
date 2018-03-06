@@ -29,6 +29,8 @@ void			free_sdl_wrapper(t_sdl_wrapper *sdl_wrap)
 void			free_wolf(t_wolf *wolf, int i)
 {
 	free_sdl_wrapper(wolf->wrap);
+	if (wolf->map.textures)
+		SDL_FreeSurface(wolf->map.textures);
 	exit(i);
 }
 

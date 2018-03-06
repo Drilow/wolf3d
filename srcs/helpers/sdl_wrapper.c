@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/11 19:54:22 by adleau            #+#    #+#             */
-/*   Updated: 2018/02/27 17:46:23 by adleau           ###   ########.fr       */
+/*   Updated: 2018/03/05 18:29:43 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void			init_sdl_wrap(t_sdl_wrapper *wrap)
 	if (SDL_Init(SDL_INIT_EVERYTHING))
 		ft_putendl_fd("Failed to init SDL", 2);
 	wrap->screen = NULL;
-	flags = IMG_INIT_JPG|IMG_INIT_PNG;
+	flags = IMG_INIT_PNG;
 	initted = IMG_Init(flags);
 	if((initted&flags) != flags) {
 		printf("IMG_Init: Failed to init required jpg and png support!\n");
