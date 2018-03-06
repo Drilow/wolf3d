@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:28:28 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/06 16:27:40 by adleau           ###   ########.fr       */
+/*   Updated: 2018/03/06 20:08:23 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,11 +247,10 @@ t_vector_2d			detect_wall(t_wolf *wolf, t_wall *wall, double c_ray, int x)
 			else
 			{
 				if (w_ray.direction.y == -1)
-					wall->first_proc = CELL - w_ray.proc_y.y % CELL;
+					wall->first_proc = CELL - (w_ray.proc_y.y % CELL);
 				else if (w_ray.direction.y == 1)
 					wall->first_proc = w_ray.proc_y.y % CELL;
 			}
-//			printf("perdon? %d\n", x);
 		}
 		if ((compare_vector_2d(w_ray.inmap, wall->inmap) || (wall->flag != -1 && wall->detected != -1 && wall->flag != wall->detected)) || x == WIN_WD)
 		{
@@ -273,7 +272,7 @@ void				w3d_draw(t_wolf *wolf)
 	double			rays;
 	double			inc;
 
-	draw_floor_ceiling(wolf->wrap->wolf);
+	draw_floor_ceiling(wolf->wrap->wolf, wolf->map.textures, &(wolf->map.background));
 	init_w3dcam(&(wolf->map.cam));
 	if (init_walls(&walls))
 		free_wolf(wolf, 1);
@@ -315,8 +314,8 @@ void				w3d_draw(t_wolf *wolf)
 			start = walls.wall;
 		else if (walls.wall->end >= 0)
 		{
-//			detect_wall(wolf, walls.wall, rays, x);
 			walls.collumns[walls.wall->start] = walls.collumns[walls.wall->start - 1];
+//			detect_wall(wolf, walls.wall, rays - inc, x);
 //			walls.wall->orientation = wolf->map.cam.orientation;// - ((walls.wall->end - walls.wall->start) * inc / 2);
 			if (!(walls.wall->next = (t_wall*)malloc(sizeof(t_wall))))
 				free_wolf(wolf, 1);
@@ -338,6 +337,7 @@ void				w3d_draw(t_wolf *wolf)
 			draw_wall_tmp(wolf, &walls);
 		else if (walls.wall->start == -1 || walls.wall->end == -1)
 			break ;
+		printf("FP %d\n", walls.wall->first_proc);
 		walls.wall = walls.wall->next;
 	}
 //	exit(1);

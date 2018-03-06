@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:36:41 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/06 16:28:55 by adleau           ###   ########.fr       */
+/*   Updated: 2018/03/06 20:21:01 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,29 @@
 #include <mandatory_part/wolf.h>
 #include <mandatory_part/walls.h>
 
-void			draw_floor_ceiling(SDL_Surface *surf)
+void			draw_floor_ceiling(SDL_Surface *surf, SDL_Surface *src, t_vector_2d *index)
 {
 	int			x;
 	int			y;
+	double		ratiox;
+	double		ratioy;
+	Uint32		color;
 
 	y = -1;
+	ratiox = (double)(CELL - 1) / WIN_WD;
+	ratioy = (double)(CELL - 1) / WIN_HT;
 	while (++y <= WIN_HT)
 	{
 		x = -1;
 		while (++x <= WIN_WD)
 		{
-			if (y <= WIN_HT / 2)
+			color = *((Uint32*)src->pixels + (Uint32)((((index->y * CELL + (Uint32)(y * ratioy)) * (src->pitch / src->format->BytesPerPixel)) + (index->x * CELL + (Uint32)(x * ratiox)))));
+			draw_px(surf, x, y, color);
+/*			if (y <= WIN_HT / 2)
 				draw_px(surf, x, y, 0x0000FF);
 			else
 				draw_px(surf, x, y, 0x00FF00);
-		}
+*/		}
 	}
 }
 
@@ -54,6 +61,11 @@ Uint32			get_color_from_tex(t_wolf *wolf, int x, int y, t_walls *walls)
 	double ratiox;
 	double ratioy;
 
+	if (walls->wall->first_proc < 0)
+	{
+		printf("bonjour %d\n", walls->wall->first_proc);
+		walls->wall->first_proc = 0;
+	}
 	ratiox = (double)(CELL - 1) / (walls->wall->end - walls->wall->start);
 	ratioy = (double)(CELL - 1) / (walls->collumns[x]);
 	if (walls->wall->end - walls->wall->start == 0)
@@ -71,6 +83,8 @@ Uint32			get_color_from_tex(t_wolf *wolf, int x, int y, t_walls *walls)
 	}
 //	SDL_LockSurface(wolf->map.textures);
 //	printf("a %d\n", walls->wall->l_off);
+	if (x == walls->wall->start && walls->wall->first_proc != 0)
+		printf("%d\n", walls->wall->first_proc);
 	pxmem = (Uint32*)wolf->map.textures->pixels + (Uint32)((((walls->wall->index.y * CELL + (Uint32)(y * ratioy)) * (wolf->map.textures->pitch / wolf->map.textures->format->BytesPerPixel)) + (walls->wall->index.x * CELL + (Uint32)((x - walls->wall->start) * ratiox))));
 	color = *pxmem;
 	return (color);

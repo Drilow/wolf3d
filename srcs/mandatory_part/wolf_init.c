@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:24:39 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/05 18:31:43 by adleau           ###   ########.fr       */
+/*   Updated: 2018/03/06 20:25:38 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,9 @@ void		init_w3dmap(t_wolf *wolf, t_w3dmap *map)
 	map->walltab[1].y = 2;
 	map->walltab[2].x = 2;
 	map->walltab[2].y = 5;
-	map->walltab[3].x = 4;
-	map->walltab[3].y = 3;
-	map->background.x = 0;
+	map->walltab[3].x = 2;
+	map->walltab[3].y = 11;
+	map->background.x = 1;
 	map->background.y = 5;
 	map->cam.player.x = CELL / 2;
 	map->cam.player.y = CELL / 2;
