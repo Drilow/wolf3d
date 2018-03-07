@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:24:39 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/07 15:55:40 by adleau           ###   ########.fr       */
+/*   Updated: 2018/03/06 20:45:00 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void		init_w3dcam(t_w3d_camera *cam)
 void		init_w3dparse(t_wolf *wolf, char *path)
 {
 	if (path == NULL)
-		if (!(path = ft_strdup("maps/wolf3d/lvl2.w3dmap")))
+		if (!(path = ft_strdup("maps/wolf3d/lvl1.w3dmap")))
 			free_wolf(wolf, 1);
 	if ((wolf->parse.fd = open(path, O_RDONLY)) == -1)
 		free_wolf(wolf, 1);
@@ -67,14 +67,13 @@ void		init_w3dmap(t_wolf *wolf, t_w3dmap *map)
 	map->background.y = 5;
 	map->cam.player.x = CELL / 2;
 	map->cam.player.y = CELL / 2;
-	map->cam.orientation = 180;
 }
 
 /* init_wolf function
 ** initializes all the data relative to the w3d wolfine
 */
 
-void		init_wolf(t_wolf *wolf, t_sdl_wrapper *wrap, char __attribute__((unused))*path)
+void		init_wolf(t_wolf *wolf, t_sdl_wrapper *wrap, char *path)
 {
 	init_w3dparse(wolf, path);
 	wrap->drawn = 0;
