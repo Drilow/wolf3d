@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wolf_parse.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:23:53 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/06 20:41:57 by adleau           ###   ########.fr       */
+/*   Updated: 2018/03/07 13:42:41 by mabessir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,15 +42,14 @@ int				get_map_infos(t_wolf *wolf, t_w3dmap *map, char *line)
 		while (++i <= map->size.y)
 		{
 			map->map[i] = 0;
-			if (!(map->map[i] = (char*)malloc(sizeof(char) * (map->size.x + 1))))
+			if (!(map->map[i] = (char*)malloc(sizeof(char) *
+			(map->size.x + 1))))
 				free_wolf(wolf, 1);
 			ft_memset(map->map[i], 0, map->size.x);
 		}
 	}
 	if (!ft_strncmp(line, "CameraDirection:", ft_strlen("CameraDirection:")))
-	{
 		map->cam.orientation = ft_atoi(line + ft_strlen("CameraDirection:"));
-	}
 	return (0);
 }
 
