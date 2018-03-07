@@ -6,7 +6,7 @@
 /*   By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:23:53 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/07 13:42:41 by mabessir         ###   ########.fr       */
+/*   Updated: 2018/03/07 13:46:17 by mabessir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,11 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
-/* get_map_infos function
+/*
+** get_map_infos function
 ** reads if there is some, and fills the information relative to the map
 ** into the map structure, returns 1 if done
- */
+*/
 
 int				get_map_infos(t_wolf *wolf, t_w3dmap *map, char *line)
 {
@@ -53,7 +54,8 @@ int				get_map_infos(t_wolf *wolf, t_w3dmap *map, char *line)
 	return (0);
 }
 
-/* get_map function
+/*
+** get_map function
 ** fills the map tab with the line feed
 */
 
@@ -63,9 +65,10 @@ void			get_map(t_wolf *wolf, t_w3dmap *map, char *line)
 		remove_spaces(line, map->map[++(wolf->parse.linesread)]);
 }
 
-/* fill_parse_tab_and_map function
+/*
+** fill_parse_tab_and_map function
 ** handles the parse for each line
- */
+*/
 
 void			fill_parse_tab_and_map(t_wolf *wolf, char *line)
 {
@@ -99,14 +102,15 @@ t_vector_2d		get_starting(char **map)
 	return (r);
 }
 
-/* parse function
+/*
+** parse function
 ** entry pointo to the parse
- */
+*/
 
 void			w3d_parse(t_wolf *wolf)
 {
-	while ((wolf->parse.beenread = get_next_line
-	(wolf->parse.fd, &(wolf->parse.buf))) != -1)
+	while ((wolf->parse.beenread =
+	get_next_line(wolf->parse.fd, &(wolf->parse.buf))) != -1)
 	{
 		if (wolf->parse.beenread == 0)
 			break ;
