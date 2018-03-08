@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:28:28 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/07 16:25:06 by adleau           ###   ########.fr       */
+/*   Updated: 2018/03/08 11:07:31 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -260,7 +260,6 @@ void				w3d_draw(t_wolf *wolf)
 	double			rays;
 	double			inc;
 
-//	printf("in\n");
 	draw_floor_ceiling(wolf->wrap->wolf, wolf->map.textures, &(wolf->map.background));
 	init_w3dcam(&(wolf->map.cam));
 	if (init_walls(&walls))
@@ -273,8 +272,7 @@ void				w3d_draw(t_wolf *wolf)
 		wolf->wrap->tex = NULL;
 	}
 	rays = wolf->map.cam.range[0];
-//	printf("mid %f\n", rays);
-//	walls.wall->inmap = detect_wall(wolf, walls.wall, rays, 0);
+//	printf("1mid %f\n", rays);
 	inc = wolf->map.cam.fov / WIN_WD;
 //	printf("check\n");
 	while (++x <= WIN_WD)
