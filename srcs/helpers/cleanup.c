@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/06 20:42:52 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/06 20:42:55 by adleau           ###   ########.fr       */
+/*   Updated: 2018/03/08 12:27:22 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 #include <helpers/cleanup.h>
 #include <helpers/sdl_wrapper.h>
 #include <mandatory_part/wolf.h>
-#include <bonus/bonus.h>
-#include <menu.h>
 
 /* free_sdl_wrapper
 ** frees everything SDL-related
@@ -43,12 +41,5 @@ void			free_wolf(t_wolf *wolf, int i)
 	free_sdl_wrapper(wolf->wrap);
 	if (wolf->map.textures)
 		SDL_FreeSurface(wolf->map.textures);
-	exit(i);
-}
-
-void			free_menu(t_mainmenu *menu, t_sdl_wrapper*wrap, int i)
-{
-	(void)menu;
-	free_sdl_wrapper(wrap);
 	exit(i);
 }

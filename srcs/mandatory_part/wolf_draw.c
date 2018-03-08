@@ -6,7 +6,7 @@
 /*   By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:28:28 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/08 11:37:43 by adleau           ###   ########.fr       */
+/*   Updated: 2018/03/08 14:59:18 by adleau           ###   ########.fr       */
 /*   Updated: 2018/03/07 17:32:20 by mabessir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -188,15 +188,19 @@ void				handle_overflow(t_w3dray *w_ray, t_vector_2d size)
 {
 	if (PPROCX_X >= size.x || PPROCX_X < 0)
 	{
-		while (PPROCX_X >= size.x || PPROCX_X < 0)
+//		printf("handleoverflow in x\n");
+		while (PPROCX_X >= size.x)// || PPROCX_X < 0)
 			w_ray->proc_x.x -= CELL;
 		w_ray->distance.x = get_dist(&(w_ray->proc_x));
+//		printf("handleoverflow out x\n");
 	}
 	if (PPROCY_Y >= size.y || PPROCY_Y < 0)
 	{
+//		printf("handleoverflow in y\n");
 		while (PPROCY_Y >= size.y || PPROCY_Y < 0)
 			w_ray->proc_y.y -= CELL;
 		w_ray->distance.y = get_dist(&(w_ray->proc_y));
+//		printf("handleoverflow out y\n");
 	}
 }
 
@@ -207,6 +211,7 @@ t_wall *wall, double c_ray, int x)
 
 	init_ray(wolf, &w_ray, c_ray);
 	wall->detected = wall->flag;
+//	printf("focketyfock %f\n", c_ray);
 	if (wall->inmap.x < 0 && wall->inmap.y < 0)
 		wall->start = x;
 	while ((w_ray.distance.x == 0 || w_ray.distance.y == 0))
@@ -225,9 +230,13 @@ t_wall *wall, double c_ray, int x)
 				(wolf->map.map[PROCY_Y][PROCY_X] != 'S'))
 				w_ray.distance.y = get_dist(&(w_ray.proc_y));
 		}
-		handle_overflow(&w_ray, wolf->map.size);
+//		ft_putstr("HERE\n");
+		handle_overflow(&w_ray, wolf->map.size); // this causes inf loop
+//		ft_putstr("HERE2\n");
 		launch_ray(&w_ray, &(wolf->map.size));
+//		ft_putstr("HERE3\n");
 	}
+//	printf("where am i?\n");
 	w_ray.inmap.x =
 	(w_ray.distance.x < w_ray.distance.y) ? PROCX_X : PROCY_X;
 	w_ray.inmap.y =
@@ -279,10 +288,10 @@ void				w3d_draw(t_wolf *wolf)
 	double			rays;
 	double			inc;
 
-	draw_floor_ceiling(wolf->wrap->wolf, wolf->map.textures, &(wolf->map.background));
-//	printf("in\n");
+//	printf("in \n");
+	rays = 0;
 	draw_floor_ceiling(wolf->wrap->wolf,
-	wolf->map.textures, &(wolf->map.background));
+					   wolf->map.textures, &(wolf->map.background));
 	init_w3dcam(&(wolf->map.cam));
 	if (init_walls(&walls))
 		free_wolf(wolf, 1);
@@ -294,9 +303,12 @@ void				w3d_draw(t_wolf *wolf)
 		wolf->wrap->tex = NULL;
 	}
 	rays = wolf->map.cam.range[0];
-//	printf("1mid %f\n", rays);
+//	ft_putstr("lalalala\n");
+//	walls.wall->inmap = detect_wall(wolf, walls.wall, rays, 0);
+//	printf("1mid %f\n", wolf->map.cam.range[0]);
 	inc = wolf->map.cam.fov / WIN_WD;
-//	printf("check\n");
+//	ft_putstr("hmmm\n");
+//	printf("check %f\n", inc);
 	while (++x <= WIN_WD)
 	{
 //		printf("mid %f\n", rays);
@@ -304,8 +316,6 @@ void				w3d_draw(t_wolf *wolf)
 			rays -= 360;
 		if (rays < 0)
 			rays += 360;
-		if (rays == INFINITY)
-			exit(1);
 		if (rays == 90)
 		{
 			if (x)
@@ -315,6 +325,7 @@ void				w3d_draw(t_wolf *wolf)
 			rays += inc;
 			x++;
 		}
+//		printf("mid2\n");
 		walls.wall->inmap = detect_wall(wolf, walls.wall, rays, x);
 		walls.collumns[x] = walls.wall->col;
 		if (walls.collumns[x] <= 0)
@@ -324,7 +335,7 @@ void				w3d_draw(t_wolf *wolf)
 		else if (walls.wall->end >= 0)
 		{
 			walls.collumns[walls.wall->start] =
-			walls.collumns[walls.wall->start - 1];
+				walls.collumns[walls.wall->start - 1];
 			if (!(walls.wall->next = (t_wall*)malloc(sizeof(t_wall))))
 				free_wolf(wolf, 1);
 			walls.wall = walls.wall->next;
@@ -332,6 +343,7 @@ void				w3d_draw(t_wolf *wolf)
 		}
 		rays += inc;
 	}
+//	printf("FOCK\n");
 	if (walls.wall->end == -1 && walls.wall->start != -1)
 		walls.wall->end = WIN_WD;
 	walls.wall = start;
@@ -339,7 +351,7 @@ void				w3d_draw(t_wolf *wolf)
 	{
 		walls.wall->index = wolf->map.walltab[pick_wall(walls.wall)];
 		if (walls.wall->start != -1 && walls.wall->end
-		!= -1 && walls.wall->start - walls.wall->end != 0)
+			!= -1 && walls.wall->start - walls.wall->end != 0)
 			draw_wall_tmp(wolf, &walls);
 		else if (walls.wall->start == -1 || walls.wall->end == -1)
 			break ;
@@ -349,10 +361,10 @@ void				w3d_draw(t_wolf *wolf)
 	// free wall(s) ici
 	if (!(wolf->wrap->renderer))
 		if (!(wolf->wrap->renderer =
-		SDL_CreateRenderer(wolf->wrap->screen, -1, SDL_RENDERER_ACCELERATED)))
+			  SDL_CreateRenderer(wolf->wrap->screen, -1, SDL_RENDERER_ACCELERATED)))
 			free_wolf(wolf, 1);
 	if (!(wolf->wrap->tex =
-	SDL_CreateTextureFromSurface(wolf->wrap->renderer, wolf->wrap->wolf)))
+		  SDL_CreateTextureFromSurface(wolf->wrap->renderer, wolf->wrap->wolf)))
 		free_wolf(wolf, 1);
 	SDL_RenderClear(wolf->wrap->renderer);
 	SDL_RenderCopy(wolf->wrap->renderer, wolf->wrap->tex, NULL, NULL);

@@ -6,7 +6,7 @@
 #    By: adleau <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/17 12:44:17 by adleau            #+#    #+#              #
-#    Updated: 2018/03/08 11:23:26 by adleau           ###   ########.fr        #
+#    Updated: 2018/03/08 12:28:21 by adleau           ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -49,13 +49,10 @@ SRC =   $(SRCPATH)main.c \
 
 INCPATH	=	includes/
 
-INC	=	$(INCPATH)menu.h \
-		$(INCPATH)full_run.h \
-		$(INCPATH)engine.h	\
+INC	=	$(INCPATH)full_run.h \
 		$(INCPATH)mandatory_part/wolf.h \
 		$(INCPATH)helpers/cleanup.h \
 		$(INCPATH)helpers/sdl_wrapper.h \
-		$(INCPATH)helpers/loop.h \
 		$(INCPATH)helpers/str_helpers.h \
 
 OBJ = $(SRC:.c=.o)
