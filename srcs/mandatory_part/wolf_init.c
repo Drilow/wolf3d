@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wolf_init.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:24:39 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/07 15:55:40 by adleau           ###   ########.fr       */
+/*   Updated: 2018/03/09 16:28:56 by mabessir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ void		init_w3dmap(t_wolf *wolf, t_w3dmap *map)
 	map->size.y = 0;
 	map->pos.x = -1;
 	map->pos.y = -1;
-	if (!(map->textures = SDL_CreateRGBSurfaceWithFormat(0, WIN_WD, WIN_HT, 32, SDL_PIXELFORMAT_RGBA32)))
+	if (!(map->textures = SDL_CreateRGBSurfaceWithFormat(0, WIN_WD, WIN_HT,
+	32, SDL_PIXELFORMAT_RGBA32)))
 		free_wolf(wolf, 1);
 	if (!(map->textures = IMG_Load("assets/textures/default/1375.png")))
 		free_wolf(wolf, 1);
@@ -70,11 +71,13 @@ void		init_w3dmap(t_wolf *wolf, t_w3dmap *map)
 	map->cam.orientation = 180;
 }
 
-/* init_wolf function
+/*
+** init_wolf function
 ** initializes all the data relative to the w3d wolfine
 */
 
-void		init_wolf(t_wolf *wolf, t_sdl_wrapper *wrap, char __attribute__((unused))*path)
+void		init_wolf(t_wolf *wolf, t_sdl_wrapper *wrap,
+char __attribute__((unused)) *path)
 {
 	init_w3dparse(wolf, path);
 	wrap->drawn = 0;

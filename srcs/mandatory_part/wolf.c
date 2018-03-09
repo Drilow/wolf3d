@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wolf.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:21:13 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/06 20:44:28 by adleau           ###   ########.fr       */
+/*   Updated: 2018/03/09 16:22:07 by mabessir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
-/* mandatory_part function
+/*
+** mandatory_part function
 ** entry point to the mandatory part
 */
 

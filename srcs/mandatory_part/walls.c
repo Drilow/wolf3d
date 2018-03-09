@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   walls.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:36:41 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/06 20:38:44 by adleau           ###   ########.fr       */
+/*   Updated: 2018/03/09 16:49:29 by mabessir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 #include <mandatory_part/wolf.h>
 #include <mandatory_part/walls.h>
 
-void			draw_floor_ceiling(SDL_Surface *surf, SDL_Surface *src, t_vector_2d *index)
+void			draw_floor_ceiling(SDL_Surface *surf, SDL_Surface *src,
+t_vector_2d *index)
 {
 	int			x;
 	int			y;
@@ -30,7 +31,9 @@ void			draw_floor_ceiling(SDL_Surface *surf, SDL_Surface *src, t_vector_2d *inde
 		x = -1;
 		while (++x <= WIN_WD)
 		{
-			color = *((Uint32*)src->pixels + (Uint32)((((index->y * CELL + (Uint32)(y * ratioy)) * (src->pitch / src->format->BytesPerPixel)) + (index->x * CELL + (Uint32)(x * ratiox)))));
+			color = *((Uint32*)src->pixels + (Uint32)((((index->y *
+			CELL + (Uint32)(y * ratioy)) * (src->pitch / src->format->BytesPerPixel))
+			+ (index->x * CELL + (Uint32)(x * ratiox)))));
 			draw_px(surf, x, y, color);
 		}
 	}
@@ -46,16 +49,17 @@ void			draw_px(SDL_Surface *surf, int x, int y, int color)
 	cols.g = color >> 8;
 	cols.b = color;
 	col = SDL_MapRGB(surf->format, cols.r, cols.g, cols.b);
-	pxmem = (Uint32*)surf->pixels + (y * surf->pitch / surf->format->BytesPerPixel) + x;
+	pxmem = (Uint32*)surf->pixels + (y * surf->pitch / surf->format->BytesPerPixel)
+	+ x;
 	*pxmem = col;
 }
 
 Uint32			get_color_from_tex(t_wolf *wolf, int x, int y, t_walls *walls)
 {
-	Uint32		color;
-	Uint32		*pxmem;
-	double ratiox;
-	double ratioy;
+	Uint32	color;
+	Uint32	*pxmem;
+	double	ratiox;
+	double	ratioy;
 
 	ratiox = (double)(CELL - 1) / (walls->wall->end - walls->wall->start);
 	ratioy = (double)(CELL - 1) / (walls->collumns[x]);
@@ -72,7 +76,10 @@ Uint32			get_color_from_tex(t_wolf *wolf, int x, int y, t_walls *walls)
 			return (0);
 		}
 	}
-	pxmem = (Uint32*)wolf->map.textures->pixels + (Uint32)((((walls->wall->index.y * CELL + (Uint32)(y * ratioy)) * (wolf->map.textures->pitch / wolf->map.textures->format->BytesPerPixel)) + (walls->wall->index.x * CELL + (Uint32)((x - walls->wall->start) * ratiox))));
+	pxmem = (Uint32*)wolf->map.textures->pixels + (Uint32)((((walls->wall->index.y * CELL
+	+ (Uint32)(y * ratioy)) * (wolf->map.textures->pitch
+	/ wolf->map.textures->format->BytesPerPixel))
+	+ (walls->wall->index.x * CELL + (Uint32)((x - walls->wall->start) * ratiox))));
 	color = *pxmem;
 	return (color);
 }
@@ -88,7 +95,8 @@ void			draw_collumn_tmp(t_wolf *wolf, t_walls *walls, int x)
 	while (++y + y_onscreen <= WIN_HT && y <= walls->collumns[x])
 	{
 		if (y + y_onscreen >= 0)
-			draw_px(wolf->wrap->wolf, x, y + y_onscreen, get_color_from_tex(wolf, x, y, walls));
+			draw_px(wolf->wrap->wolf, x, y + y_onscreen,
+			get_color_from_tex(wolf, x, y, walls));
 		else
 			walls->wall->l_off = y;
 	}

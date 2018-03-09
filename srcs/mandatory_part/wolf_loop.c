@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wolf_loop.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:27:33 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/07 16:23:42 by adleau           ###   ########.fr       */
+/*   Updated: 2018/03/09 17:17:39 by mabessir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,40 @@
 #define EVENT_PTR wolf->wrap->event
 #define WIN_PTR wolf->wrap->screen
 
+void		check_wall(t_wolf *wolf, int *tmpx, int *tmpy)
+{
+	if (wolf->map.map[wolf->map.pos.y][wolf->map.pos.x +
+	(wolf->map.cam.direction.x)] == '1')
+	{
+		wolf->map.cam.player.x = *tmpx;
+		wolf->map.cam.player.y = *tmpy;
+		return ;
+	}
+	else
+	{
+		wolf->map.pos.x += wolf->map.cam.direction.x;
+		wolf->map.cam.player.x =
+		(wolf->map.cam.direction.x > 0) ? 0 : CELL;
+	}
+}
+
+void		check_wall2(t_wolf *wolf, int *tmpx, int *tmpy)
+{
+	if (wolf->map.map[wolf->map.pos.y +
+	wolf->map.cam.direction.y][wolf->map.pos.x] == '1')
+	{
+		wolf->map.cam.player.x = *tmpx;
+		wolf->map.cam.player.y = *tmpy;
+		return ;
+	}
+	else
+	{
+		wolf->map.pos.y += wolf->map.cam.direction.y;
+		wolf->map.cam.player.y =
+		(wolf->map.cam.direction.y > 0) ? 0 : CELL;
+	}
+}
+
 void		keyup_up(t_wolf *wolf)
 {
 	int		tmpx;
@@ -23,36 +57,14 @@ void		keyup_up(t_wolf *wolf)
 
 	tmpx = wolf->map.cam.player.x;
 	tmpy = wolf->map.cam.player.y;
-	wolf->map.cam.player.x += (wolf->map.cam.direction.x * 10 * (cos(wolf->map.cam.angle * M_PI / 180)));
-	wolf->map.cam.player.y += (wolf->map.cam.direction.y * 10 * sin(wolf->map.cam.angle * M_PI / 180));
+	wolf->map.cam.player.x += (wolf->map.cam.direction.x *
+	10 * (cos(wolf->map.cam.angle * M_PI / 180)));
+	wolf->map.cam.player.y += (wolf->map.cam.direction.y *
+	10 * sin(wolf->map.cam.angle * M_PI / 180));
 	if (wolf->map.cam.player.x >= CELL - 1 || wolf->map.cam.player.x < 1)
-	{
-		if (wolf->map.map[wolf->map.pos.y][wolf->map.pos.x + (wolf->map.cam.direction.x)] == '1')
-		{
-			wolf->map.cam.player.x = tmpx;
-			wolf->map.cam.player.y = tmpy;
-			return ;
-		}
-		else
-		{
-			wolf->map.pos.x += wolf->map.cam.direction.x;
-			wolf->map.cam.player.x = (wolf->map.cam.direction.x > 0) ? 0 : CELL;
-		}
-	}
+		check_wall(wolf, &tmpx, &tmpy);
 	if (wolf->map.cam.player.y >= CELL - 1 || wolf->map.cam.player.y < 1)
-	{
-		if (wolf->map.map[wolf->map.pos.y + wolf->map.cam.direction.y][wolf->map.pos.x] == '1')
-		{
-			wolf->map.cam.player.x = tmpx;
-			wolf->map.cam.player.y = tmpy;
-			return ;
-		}
-		else
-		{
-			wolf->map.pos.y += wolf->map.cam.direction.y;
-			wolf->map.cam.player.y = (wolf->map.cam.direction.y > 0) ? 0 : CELL;
-		}
-	}
+		check_wall2(wolf, &tmpx, &tmpy);
 }
 
 void		keyup_events_w3d(t_wolf *wolf)
@@ -78,7 +90,8 @@ void		keyup_events_w3d(t_wolf *wolf)
 		keyup_up(wolf);
 }
 
-/* wolf_loop function
+/*
+** wolf_loop function
 ** infinite loop to handle the w3d engine
 */
 
