@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/06 20:42:52 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/08 12:27:22 by adleau           ###   ########.fr       */
+/*   Updated: 2018/03/12 13:55:54 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,22 +24,50 @@ void			free_sdl_wrapper(t_sdl_wrapper *sdl_wrap)
 {
 	if (sdl_wrap->screen)
 		SDL_DestroyWindow(sdl_wrap->screen);
-	if (sdl_wrap->menu)
-		SDL_FreeSurface(sdl_wrap->menu);
 	if (sdl_wrap->wolf)
 		SDL_FreeSurface(sdl_wrap->wolf);
 	if (sdl_wrap->renderer)
 		SDL_DestroyRenderer(sdl_wrap->renderer);
 	if (sdl_wrap->tex)
 		SDL_DestroyTexture(sdl_wrap->tex);
+	if (sdl_wrap)
+		free((t_sdl_wrapper*)sdl_wrap);
 	SDL_Quit();
 	IMG_Quit();
+}
+
+void			free_wall(t_wall *wall)
+{
+	if (wall)
+		free_wall(wall->next);
+	free((t_wall*)wall);
+}
+
+void			free_walls(t_walls *walls)
+{
+	if (walls->collumns)
+		free((int*)walls->collumns);
+	free_wall(walls->wall);
+}
+
+void			free_map(t_w3dmap *map)
+{
+	int			i;
+
+	i = -1;
+	if (map->map)
+	{
+		while (++i < map->size.y)
+			free((char*)map->map[i]);
+		free((char**)map->map);
+	}
+	if (map->textures)
+		SDL_FreeSurface(map->textures);
 }
 
 void			free_wolf(t_wolf *wolf, int i)
 {
 	free_sdl_wrapper(wolf->wrap);
-	if (wolf->map.textures)
-		SDL_FreeSurface(wolf->map.textures);
+	free_map(&(wolf->map));
 	exit(i);
 }

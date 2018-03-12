@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/11 14:35:49 by adleau            #+#    #+#             */
-/*   Updated: 2018/01/23 16:57:59 by adleau           ###   ########.fr       */
+/*   Updated: 2018/03/12 13:49:15 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,7 @@ typedef struct			s_sdl_wrapper
 {
 	int					drawn;
 	SDL_Window			*screen;
-	SDL_Surface			*menu;
 	SDL_Surface			*wolf;
-	SDL_Surface			*bonus;
 	SDL_Renderer		*renderer;
 	SDL_Texture			*tex;
 	SDL_Event			event;

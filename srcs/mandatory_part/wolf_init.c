@@ -6,7 +6,7 @@
 /*   By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:24:39 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/09 16:28:56 by mabessir         ###   ########.fr       */
+/*   Updated: 2018/03/12 13:55:33 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ void		init_w3dparse(t_wolf *wolf, char *path)
 	wolf->parse.beenread = -1;
 	wolf->parse.linesread = -1;
 	wolf->parse.done = 0;
+	if (path)
+		free(path);
 }
 
 void		init_w3dmap(t_wolf *wolf, t_w3dmap *map)
@@ -51,9 +53,6 @@ void		init_w3dmap(t_wolf *wolf, t_w3dmap *map)
 	map->size.y = 0;
 	map->pos.x = -1;
 	map->pos.y = -1;
-	if (!(map->textures = SDL_CreateRGBSurfaceWithFormat(0, WIN_WD, WIN_HT,
-	32, SDL_PIXELFORMAT_RGBA32)))
-		free_wolf(wolf, 1);
 	if (!(map->textures = IMG_Load("assets/textures/default/1375.png")))
 		free_wolf(wolf, 1);
 	map->walltab[0].x = 0;
@@ -77,7 +76,7 @@ void		init_w3dmap(t_wolf *wolf, t_w3dmap *map)
 */
 
 void		init_wolf(t_wolf *wolf, t_sdl_wrapper *wrap,
-char __attribute__((unused)) *path)
+char *path)
 {
 	init_w3dparse(wolf, path);
 	wrap->drawn = 0;

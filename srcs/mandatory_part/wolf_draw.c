@@ -6,7 +6,7 @@
 /*   By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:28:28 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/08 14:59:18 by adleau           ###   ########.fr       */
+/*   Updated: 2018/03/12 14:49:16 by adleau           ###   ########.fr       */
 /*   Updated: 2018/03/07 17:32:20 by mabessir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -288,7 +288,6 @@ void				w3d_draw(t_wolf *wolf)
 	double			rays;
 	double			inc;
 
-//	printf("in \n");
 	rays = 0;
 	draw_floor_ceiling(wolf->wrap->wolf,
 					   wolf->map.textures, &(wolf->map.background));
@@ -303,15 +302,9 @@ void				w3d_draw(t_wolf *wolf)
 		wolf->wrap->tex = NULL;
 	}
 	rays = wolf->map.cam.range[0];
-//	ft_putstr("lalalala\n");
-//	walls.wall->inmap = detect_wall(wolf, walls.wall, rays, 0);
-//	printf("1mid %f\n", wolf->map.cam.range[0]);
 	inc = wolf->map.cam.fov / WIN_WD;
-//	ft_putstr("hmmm\n");
-//	printf("check %f\n", inc);
 	while (++x <= WIN_WD)
 	{
-//		printf("mid %f\n", rays);
 		if (rays >= 360)
 			rays -= 360;
 		if (rays < 0)
@@ -325,7 +318,6 @@ void				w3d_draw(t_wolf *wolf)
 			rays += inc;
 			x++;
 		}
-//		printf("mid2\n");
 		walls.wall->inmap = detect_wall(wolf, walls.wall, rays, x);
 		walls.collumns[x] = walls.wall->col;
 		if (walls.collumns[x] <= 0)
@@ -343,7 +335,6 @@ void				w3d_draw(t_wolf *wolf)
 		}
 		rays += inc;
 	}
-//	printf("FOCK\n");
 	if (walls.wall->end == -1 && walls.wall->start != -1)
 		walls.wall->end = WIN_WD;
 	walls.wall = start;
@@ -357,17 +348,21 @@ void				w3d_draw(t_wolf *wolf)
 			break ;
 		walls.wall = walls.wall->next;
 	}
-//	free(walls.collumns);
-	// free wall(s) ici
+	free_walls(&walls);
 	if (!(wolf->wrap->renderer))
 		if (!(wolf->wrap->renderer =
 			  SDL_CreateRenderer(wolf->wrap->screen, -1, SDL_RENDERER_ACCELERATED)))
+			  free_wolf(wolf, 1);
+	if (!(wolf->wrap->tex))
+		if (!(wolf->wrap->tex =
+	SDL_CreateTextureFromSurface(wolf->wrap->renderer, wolf->wrap->wolf)))
+		{
+			printf("in %p %s\n", wolf->wrap->renderer, SDL_GetError());
 			free_wolf(wolf, 1);
-	if (!(wolf->wrap->tex =
-		  SDL_CreateTextureFromSurface(wolf->wrap->renderer, wolf->wrap->wolf)))
-		free_wolf(wolf, 1);
+		}
 	SDL_RenderClear(wolf->wrap->renderer);
 	SDL_RenderCopy(wolf->wrap->renderer, wolf->wrap->tex, NULL, NULL);
 	SDL_RenderPresent(wolf->wrap->renderer);
-//	printf("out\n");
+	SDL_DestroyTexture(wolf->wrap->tex);
+//	SDL_DestroyRenderer(wolf->wrap->renderer);
 }

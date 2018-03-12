@@ -6,7 +6,7 @@
 /*   By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:27:33 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/09 17:17:39 by mabessir         ###   ########.fr       */
+/*   Updated: 2018/03/12 14:43:35 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,9 @@ void		keyup_up(t_wolf *wolf)
 	tmpx = wolf->map.cam.player.x;
 	tmpy = wolf->map.cam.player.y;
 	wolf->map.cam.player.x += (wolf->map.cam.direction.x *
-	10 * (cos(wolf->map.cam.angle * M_PI / 180)));
+	8 * (cos(wolf->map.cam.angle * M_PI / 180)));
 	wolf->map.cam.player.y += (wolf->map.cam.direction.y *
-	10 * sin(wolf->map.cam.angle * M_PI / 180));
+	8 * sin(wolf->map.cam.angle * M_PI / 180));
 	if (wolf->map.cam.player.x >= CELL - 1 || wolf->map.cam.player.x < 1)
 		check_wall(wolf, &tmpx, &tmpy);
 	if (wolf->map.cam.player.y >= CELL - 1 || wolf->map.cam.player.y < 1)
@@ -100,8 +100,6 @@ void		wolf_loop(t_wolf *wolf)
 	int		istrue;
 
 	istrue = 1;
-	wolf->wrap->drawn = 0;
-	// free tout le parse ici
 	while (istrue)
 	{
 		while (SDL_PollEvent(&(EVENT_PTR)))
