@@ -3,11 +3,11 @@ w3dmapformat:
 X: 14
 Y: 14
 CameraDirection: 180
-WALL0:[0][0] /* [0 - 5][0 - 17] commentaires a retirer*/
+WALL0:[0][0]
 WALL1:[2][2]
 WALL2:[2][5]
-WALL3:[4][3]
-BACKGROUND:[0][5]
+WALL3:[2][11]
+BACKGROUND:[1][5]
 }
 1 1 1 1 1 1 1 1 1 1 1 1 1 1
 1 0 1 0 0 0 0 0 0 0 0 0 0 1

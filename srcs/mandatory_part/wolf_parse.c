@@ -6,7 +6,7 @@
 /*   By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:23:53 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/12 13:11:17 by adleau           ###   ########.fr       */
+/*   Updated: 2018/03/12 17:29:45 by mabessir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,31 @@
 ** into the map structure, returns 1 if done
 */
 
+int			ft_wallstexture(t_vector_2d  walltab[], int j,
+t_wolf *wolf, char *line)
+{
+	int		i;
+	char	*str;
+
+	i = 1;
+	if ((str = ft_strchr(line, '[')))
+	{
+		if (ft_isdigit(str[i]) && (ft_isdigit(str[i + 1]) || str[i + 1] == ']'))
+			walltab[j].x = atoi(str + i);
+		else
+			free_wolf(wolf, 1);
+	}
+	if ((str = ft_strrchr(line, '[')))
+	{
+		if (ft_isdigit(str[i]) && (ft_isdigit(str[i + 1]) || str[i + 1] == ']'))
+			walltab[j].y = atoi(str + i);
+		else
+			free_wolf(wolf, 1);
+	}
+	j++;;
+	return (j);
+}
+
 int				get_map_infos(t_wolf *wolf, t_w3dmap *map, char *line)
 {
 	int			i;
@@ -36,6 +61,9 @@ int				get_map_infos(t_wolf *wolf, t_w3dmap *map, char *line)
 		map->size.x = ft_atoi(line + ft_strlen("X: "));
 	else if (!ft_strncmp(line, "Y: ", ft_strlen("Y: ")))
 		map->size.y = ft_atoi(line + ft_strlen("Y: "));
+	else if(!ft_strncmp(line, "WALL", ft_strlen("WALL")) /*||
+	!ft_strncmp(line, "BACKGROUND",ft_strlen("BACKGROUND"))*/)
+		map->j = ft_wallstexture(map->walltab, map->j, wolf, line);
 	if (map->size.x != 0 && map->size.y != 0 && !map->map)
 	{
 		if (!(map->map = (char**)malloc(sizeof(char*) * (map->size.y + 1))))
