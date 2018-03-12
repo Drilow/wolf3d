@@ -6,7 +6,7 @@
 /*   By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:27:33 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/12 14:43:35 by adleau           ###   ########.fr       */
+/*   Updated: 2018/03/12 15:44:03 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,9 +109,6 @@ void		wolf_loop(t_wolf *wolf)
 				exit(0);
 			else if (EVENT_PTR.type == SDL_KEYDOWN)
 				keyup_events_w3d(wolf);
-/*			else if (EVENT_PTR.type == SDL_MOUSEBUTTONUP)
-			if ((ret = mouseup_events(eng)))
-			istrue = 0;
-*/		}
+		}
 	}
 }

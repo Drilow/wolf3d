@@ -6,7 +6,7 @@
 /*   By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:28:28 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/12 14:49:16 by adleau           ###   ########.fr       */
+/*   Updated: 2018/03/12 15:28:32 by adleau           ###   ########.fr       */
 /*   Updated: 2018/03/07 17:32:20 by mabessir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -352,17 +352,14 @@ void				w3d_draw(t_wolf *wolf)
 	if (!(wolf->wrap->renderer))
 		if (!(wolf->wrap->renderer =
 			  SDL_CreateRenderer(wolf->wrap->screen, -1, SDL_RENDERER_ACCELERATED)))
-			  free_wolf(wolf, 1);
+			free_wolf(wolf, 1);
 	if (!(wolf->wrap->tex))
 		if (!(wolf->wrap->tex =
-	SDL_CreateTextureFromSurface(wolf->wrap->renderer, wolf->wrap->wolf)))
-		{
-			printf("in %p %s\n", wolf->wrap->renderer, SDL_GetError());
+			  SDL_CreateTextureFromSurface(wolf->wrap->renderer, wolf->wrap->wolf)))
 			free_wolf(wolf, 1);
-		}
 	SDL_RenderClear(wolf->wrap->renderer);
 	SDL_RenderCopy(wolf->wrap->renderer, wolf->wrap->tex, NULL, NULL);
 	SDL_RenderPresent(wolf->wrap->renderer);
 	SDL_DestroyTexture(wolf->wrap->tex);
-//	SDL_DestroyRenderer(wolf->wrap->renderer);
+	wolf->wrap->tex = NULL;
 }

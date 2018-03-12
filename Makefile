@@ -6,7 +6,7 @@
 #    By: adleau <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/17 12:44:17 by adleau            #+#    #+#              #
-#    Updated: 2018/03/12 13:24:42 by adleau           ###   ########.fr        #
+#    Updated: 2018/03/12 15:51:33 by adleau           ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -20,7 +20,7 @@ NAME = wolf3d
 
 CC = gcc
 
-CFLAGS = -Wall -Werror -Wextra -O3 -g3 #-std=c89
+CFLAGS = -Wall -Werror -Wextra -O3 #-std=c89
 
 LDFLAGS = `ext/SDL2/bin/sdl2-config --cflags --libs -lSDL2 -lSDL2_image`
 

@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/11 19:54:22 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/12 14:48:33 by adleau           ###   ########.fr       */
+/*   Updated: 2018/03/12 15:46:51 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void			init_sdl_wrap(t_sdl_wrapper *wrap)
 	int			flags;
 	int			initted;
 
-	wrap->drawn = 0;
 	if (SDL_Init(SDL_INIT_EVERYTHING))
 		ft_putendl_fd("Failed to init SDL", 2);
 	wrap->screen = NULL;
