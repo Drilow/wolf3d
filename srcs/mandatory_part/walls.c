@@ -6,7 +6,7 @@
 /*   By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:36:41 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/12 14:13:28 by adleau           ###   ########.fr       */
+/*   Updated: 2018/03/13 14:00:40 by mabessir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ t_vector_2d *index)
 		while (++x <= WIN_WD)
 		{
 			color = *((Uint32*)src->pixels + (Uint32)((((index->y *
-			CELL + (Uint32)(y * ratioy)) * (src->pitch / src->format->BytesPerPixel))
+			CELL + (Uint32)(y * ratioy)) *
+			(src->pitch / src->format->BytesPerPixel))
 			+ (index->x * CELL + (Uint32)(x * ratiox)))));
 			draw_px(surf, x, y, color);
 		}
@@ -48,10 +49,24 @@ void			draw_px(SDL_Surface *surf, int x, int y, int color)
 	cols.r = color >> 16;
 	cols.g = color >> 8;
 	cols.b = color;
-	col = SDL_MapRGB(surf->format, cols.r, cols.g, cols.b);
-	pxmem = (Uint32*)surf->pixels + (y * surf->pitch / surf->format->BytesPerPixel)
+	col = SDL_MapRGB(surf->format,
+		cols.r, cols.g, cols.b);
+	pxmem = (Uint32*)surf->pixels +
+	(y * surf->pitch / surf->format->BytesPerPixel)
 	+ x;
 	*pxmem = col;
+}
+
+static	int		check_walls_collumns_x(t_walls *walls, int x)
+{
+	if (x > 0)
+		walls->collumns[x] = walls->collumns[x - 1];
+	else
+	{
+		walls->collumns[x] = 0;
+		return (0);
+	}
+	return (1);
 }
 
 Uint32			get_color_from_tex(t_wolf *wolf, int x, int y, t_walls *walls)
@@ -68,18 +83,15 @@ Uint32			get_color_from_tex(t_wolf *wolf, int x, int y, t_walls *walls)
 	color = 0;
 	if (walls->collumns[x] <= 0)
 	{
-		if (x > 0)
-			walls->collumns[x] = walls->collumns[x - 1];
-		else
-		{
-			walls->collumns[x] = 0;
+		if (check_walls_collumns_x(walls, x) == 0)
 			return (0);
-		}
 	}
-	pxmem = (Uint32*)wolf->map.textures->pixels + (Uint32)((((walls->wall->index.y * CELL
+	pxmem = (Uint32*)wolf->map.textures->pixels +
+	(Uint32)((((walls->wall->index.y * CELL
 	+ (Uint32)(y * ratioy)) * (wolf->map.textures->pitch
 	/ wolf->map.textures->format->BytesPerPixel))
-	+ (walls->wall->index.x * CELL + (Uint32)((x - walls->wall->start) * ratiox))));
+	+ (walls->wall->index.x * CELL +
+		(Uint32)((x - walls->wall->start) * ratiox))));
 	color = *pxmem;
 	return (color);
 }

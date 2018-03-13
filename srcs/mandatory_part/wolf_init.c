@@ -6,7 +6,7 @@
 /*   By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:24:39 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/12 17:30:02 by mabessir         ###   ########.fr       */
+/*   Updated: 2018/03/13 13:07:46 by mabessir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,5 +75,7 @@ char *path)
 	wrap->drawn = 0;
 	init_w3dmap(wolf, &(wolf->map));
 	w3d_parse(wolf);
+	if (wolf->map.j != 4)
+		free_wolf(wolf, 1);
 	init_w3dcam(&(wolf->map.cam));
 }

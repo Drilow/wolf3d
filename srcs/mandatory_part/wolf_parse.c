@@ -6,7 +6,7 @@
 /*   By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:23:53 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/12 17:29:45 by mabessir         ###   ########.fr       */
+/*   Updated: 2018/03/13 13:04:51 by mabessir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,18 +34,20 @@ t_wolf *wolf, char *line)
 	i = 1;
 	if ((str = ft_strchr(line, '[')))
 	{
-		if (ft_isdigit(str[i]) && (ft_isdigit(str[i + 1]) || str[i + 1] == ']'))
+		if (ft_isdigit(str[i]) && (ft_isdigit(str[i + 1]) || str[i + 1] == ']') && atoi(str + i) < 6)
 			walltab[j].x = atoi(str + i);
-		else
+		else if (walltab[j].x > 5)
 			free_wolf(wolf, 1);
 	}
+	ft_putnbr(walltab[j].x);
 	if ((str = ft_strrchr(line, '[')))
 	{
-		if (ft_isdigit(str[i]) && (ft_isdigit(str[i + 1]) || str[i + 1] == ']'))
+		if (ft_isdigit(str[i]) && (ft_isdigit(str[i + 1]) || str[i + 1] == ']') && atoi(str + i) < 18)
 			walltab[j].y = atoi(str + i);
 		else
 			free_wolf(wolf, 1);
 	}
+	ft_putnbr(walltab[j].y);
 	j++;;
 	return (j);
 }
@@ -61,8 +63,7 @@ int				get_map_infos(t_wolf *wolf, t_w3dmap *map, char *line)
 		map->size.x = ft_atoi(line + ft_strlen("X: "));
 	else if (!ft_strncmp(line, "Y: ", ft_strlen("Y: ")))
 		map->size.y = ft_atoi(line + ft_strlen("Y: "));
-	else if(!ft_strncmp(line, "WALL", ft_strlen("WALL")) /*||
-	!ft_strncmp(line, "BACKGROUND",ft_strlen("BACKGROUND"))*/)
+	else if(!ft_strncmp(line, "WALL", ft_strlen("WALL")))
 		map->j = ft_wallstexture(map->walltab, map->j, wolf, line);
 	if (map->size.x != 0 && map->size.y != 0 && !map->map)
 	{

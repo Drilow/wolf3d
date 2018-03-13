@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wolf.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:26:31 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/06 20:44:08 by adleau           ###   ########.fr       */
+/*   Updated: 2018/03/13 14:56:28 by mabessir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ typedef struct		s_wolf
 	t_w3dparse		parse;
 	t_w3dmap		map;
 	t_sdl_wrapper	*wrap;
+	int				x;
 }					t_wolf;
 
 void				wolf_loop(t_wolf *wolf);
