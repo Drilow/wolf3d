@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sdl_wrapper.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/11 14:35:49 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/12 13:49:15 by adleau           ###   ########.fr       */
+/*   Updated: 2018/03/14 12:17:49 by mabessir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,10 @@
 # define WIN_HT 720
 # include <SDL.h>
 
-/* SDL_WRAPPER
+/*
+** SDL_WRAPPER
 ** holds the data relevant to the SDL
- */
+*/
 
 typedef struct			s_sdl_wrapper
 {

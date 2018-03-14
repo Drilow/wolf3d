@@ -6,7 +6,7 @@
 /*   By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:26:31 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/13 14:56:28 by mabessir         ###   ########.fr       */
+/*   Updated: 2018/03/14 12:13:30 by mabessir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,6 @@ void				wolf_loop(t_wolf *wolf);
 void				w3d_draw(t_wolf *wolf);
 void				init_wolf(t_wolf *wolf, t_sdl_wrapper *wrap, char *path);
 void				w3d_parse(t_wolf *wolf);
+int					get_map_infos(t_wolf *wolf, t_w3dmap *map, char *line);
 
 #endif

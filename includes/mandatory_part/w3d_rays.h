@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   w3d_rays.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/13 17:43:27 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/06 20:47:29 by adleau           ###   ########.fr       */
+/*   Updated: 2018/03/14 12:15:27 by mabessir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef W3D_RAYS_H
 # define W3D_RAYS_H
 
-#include <helpers/shapes.h>
+# include <helpers/shapes.h>
 
 typedef struct			s_w3dray
 {
