@@ -6,7 +6,7 @@
 /*   By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:37:54 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/14 12:17:07 by mabessir         ###   ########.fr       */
+/*   Updated: 2018/03/14 14:07:45 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ typedef struct		s_wall
 	int				start;
 	int				end;
 	int				l_off;
-	int				first_proc;
 	int				processed_size;
 	int				col;
 	int				flag;
