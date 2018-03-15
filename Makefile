@@ -6,7 +6,11 @@
 #    By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/17 12:44:17 by adleau            #+#    #+#              #
+<<<<<<< HEAD
 #    Updated: 2018/03/15 15:54:32 by mabessir         ###   ########.fr        #
+=======
+#    Updated: 2018/03/15 16:28:59 by adleau           ###   ########.fr        #
+>>>>>>> 94501d341e29ffd5f269dffe924ccee2514d88d0
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +24,11 @@ NAME = wolf3d
 
 CC = gcc
 
+<<<<<<< HEAD
 CFLAGS = -Wall -Werror -Wextra -O3 -g3 #-fsanitize=address #-std=c89
+=======
+CFLAGS = -Wall -Werror -Wextra -O0  #-fsanitize=address  #-std=c89
+>>>>>>> 94501d341e29ffd5f269dffe924ccee2514d88d0
 
 LDFLAGS = `ext/SDL2/bin/sdl2-config --cflags --libs -lSDL2 -lSDL2_image`
 
@@ -47,7 +55,6 @@ SRC =   $(SRCPATH)main.c \
 		$(SRCPATH)helpers/cleanup.c \
 		$(SRCPATH)helpers/sdl_wrapper.c \
 		$(SRCPATH)helpers/str_helpers.c	\
-		$(SRCPATH)helpers/draw_functions.c	\
 
 INCPATH	=	includes/
 
