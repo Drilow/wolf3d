@@ -6,7 +6,7 @@
 /*   By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:24:39 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/14 14:32:39 by mabessir         ###   ########.fr       */
+/*   Updated: 2018/03/15 15:47:37 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,15 +34,21 @@ void		init_w3dcam(t_w3d_camera *cam)
 
 void		init_w3dparse(t_wolf *wolf, char *path)
 {
+	int		i;
+
+	i = 0;
 	if (path == NULL)
+	{
 		if (!(path = ft_strdup("maps/wolf3d/lvl2.w3dmap")))
 			free_wolf(wolf, 1);
+		i = 1;
+	}
 	if ((wolf->parse.fd = open(path, O_RDONLY)) == -1)
 		free_wolf(wolf, 1);
 	wolf->parse.beenread = -1;
 	wolf->parse.linesread = -1;
 	wolf->parse.done = 0;
-	if (path)
+	if (i && path != NULL)
 		free(path);
 }
 
