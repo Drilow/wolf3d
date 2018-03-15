@@ -6,7 +6,7 @@
 /*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/06 20:42:52 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/12 13:55:54 by adleau           ###   ########.fr       */
+/*   Updated: 2018/03/15 15:18:43 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,10 @@
 #include <helpers/sdl_wrapper.h>
 #include <mandatory_part/wolf.h>
 
-/* free_sdl_wrapper
+/*
+** free_sdl_wrapper
 ** frees everything SDL-related
- */
+*/
 
 void			free_sdl_wrapper(t_sdl_wrapper *sdl_wrap)
 {

@@ -6,7 +6,7 @@
 #    By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/17 12:44:17 by adleau            #+#    #+#              #
-#    Updated: 2018/03/14 12:12:29 by mabessir         ###   ########.fr        #
+#    Updated: 2018/03/15 15:14:18 by adleau           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,7 +47,6 @@ SRC =   $(SRCPATH)main.c \
 		$(SRCPATH)helpers/cleanup.c \
 		$(SRCPATH)helpers/sdl_wrapper.c \
 		$(SRCPATH)helpers/str_helpers.c	\
-		$(SRCPATH)helpers/draw_functions.c	\
 
 INCPATH	=	includes/
 

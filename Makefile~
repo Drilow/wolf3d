@@ -1,14 +1,14 @@
-#******************************************************************************#
+# **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: adleau <marvin@42.fr>                      +#+  +:+       +#+         #
+#    By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/17 12:44:17 by adleau            #+#    #+#              #
-#    Updated: 2018/03/12 15:06:16 by adleau           ###   ########.fr        #
+#    Updated: 2018/03/14 12:12:29 by mabessir         ###   ########.fr        #
 #                                                                              #
-#******************************************************************************#
+# **************************************************************************** #
 
 NCOL=\x1b[0m
 VERT=\x1b[32;01m
@@ -38,8 +38,10 @@ SRCPATH = srcs/
 SRC =   $(SRCPATH)main.c \
 		$(SRCPATH)mandatory_part/wolf.c \
 		$(SRCPATH)mandatory_part/walls.c \
+		$(SRCPATH)mandatory_part/walls_draw.c \
 		$(SRCPATH)mandatory_part/wolf_init.c \
 		$(SRCPATH)mandatory_part/wolf_parse.c \
+		$(SRCPATH)mandatory_part/w_finish_parse.c \
 		$(SRCPATH)mandatory_part/wolf_loop.c \
 		$(SRCPATH)mandatory_part/wolf_draw.c \
 		$(SRCPATH)helpers/cleanup.c \
@@ -62,7 +64,7 @@ all: ext $(NAME)
 $(NAME): $(OBJ) $(INC)
 		make -C libft/
 		@echo "$(VERT)~> [ libft library made. ]$(NCOL)"
-		$(CC) $(OBJ) -o $(NAME) -Iincludes/ $(LDFLAGS) -Ilibft/ -Llibft/ -lft $(LIB)
+		$(CC) $(CFLAGS) $(OBJ) -o $(NAME) -Iincludes/ $(LDFLAGS) -Ilibft/ -Llibft/ -lft $(LIB)
 		@echo "$(VERT)~> [ binary file '$(NAME)' made. ]$(NCOL)"
 
 %.o: %.c
