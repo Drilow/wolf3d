@@ -6,7 +6,7 @@
 /*   By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:24:39 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/13 13:07:46 by mabessir         ###   ########.fr       */
+/*   Updated: 2018/03/14 14:32:39 by mabessir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void		init_w3dparse(t_wolf *wolf, char *path)
 
 void		init_w3dmap(t_wolf *wolf, t_w3dmap *map)
 {
+	wolf->i = 0;
 	map->map = NULL;
 	map->j = 0;
 	map->size.x = 0;
