@@ -1,26 +1,14 @@
-# **************************************************************************** #
+#******************************************************************************#
 #                                                                              #
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+         #
+#    By: adleau <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2018/01/17 12:44:17 by adleau            #+#    #+#              #
-<<<<<<< HEAD
-#    Updated: 2018/03/15 16:44:18 by mabessir         ###   ########.fr        #
-=======
-<<<<<<< HEAD
-#    Updated: 2018/03/15 16:41:20 by adleau           ###   ########.fr        #
-=======
-<<<<<<< HEAD
-#    Updated: 2018/03/15 15:54:32 by mabessir         ###   ########.fr        #
-=======
-#    Updated: 2018/03/15 16:28:59 by adleau           ###   ########.fr        #
->>>>>>> 94501d341e29ffd5f269dffe924ccee2514d88d0
->>>>>>> f6afa5d3c2b11dee8c13fb0d0afdb55aec7f7fdd
->>>>>>> 462395bcda65d34e8946d6f183a35132717e7f7f
+#    Created: 2018/03/15 16:49:08 by adleau            #+#    #+#              #
+#    Updated: 2018/03/15 16:49:47 by adleau           ###   ########.fr        #
 #                                                                              #
-# **************************************************************************** #
+#******************************************************************************#
 
 NCOL=\x1b[0m
 VERT=\x1b[32;01m
@@ -32,19 +20,7 @@ NAME = wolf3d
 
 CC = gcc
 
-<<<<<<< HEAD
-CFLAGS = -Wall -Werror -Wextra -O3 -g3 #-fsanitize=address #-std=c89
-=======
-<<<<<<< HEAD
-CFLAGS = -Wall -Werror -Wextra -O3  #-fsanitize=address  #-std=c89
-=======
-<<<<<<< HEAD
-CFLAGS = -Wall -Werror -Wextra -O3 -g3 #-fsanitize=address #-std=c89
-=======
-CFLAGS = -Wall -Werror -Wextra -O0  #-fsanitize=address  #-std=c89
->>>>>>> 94501d341e29ffd5f269dffe924ccee2514d88d0
->>>>>>> f6afa5d3c2b11dee8c13fb0d0afdb55aec7f7fdd
->>>>>>> 462395bcda65d34e8946d6f183a35132717e7f7f
+CFLAGS = -Wall -Werror -Wextra
 
 LDFLAGS = `ext/SDL2/bin/sdl2-config --cflags --libs -lSDL2 -lSDL2_image`
 

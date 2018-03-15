@@ -6,7 +6,7 @@
 /*   By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:27:33 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/12 15:44:03 by adleau           ###   ########.fr       */
+/*   Updated: 2018/03/15 16:53:15 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,19 +74,19 @@ void		keyup_events_w3d(t_wolf *wolf)
 		free_sdl_wrapper(wolf->wrap);
 		exit(0);
 	}
-	if (EVENT_PTR.key.keysym.sym == SDLK_RIGHT)
+	else if (EVENT_PTR.key.keysym.sym == SDLK_RIGHT)
 	{
 		wolf->map.cam.orientation += 5;
 		if (wolf->map.cam.orientation >= 360)
 			wolf->map.cam.orientation -= 360;
 	}
-	if (EVENT_PTR.key.keysym.sym == SDLK_LEFT)
+	else if (EVENT_PTR.key.keysym.sym == SDLK_LEFT)
 	{
 		wolf->map.cam.orientation -= 5;
 		if (wolf->map.cam.orientation < 0)
 			wolf->map.cam.orientation += 360;
 	}
-	if (EVENT_PTR.key.keysym.sym == SDLK_UP)
+	else if (EVENT_PTR.key.keysym.sym == SDLK_UP)
 		keyup_up(wolf);
 }
 
