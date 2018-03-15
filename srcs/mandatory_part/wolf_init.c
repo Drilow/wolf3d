@@ -6,7 +6,7 @@
 /*   By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:24:39 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/14 14:32:39 by mabessir         ###   ########.fr       */
+/*   Updated: 2018/03/15 16:22:04 by mabessir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void		init_w3dparse(t_wolf *wolf, char *path)
 void		init_w3dmap(t_wolf *wolf, t_w3dmap *map)
 {
 	wolf->i = 0;
+	wolf->spawn = 0 ;
 	map->map = NULL;
 	map->j = 0;
 	map->size.x = 0;
@@ -61,7 +62,7 @@ void		init_w3dmap(t_wolf *wolf, t_w3dmap *map)
 	map->background.y = 5;
 	map->cam.player.x = CELL / 2;
 	map->cam.player.y = CELL / 2;
-	map->cam.orientation = 180;
+	map->cam.orientation = 0;
 }
 
 /*

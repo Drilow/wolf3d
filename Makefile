@@ -6,7 +6,7 @@
 #    By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/17 12:44:17 by adleau            #+#    #+#              #
-#    Updated: 2018/03/14 12:12:29 by mabessir         ###   ########.fr        #
+#    Updated: 2018/03/15 15:54:32 by mabessir         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ NAME = wolf3d
 
 CC = gcc
 
-CFLAGS = -Wall -Werror -Wextra -O3 -g3 #-std=c89
+CFLAGS = -Wall -Werror -Wextra -O3 -g3 #-fsanitize=address #-std=c89
 
 LDFLAGS = `ext/SDL2/bin/sdl2-config --cflags --libs -lSDL2 -lSDL2_image`
 
