@@ -6,7 +6,7 @@
 /*   By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:26:31 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/14 12:44:27 by mabessir         ###   ########.fr       */
+/*   Updated: 2018/03/15 16:21:34 by mabessir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ typedef struct		s_wolf
 	t_sdl_wrapper	*wrap;
 	int				x;
 	int				i;
+	int				spawn;
 }					t_wolf;
 
 void				wolf_loop(t_wolf *wolf);

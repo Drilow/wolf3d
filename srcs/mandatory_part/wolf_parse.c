@@ -6,7 +6,7 @@
 /*   By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:23:53 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/15 14:45:24 by mabessir         ###   ########.fr       */
+/*   Updated: 2018/03/15 16:36:57 by mabessir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void			fill_parse_tab_and_map(t_wolf *wolf, char *line)
 		get_map(wolf, &(wolf->map), line);
 }
 
-t_vector_2d		get_starting(char **map)
+t_vector_2d		get_starting(char **map,t_wolf *wolf)
 {
 	t_vector_2d	r;
 
@@ -58,13 +58,37 @@ t_vector_2d		get_starting(char **map)
 		r.x = -1;
 		while (map[r.y][++(r.x)])
 		{
-			if (map[r.y][r.x] == 'S')
+			if (map[r.y][r.x] == 'S' && r.y > 0)
 				return (r);
 		}
 	}
-	r.x = -1;
-	r.y = -1;
 	return (r);
+}
+
+int				check_map(t_wolf *wolf, char **map, t_w3dmap wmap)
+{
+	int i;
+	int j;
+	int k;
+
+	i = -1;
+	k = 0;
+	while (++i < wmap.size.y)
+	{
+		j = -1;
+		while (++j < wmap.size.x)
+		{
+			if (map[0][j] == '0')
+				free_wolf(wolf, 1);
+			if (map[i][0] == '0')
+				free_wolf(wolf, 1);
+			if (map[i][j] == 'S')
+				wolf->spawn++;
+		}
+		ft_putnbr(k);
+		k++;
+	}
+	return (0);
 }
 
 /*
@@ -84,7 +108,10 @@ void			w3d_parse(t_wolf *wolf)
 	}
 	if (wolf->parse.beenread == -1)
 		free_wolf(wolf, 1);
-	wolf->map.pos = get_starting(wolf->map.map);
+	check_map(wolf, wolf->map.map, wolf->map);
+	if (wolf->spawn != 1)
+		free_wolf(wolf, 1);
+	wolf->map.pos = get_starting(wolf->map.map, wolf);
 	wolf->parse.done = 1;
 	if (wolf->i != 9)
 		free_wolf(wolf, 1);
