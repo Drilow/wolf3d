@@ -6,7 +6,7 @@
 /*   By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/14 12:10:49 by mabessir          #+#    #+#             */
-/*   Updated: 2018/03/15 14:57:47 by mabessir         ###   ########.fr       */
+/*   Updated: 2018/03/16 14:13:38 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,10 @@ void			check_properly_do(t_wolf *wolf, char *line)
 	ft_strncmp(line, "CameraDirection:", ft_strlen("CameraDirection:")) &&
 	ft_strncmp(line, "WALL", ft_strlen("WALL")) &&
 	ft_strncmp(line, "}", 1))
+	{
+		printf("%s | %zu\n", line, ft_strlen(line));
 		free_wolf(wolf, 1);
+	}
 	if (wolf->i > 9)
 		free_wolf(wolf, 1);
 }

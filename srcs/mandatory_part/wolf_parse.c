@@ -6,7 +6,7 @@
 /*   By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:23:53 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/15 16:45:04 by mabessir         ###   ########.fr       */
+/*   Updated: 2018/03/16 14:29:16 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ void			w3d_parse(t_wolf *wolf)
 			break ;
 		fill_parse_tab_and_map(wolf, wolf->parse.buf);
 		free(wolf->parse.buf);
+		wolf->parse.buf = NULL;
 	}
 	if (wolf->parse.beenread == -1)
 		free_wolf(wolf, 1);

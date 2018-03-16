@@ -6,7 +6,7 @@
 /*   By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:27:33 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/15 16:53:15 by adleau           ###   ########.fr       */
+/*   Updated: 2018/03/16 13:32:45 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,40 @@ void		check_wall2(t_wolf *wolf, int *tmpx, int *tmpy)
 	}
 }
 
+void		check_wall_b(t_wolf *wolf, int *tmpx, int *tmpy)
+{
+	if (wolf->map.map[wolf->map.pos.y][wolf->map.pos.x -
+	(wolf->map.cam.direction.x)] == '1')
+	{
+		wolf->map.cam.player.x = *tmpx;
+		wolf->map.cam.player.y = *tmpy;
+		return ;
+	}
+	else
+	{
+		wolf->map.pos.x -= wolf->map.cam.direction.x;
+		wolf->map.cam.player.x =
+		(wolf->map.cam.direction.x < 0) ? 0 : CELL;
+	}
+}
+
+void		check_wall_b2(t_wolf *wolf, int *tmpx, int *tmpy)
+{
+	if (wolf->map.map[wolf->map.pos.y -
+	wolf->map.cam.direction.y][wolf->map.pos.x] == '1')
+	{
+		wolf->map.cam.player.x = *tmpx;
+		wolf->map.cam.player.y = *tmpy;
+		return ;
+	}
+	else
+	{
+		wolf->map.pos.y -= wolf->map.cam.direction.y;
+		wolf->map.cam.player.y =
+		(wolf->map.cam.direction.y < 0) ? 0 : CELL;
+	}
+}
+
 void		keyup_up(t_wolf *wolf)
 {
 	int		tmpx;
@@ -65,6 +99,23 @@ void		keyup_up(t_wolf *wolf)
 		check_wall(wolf, &tmpx, &tmpy);
 	if (wolf->map.cam.player.y >= CELL - 1 || wolf->map.cam.player.y < 1)
 		check_wall2(wolf, &tmpx, &tmpy);
+}
+
+void		keyup_down(t_wolf *wolf)
+{
+	int		tmpx;
+	int		tmpy;
+
+	tmpx = wolf->map.cam.player.x;
+	tmpy = wolf->map.cam.player.y;
+	wolf->map.cam.player.x -= (wolf->map.cam.direction.x *
+	8 * (cos(wolf->map.cam.angle * M_PI / 180)));
+	wolf->map.cam.player.y -= (wolf->map.cam.direction.y *
+	8 * sin(wolf->map.cam.angle * M_PI / 180));
+	if (wolf->map.cam.player.x >= CELL - 1 || wolf->map.cam.player.x < 1)
+		check_wall_b(wolf, &tmpx, &tmpy);
+	if (wolf->map.cam.player.y >= CELL - 1 || wolf->map.cam.player.y < 1)
+		check_wall_b2(wolf, &tmpx, &tmpy);
 }
 
 void		keyup_events_w3d(t_wolf *wolf)
@@ -88,6 +139,8 @@ void		keyup_events_w3d(t_wolf *wolf)
 	}
 	else if (EVENT_PTR.key.keysym.sym == SDLK_UP)
 		keyup_up(wolf);
+	else if (EVENT_PTR.key.keysym.sym == SDLK_DOWN)
+		keyup_down(wolf);
 }
 
 /*
