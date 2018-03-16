@@ -3,66 +3,72 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adleau <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/31 14:49:33 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/16 14:20:07 by adleau           ###   ########.fr       */
+/*   Updated: 2018/03/16 14:55:51 by mabessir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include "libft.h"
 #include <limits.h>
-#define X '\n'
-#define TMP tmp[fd]
 
-static char		*ft_strchr1(const char *s, int c)
+static int	cut_line(char **pos, char **line)
 {
-	char		*str;
+	char *n_pos;
 
-	str = (char *)s;
-	while (*str != c)
+	if ((n_pos = ft_strchr(*pos, (int)'\n')))
 	{
-		if (*str == '\0')
-			return (NULL);
-		str++;
+		*line = ft_strsub(*pos, 0, n_pos - *pos);
+		ft_memmove(*pos, n_pos + 1, ft_strlen(n_pos));
+		n_pos = NULL;
+		return (1);
 	}
-	str++;
-	return (str);
+	return (0);
 }
 
-static void		gnl_annex(char **tmp, int fd, char *str, char *line_return)
+static int	read_line(const int fd, char **pos, char **line)
 {
-	str = TMP;
-	TMP = ft_strdup(line_return);
-	free(str);
+	char	buf[BUFF_SIZE + 1];
+	char	*tmp;
+	int		ret;
+
+	while ((ret = read(fd, buf, BUFF_SIZE)))
+	{
+		if (ret == -1)
+			return (-1);
+		buf[ret] = '\0';
+		tmp = NULL;
+		if (*pos)
+		{
+			tmp = ft_strdup(*pos);
+			ft_strdel(*(&pos));
+			*pos = ft_strjoin(tmp, buf);
+			ft_strdel(&tmp);
+		}
+		else
+			*pos = ft_strdup(buf);
+		if (cut_line(pos, line))
+			return (1);
+	}
+	return (0);
 }
 
-int				get_next_line(const int fd, char **line)
+int			get_next_line(const int fd, char **line)
 {
-	int			rd;
-	static char	*tmp[OPEN_MAX];
-	char		buf[BUFF_SIZE + 1];
-	char		*str;
-	char		*line_return;
+	static char	*pos;
+	int			ret;
 
-	if (fd < 0 || line == NULL || fd >= OPEN_MAX || (*line = NULL))
+	if (fd < 0 || BUFF_SIZE < 1 || !line)
 		return (-1);
-	while ((!TMP || !ft_strchr1(TMP, X)) && (rd = read(fd, buf, BUFF_SIZE)) > 0)
-	{
-		buf[rd] = '\0';
-		str = TMP;
-		TMP = ft_strjoin(TMP, buf);
-		ft_strdel(&str);
-	}
-	if (!TMP || !ft_strlen(TMP))
-		return (rd == -1 ? -1 : 0);
-	if ((line_return = ft_strchr1(TMP, X)))
-	{
-		*line = ft_strsub(TMP, 0, line_return - TMP - 1);
-		gnl_annex(tmp, fd, str, line_return);
-	}
-	else if (!line_return && (*line = ft_strdup(TMP)) != NULL)
-		ft_strdel(&TMP);
+	if (pos && cut_line(&pos, line))
+		return (1);
+	if ((ret = read_line(fd, &pos, line)) != 0)
+		return (ret);
+	if (pos == NULL || pos[0] == '\0')
+		return (0);
+	*line = pos;
+	pos = NULL;
 	return (1);
 }
