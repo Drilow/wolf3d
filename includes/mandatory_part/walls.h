@@ -6,13 +6,17 @@
 /*   By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:37:54 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/14 14:07:45 by adleau           ###   ########.fr       */
+/*   Updated: 2018/03/16 16:06:10 by mabessir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef WALLS_H
 # define WALLS_H
 # include <helpers/shapes.h>
+# include <mandatory_part/wolf.h>
+# include <mandatory_part/w3d_calc.h>
+# include <helpers/cleanup.h>
+# include <mandatory_part/w3d_rays.h>
 
 typedef struct		s_range
 {
@@ -50,5 +54,24 @@ void				draw_floor_ceiling(SDL_Surface *surf,
 SDL_Surface *src, t_vector_2d *index);
 Uint32				get_color_from_tex(t_wolf *wolf, int x,
 int y, t_walls *walls);
+void				init_wall(t_wall *wall);
+int					init_walls(t_walls *walls);
+int					pick_wall(t_wall *wall);
+void				check_wall(t_wolf *wolf, int *tmpx, int *tmpy);
+void				check_wall2(t_wolf *wolf, int *tmpx, int *tmpy);
+void				check_wall_b(t_wolf *wolf, int *tmpx, int *tmpy);
+void				check_wall_b2(t_wolf *wolf, int *tmpx, int *tmpy);
+void				init_ray(t_wolf *wolf, t_w3dray *w_ray, double c_ray);
+void				init_draw(t_wolf *wolf, t_walls *walls);
+void				draw_loop(t_wolf *wolf, t_walls *walls);
+void				free_walls(t_walls *walls);
+void				free_wall(t_wall *wall);
+t_vector_2d			detect_wall(t_wolf *wolf,
+t_wall *wall, double c_ray, int x);
+int					handle_90degrees(t_walls *walls, int x,
+double *rays, double *inc);
+void				last_if(t_wolf *wolf, t_walls *walls);
+void				sdl_handle(t_sdl_wrapper *wrap);
+t_vector_2d			get_player(t_vector_2d player, t_vector_2d direction);
 
 #endif

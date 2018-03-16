@@ -6,7 +6,7 @@
 /*   By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:27:33 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/16 13:32:45 by adleau           ###   ########.fr       */
+/*   Updated: 2018/03/16 15:18:03 by mabessir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,74 +15,6 @@
 #include <SDL.h>
 #define EVENT_PTR wolf->wrap->event
 #define WIN_PTR wolf->wrap->screen
-
-void		check_wall(t_wolf *wolf, int *tmpx, int *tmpy)
-{
-	if (wolf->map.map[wolf->map.pos.y][wolf->map.pos.x +
-	(wolf->map.cam.direction.x)] == '1')
-	{
-		wolf->map.cam.player.x = *tmpx;
-		wolf->map.cam.player.y = *tmpy;
-		return ;
-	}
-	else
-	{
-		wolf->map.pos.x += wolf->map.cam.direction.x;
-		wolf->map.cam.player.x =
-		(wolf->map.cam.direction.x > 0) ? 0 : CELL;
-	}
-}
-
-void		check_wall2(t_wolf *wolf, int *tmpx, int *tmpy)
-{
-	if (wolf->map.map[wolf->map.pos.y +
-	wolf->map.cam.direction.y][wolf->map.pos.x] == '1')
-	{
-		wolf->map.cam.player.x = *tmpx;
-		wolf->map.cam.player.y = *tmpy;
-		return ;
-	}
-	else
-	{
-		wolf->map.pos.y += wolf->map.cam.direction.y;
-		wolf->map.cam.player.y =
-		(wolf->map.cam.direction.y > 0) ? 0 : CELL;
-	}
-}
-
-void		check_wall_b(t_wolf *wolf, int *tmpx, int *tmpy)
-{
-	if (wolf->map.map[wolf->map.pos.y][wolf->map.pos.x -
-	(wolf->map.cam.direction.x)] == '1')
-	{
-		wolf->map.cam.player.x = *tmpx;
-		wolf->map.cam.player.y = *tmpy;
-		return ;
-	}
-	else
-	{
-		wolf->map.pos.x -= wolf->map.cam.direction.x;
-		wolf->map.cam.player.x =
-		(wolf->map.cam.direction.x < 0) ? 0 : CELL;
-	}
-}
-
-void		check_wall_b2(t_wolf *wolf, int *tmpx, int *tmpy)
-{
-	if (wolf->map.map[wolf->map.pos.y -
-	wolf->map.cam.direction.y][wolf->map.pos.x] == '1')
-	{
-		wolf->map.cam.player.x = *tmpx;
-		wolf->map.cam.player.y = *tmpy;
-		return ;
-	}
-	else
-	{
-		wolf->map.pos.y -= wolf->map.cam.direction.y;
-		wolf->map.cam.player.y =
-		(wolf->map.cam.direction.y < 0) ? 0 : CELL;
-	}
-}
 
 void		keyup_up(t_wolf *wolf)
 {

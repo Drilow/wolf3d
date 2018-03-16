@@ -1,14 +1,14 @@
-#******************************************************************************#
+# **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: adleau <marvin@42.fr>                      +#+  +:+       +#+         #
+#    By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/03/15 16:49:08 by adleau            #+#    #+#              #
-#    Updated: 2018/03/16 13:21:07 by adleau           ###   ########.fr        #
+#    Updated: 2018/03/16 16:01:12 by mabessir         ###   ########.fr        #
 #                                                                              #
-#******************************************************************************#
+# **************************************************************************** #
 
 NCOL=\x1b[0m
 VERT=\x1b[32;01m
@@ -43,7 +43,12 @@ SRC =   $(SRCPATH)main.c \
 		$(SRCPATH)mandatory_part/wolf_parse.c \
 		$(SRCPATH)mandatory_part/w_finish_parse.c \
 		$(SRCPATH)mandatory_part/wolf_loop.c \
+		$(SRCPATH)mandatory_part/walls_check.c \
+		$(SRCPATH)mandatory_part/detect_walls.c \
+		$(SRCPATH)mandatory_part/getinfos.c \
 		$(SRCPATH)mandatory_part/wolf_draw.c \
+		$(SRCPATH)mandatory_part/wolf_draw2.c \
+		$(SRCPATH)mandatory_part/rays.c \
 		$(SRCPATH)helpers/cleanup.c \
 		$(SRCPATH)helpers/sdl_wrapper.c \
 		$(SRCPATH)helpers/str_helpers.c	\

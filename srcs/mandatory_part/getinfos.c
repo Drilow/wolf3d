@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   wolf_draw.c                                        :+:      :+:    :+:   */
+/*   getinfos.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/02/05 08:28:28 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/16 16:01:55 by mabessir         ###   ########.fr       */
+/*   Created: 2018/03/16 16:00:22 by mabessir          #+#    #+#             */
+/*   Updated: 2018/03/16 16:00:43 by mabessir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,59 +33,35 @@
 #define PPROCY_Y (P_MAP_Y + (w_ray->dir.y * (POFF_Y + w_ray->proc_y.y) / CELL))
 #define PPROCY_X (P_MAP_X + (w_ray->dir.x * (POFF_X + w_ray->proc_y.x) / CELL))
 
-int					compare_vector_2d(t_vector_2d v1, t_vector_2d v2)
+double				get_angle(double d)
 {
-	if (v1.x == v2.x && v1.y == v2.y)
-		return (0);
-	return (1);
+	double		r;
+
+	r = 0;
+	if (d < 90)
+		r = 90 - d;
+	else if (d < 180)
+		r = d - 90;
+	else if (d < 270)
+		r = 270 - d;
+	else if (d < 360)
+		r = d - 270;
+	return (r);
 }
 
-void				handle_overflow(t_w3dray *w_ray, t_vector_2d size)
+void				get_direction(t_vector_2d *direction, double ray)
 {
-	if (PPROCX_X >= size.x || PPROCX_X < 0)
-	{
-		while (PPROCX_X >= size.x)
-			w_ray->proc_x.x -= CELL;
-		w_ray->distance.x = get_dist(&(w_ray->proc_x));
-	}
-	if (PPROCY_Y >= size.y || PPROCY_Y < 0)
-	{
-		while (PPROCY_Y >= size.y || PPROCY_Y < 0)
-			w_ray->proc_y.y -= CELL;
-		w_ray->distance.y = get_dist(&(w_ray->proc_y));
-	}
+	if (ray > 0 && ray <= 180)
+		direction->x = 1;
+	else if (ray > 180 && ray < 360)
+		direction->x = -1;
+	if (ray > 90 && ray <= 270)
+		direction->y = 1;
+	else if ((ray < 90 && ray >= 0) || (ray > 270 && ray < 360))
+		direction->y = -1;
 }
 
-int					handle_90degrees(t_walls *walls, int x,
-double *rays, double *inc)
+int					get_dist(t_vector_2d *proc)
 {
-	if (*rays == 90)
-	{
-		if (x)
-			walls->collumns[x] = walls->collumns[x - 1];
-		else
-			walls->collumns[x] = 0;
-		*rays += *inc;
-		return (x++);
-	}
-	return (x);
-}
-
-void				last_if(t_wolf *wolf, t_walls *walls)
-{
-	walls->collumns[walls->wall->start] =
-		walls->collumns[walls->wall->start - 1];
-	if (!(walls->wall->next = (t_wall*)malloc(sizeof(t_wall))))
-		free_wolf(wolf, 1);
-	walls->wall = walls->wall->next;
-	init_wall(walls->wall);
-}
-
-void				sdl_handle(t_sdl_wrapper *wrap)
-{
-	SDL_RenderClear(wrap->renderer);
-	SDL_RenderCopy(wrap->renderer, wrap->tex, NULL, NULL);
-	SDL_RenderPresent(wrap->renderer);
-	SDL_DestroyTexture(wrap->tex);
-	wrap->tex = NULL;
+	return (sqrt(pow(proc->x, 2) + pow(proc->y, 2)));
 }

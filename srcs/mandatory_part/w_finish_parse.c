@@ -6,7 +6,7 @@
 /*   By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/14 12:10:49 by mabessir          #+#    #+#             */
-/*   Updated: 2018/03/16 14:13:38 by adleau           ###   ########.fr       */
+/*   Updated: 2018/03/16 15:04:07 by mabessir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void			alloc_map_mem(t_wolf *wolf, t_w3dmap *map, int i)
 
 void			check_properly_do(t_wolf *wolf, char *line)
 {
-	if	(ft_strncmp(line, "{", 1) &&
+	if (ft_strncmp(line, "{", 1) &&
 	ft_strncmp(line, "w3dmapformat:", ft_strlen("w3dmapformat:")) &&
 	ft_strncmp(line, "X: ", ft_strlen("X: ")) &&
 	ft_strncmp(line, "Y: ", ft_strlen("Y: ")) &&
@@ -81,9 +81,10 @@ void			check_properly_do(t_wolf *wolf, char *line)
 	if (wolf->i > 9)
 		free_wolf(wolf, 1);
 }
+
 int				get_map_infos(t_wolf *wolf, t_w3dmap *map, char *line)
 {
-	int			i;
+	int	i;
 
 	i = -1;
 	check_properly_do(wolf, line);
@@ -99,7 +100,8 @@ int				get_map_infos(t_wolf *wolf, t_w3dmap *map, char *line)
 		alloc_map_mem(wolf, map, i);
 	if (!ft_strncmp(line, "CameraDirection:", ft_strlen("CameraDirection:")))
 	{
-		if (!(map->cam.orientation = ft_atoi(line + ft_strlen("CameraDirection:")))
+		if (!(map->cam.orientation = ft_atoi(line +
+		ft_strlen("CameraDirection:")))
 		|| map->cam.orientation > 360 || map->cam.orientation < 0)
 			free_wolf(wolf, 1);
 	}
