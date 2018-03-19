@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wolf_parse.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Mendy <Mendy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:23:53 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/16 14:29:16 by adleau           ###   ########.fr       */
+/*   Updated: 2018/03/19 12:42:06 by Mendy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,9 @@ int				check_map(t_wolf *wolf, char **map, t_w3dmap wmap)
 		j = -1;
 		while (++j < wmap.size.x)
 		{
-			if (map[0][j] == '0')
+			if (map[0][j] == '0' || map[0][j] == 'S')
 				free_wolf(wolf, 1);
-			if (map[i][0] == '0')
+			if (map[i][0] == '0' || map[i][0] == 'S')
 				free_wolf(wolf, 1);
 			if (map[i][j] == 'S')
 				wolf->spawn++;

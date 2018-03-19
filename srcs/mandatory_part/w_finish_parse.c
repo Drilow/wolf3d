@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   w_finish_parse.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Mendy <Mendy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/14 12:10:49 by mabessir          #+#    #+#             */
-/*   Updated: 2018/03/16 15:04:07 by mabessir         ###   ########.fr       */
+/*   Updated: 2018/03/19 12:38:34 by Mendy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,8 @@ void			check_properly_do(t_wolf *wolf, char *line)
 		free_wolf(wolf, 1);
 	}
 	if (wolf->i > 9)
+		free_wolf(wolf, 1);
+	if (wolf->map.size.x > 30 || wolf->map.size.y > 30)
 		free_wolf(wolf, 1);
 }
 
