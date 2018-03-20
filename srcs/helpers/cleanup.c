@@ -6,7 +6,7 @@
 /*   By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/06 20:42:52 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/20 16:52:12 by mabessir         ###   ########.fr       */
+/*   Updated: 2018/03/20 18:28:38 by mabessir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,22 +70,22 @@ void			free_map(t_w3dmap *map)
 void			free_wolf(t_wolf *wolf, int i)
 {
 	if (i == 2)
-		ft_putstr("Wrong path for map.\n");
+		ft_putstr_fd("Wrong path for map.", 2);
 	if (i == 3)
-		ft_putstr("Wrong path for textures.\n");
+		ft_putstr_fd("Wrong path for textures.", 2);
 	if (i == 4)
-		ft_putstr("Wrong map format. Please verify the model.\n");
+		ft_putstr_fd("Wrong map format. Please verify the model.", 2);
 	if (i == 5)
-		ft_putstr("Map is too big or too small. Be smart.\n");
+		ft_putstr_fd("Map is too big or too small. Be smart.", 2);
 	if (i == 6)
-		ft_putstr("Something is wrong with map informations.\n");
+		ft_putstr_fd("Something is wrong with map informations.", 2);
 	if (i == 7)
-		ft_putstr("ERROR. Textures can only be selected between\
-		0 - 5 for X and 0 - 17 for Y\n");
+		ft_putstr_fd("ERROR. Textures can only be selected between\
+		0 - 5 for X and 0 - 17 for Y", 2);
 	if (i == 8)
-		ft_putstr("Check Camera value. Be smart. Protips : 0 - 360\n");
+		ft_putstr_fd("Check Camera value. Be smart. Protips : 0 - 360", 2);
 	if (i == 9)
-		ft_putstr("Something is wrong with map.\n");
+		ft_putstr_fd("Something is wrong with map.", 2);
 	free_sdl_wrapper(wolf->wrap);
 	free_map(&(wolf->map));
 	exit(i);

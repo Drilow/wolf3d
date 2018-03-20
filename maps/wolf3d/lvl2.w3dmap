@@ -3,10 +3,10 @@ w3dmapformat:
 X: 14
 Y: 14
 CameraDirection: 180
-WALL0:[4][13]
+WALL0:[0][6]
 WALL2:[2][2]
 WALL2:[2][5]
-WALL3:[2][11]
+WALL3:[4][7]
 }
 1 1 1 1 1 1 1 1 1 1 1 1 1 1
 1 0 1 0 0 0 0 0 0 0 0 0 0 1

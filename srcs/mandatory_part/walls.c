@@ -6,7 +6,7 @@
 /*   By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:36:41 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/14 11:45:27 by mabessir         ###   ########.fr       */
+/*   Updated: 2018/03/20 18:06:05 by mabessir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ t_vector_2d *index)
 	y = -1;
 	ratiox = (double)(CELL - 1) / WIN_WD;
 	ratioy = (double)(CELL - 1) / WIN_HT;
-	while (++y <= WIN_HT)
+	while (++y < WIN_HT)
 	{
 		x = -1;
-		while (++x <= WIN_WD)
+		while (++x < WIN_WD)
 		{
 			color = *((Uint32*)src->pixels + (Uint32)((((index->y *
 			CELL + (Uint32)(y * ratioy)) *

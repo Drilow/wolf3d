@@ -6,7 +6,7 @@
 /*   By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/16 15:26:17 by mabessir          #+#    #+#             */
-/*   Updated: 2018/03/16 15:52:51 by mabessir         ###   ########.fr       */
+/*   Updated: 2018/03/20 18:05:58 by mabessir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ void				draw_loop(t_wolf *wolf, t_walls *walls)
 		x = handle_90degrees(walls, x, &rays, &inc);
 		walls->wall->inmap = detect_wall(wolf, walls->wall, rays, x);
 		walls->collumns[x] = walls->wall->col;
-		if (walls->collumns[x] <= 0)
+		if (walls->collumns[x] <= 0 && x != 0)
 			walls->collumns[x] = walls->collumns[x - 1];
 		if (!start)
 			start = walls->wall;

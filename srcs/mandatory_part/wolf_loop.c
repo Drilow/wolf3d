@@ -6,7 +6,7 @@
 /*   By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:27:33 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/16 15:18:03 by mabessir         ###   ########.fr       */
+/*   Updated: 2018/03/20 18:38:16 by mabessir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,26 +52,28 @@ void		keyup_down(t_wolf *wolf)
 
 void		keyup_events_w3d(t_wolf *wolf)
 {
+	const Uint8		*key = SDL_GetKeyboardState(NULL);
+
 	if (EVENT_PTR.key.keysym.sym == SDLK_ESCAPE)
 	{
 		free_sdl_wrapper(wolf->wrap);
 		exit(0);
 	}
-	else if (EVENT_PTR.key.keysym.sym == SDLK_RIGHT)
+	if (key[SDL_SCANCODE_RIGHT])
 	{
 		wolf->map.cam.orientation += 5;
 		if (wolf->map.cam.orientation >= 360)
 			wolf->map.cam.orientation -= 360;
 	}
-	else if (EVENT_PTR.key.keysym.sym == SDLK_LEFT)
+	if (key[SDL_SCANCODE_LEFT])
 	{
 		wolf->map.cam.orientation -= 5;
 		if (wolf->map.cam.orientation < 0)
 			wolf->map.cam.orientation += 360;
 	}
-	else if (EVENT_PTR.key.keysym.sym == SDLK_UP)
+	if (key[SDL_SCANCODE_UP])
 		keyup_up(wolf);
-	else if (EVENT_PTR.key.keysym.sym == SDLK_DOWN)
+	if (key[SDL_SCANCODE_DOWN])
 		keyup_down(wolf);
 }
 
@@ -87,7 +89,7 @@ void		wolf_loop(t_wolf *wolf)
 	istrue = 1;
 	while (istrue)
 	{
-		while (SDL_PollEvent(&(EVENT_PTR)))
+		if (SDL_PollEvent(&(EVENT_PTR)))
 		{
 			w3d_draw(wolf);
 			if (EVENT_PTR.type == SDL_QUIT)
