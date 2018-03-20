@@ -6,7 +6,7 @@
 /*   By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:24:39 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/16 15:03:02 by mabessir         ###   ########.fr       */
+/*   Updated: 2018/03/20 16:17:39 by mabessir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void		init_w3dparse(t_wolf *wolf, char *path)
 	if (path == NULL)
 	{
 		if (!(path = ft_strdup("maps/wolf3d/lvl2.w3dmap")))
-			free_wolf(wolf, 1);
+			free_wolf(wolf, 2);
 		i = 1;
 	}
 	if ((wolf->parse.fd = open(path, O_RDONLY)) < 0)
@@ -64,7 +64,7 @@ void		init_w3dmap(t_wolf *wolf, t_w3dmap *map)
 	map->pos.x = -1;
 	map->pos.y = -1;
 	if (!(map->textures = IMG_Load("assets/textures/default/1375.png")))
-		free_wolf(wolf, 1);
+		free_wolf(wolf, 3);
 	map->background.x = 1;
 	map->background.y = 5;
 	map->cam.player.x = CELL / 2;

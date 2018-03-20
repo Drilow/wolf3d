@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wolf_parse.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Mendy <Mendy@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:23:53 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/19 12:42:06 by Mendy            ###   ########.fr       */
+/*   Updated: 2018/03/20 16:39:02 by mabessir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,24 +65,44 @@ t_vector_2d		get_starting(char **map)
 	return (r);
 }
 
+void			checky_map(t_wolf *wolf, t_w3dmap wmap)
+{
+	if (wmap.size.x == 0 || wmap.size.y == 0)
+		free_wolf(wolf, 6);
+	if (wmap.walltab[0].x == 0 || wmap.walltab[0].y == 0)
+		ft_putstr("fdp");
+	if (wmap.walltab[1].x == 0 || wmap.walltab[1].y == 0)
+		free_wolf(wolf, 1);
+	if (wmap.walltab[2].x == 0 || wmap.walltab[2].y == 0)
+		free_wolf(wolf, 1);
+	if (wmap.walltab[3].x == 0 || wmap.walltab[3].y == 0)
+		free_wolf(wolf, 1);
+}
+
 int				check_map(t_wolf *wolf, char **map, t_w3dmap wmap)
 {
 	int i;
 	int j;
 
 	i = -1;
+	checky_map(wolf, wmap);
 	while (++i < wmap.size.y)
 	{
 		j = -1;
 		while (++j < wmap.size.x)
 		{
-			if (map[0][j] == '0' || map[0][j] == 'S')
-				free_wolf(wolf, 1);
-			if (map[i][0] == '0' || map[i][0] == 'S')
-				free_wolf(wolf, 1);
+			if (map[0][j] == '0' ||
+			map[wmap.size.y - 1][j] == '0' || map[0][j] == 'S')
+				free_wolf(wolf, 9);
+			if (map[i][0] == '0' || map[i][0] == 'S' || map[i][wmap.size.x - 1] == '0')
+				free_wolf(wolf, 9);
 			if (map[i][j] == 'S')
 				wolf->spawn++;
+			if (map[i][j] != '0' && map[i][j] != 'S')
+				map[i][j] = '1';
 		}
+		if (map[i][wmap.size.x - 1] == 'S' )
+			free_wolf(wolf, 9);
 	}
 	return (0);
 }
@@ -107,10 +127,10 @@ void			w3d_parse(t_wolf *wolf)
 		free_wolf(wolf, 1);
 	check_map(wolf, wolf->map.map, wolf->map);
 	if (wolf->spawn != 1)
-		free_wolf(wolf, 1);
+		free_wolf(wolf, 9);
 	wolf->map.pos = get_starting(wolf->map.map);
 	wolf->parse.done = 1;
 	if (wolf->i != 9)
-		free_wolf(wolf, 1);
+		free_wolf(wolf, 5);
 	close(wolf->parse.fd);
 }

@@ -6,7 +6,7 @@
 /*   By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/14 12:10:49 by mabessir          #+#    #+#             */
-/*   Updated: 2018/03/20 10:12:48 by mabessir         ###   ########.fr       */
+/*   Updated: 2018/03/20 16:33:24 by mabessir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,19 +34,19 @@ t_wolf *wolf, char *line)
 	i = 1;
 	if ((str = ft_strchr(line, '[')))
 	{
-		if (ft_isdigit(str[i]) && (ft_isdigit(str[i + 1]) ||
-		str[i + 1] == ']') && atoi(str + i) < 6)
-			walltab[j].x = atoi(str + i);
-		else if (walltab[j].x > 5)
-			free_wolf(wolf, 1);
+		if (ft_atoi(str + i) > 5 || ft_atoi(str + i) < 0)
+			free_wolf(wolf, 7);
+		else if (ft_isdigit(str[i]) && (ft_isdigit(str[i + 1]) ||
+		str[i + 1] == ']') && ft_atoi(str + i) < 6)
+			walltab[j].x = ft_atoi(str + i);
 	}
 	if ((str = ft_strrchr(line, '[')))
 	{
 		if (ft_isdigit(str[i]) && (ft_isdigit(str[i + 1]) ||
-		str[i + 1] == ']') && atoi(str + i) < 18)
-			walltab[j].y = atoi(str + i);
-		else if (walltab[j].y > 17)
-			free_wolf(wolf, 1);
+		str[i + 1] == ']') && ft_atoi(str + i) < 18)
+			walltab[j].y = ft_atoi(str + i);
+		if (ft_atoi(str + i) > 17 || ft_atoi(str + i) < 0)
+			free_wolf(wolf, 7);
 	}
 	j++;
 	return (j);
@@ -74,13 +74,13 @@ void			check_properly_do(t_wolf *wolf, char *line)
 	ft_strncmp(line, "CameraDirection:", ft_strlen("CameraDirection:")) &&
 	ft_strncmp(line, "WALL", ft_strlen("WALL")) &&
 	ft_strncmp(line, "}", 1))
-		free_wolf(wolf, 1);
+		free_wolf(wolf, 6);
 	if (wolf->i > 9)
-		free_wolf(wolf, 1);
+		free_wolf(wolf, 4);
 	if (wolf->map.size.x > 5000 || wolf->map.size.x < 0)
-		free_wolf(wolf, 1);
+		free_wolf(wolf, 5);
 	if (wolf->map.size.y > 5000 || wolf->map.size.y < 0)
-		free_wolf(wolf, 1);
+		free_wolf(wolf, 5);
 }
 
 int				get_map_infos(t_wolf *wolf, t_w3dmap *map, char *line)
@@ -101,10 +101,10 @@ int				get_map_infos(t_wolf *wolf, t_w3dmap *map, char *line)
 		alloc_map_mem(wolf, map, i);
 	if (!ft_strncmp(line, "CameraDirection:", ft_strlen("CameraDirection:")))
 	{
-		if (!(map->cam.orientation = ft_atoi(line +
-		ft_strlen("CameraDirection:")))
-		|| map->cam.orientation > 360 || map->cam.orientation < 0)
-			free_wolf(wolf, 1);
+		map->cam.orientation = ft_atoi(line +
+		ft_strlen("CameraDirection:"));
+		if (map->cam.orientation > 360 || map->cam.orientation < 0)
+			free_wolf(wolf, 8);
 	}
 	wolf->i++;
 	return (0);
