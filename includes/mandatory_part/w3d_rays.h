@@ -6,7 +6,7 @@
 /*   By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/13 17:43:27 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/16 15:13:30 by mabessir         ###   ########.fr       */
+/*   Updated: 2018/03/20 10:06:22 by mabessir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,6 @@ typedef struct			s_w3dray
 	t_vector_2d			distance;
 }						t_w3dray;
 
-void				launch_ray(t_w3dray *w_ray, t_vector_2d *size);
+void					launch_ray(t_w3dray *w_ray, t_vector_2d *size);
 
 #endif

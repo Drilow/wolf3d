@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   w_finish_parse.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Mendy <Mendy@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/14 12:10:49 by mabessir          #+#    #+#             */
-/*   Updated: 2018/03/19 12:38:34 by Mendy            ###   ########.fr       */
+/*   Updated: 2018/03/20 10:12:48 by mabessir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,13 +74,12 @@ void			check_properly_do(t_wolf *wolf, char *line)
 	ft_strncmp(line, "CameraDirection:", ft_strlen("CameraDirection:")) &&
 	ft_strncmp(line, "WALL", ft_strlen("WALL")) &&
 	ft_strncmp(line, "}", 1))
-	{
-		printf("%s | %zu\n", line, ft_strlen(line));
 		free_wolf(wolf, 1);
-	}
 	if (wolf->i > 9)
 		free_wolf(wolf, 1);
-	if (wolf->map.size.x > 30 || wolf->map.size.y > 30)
+	if (wolf->map.size.x > 5000 || wolf->map.size.x < 0)
+		free_wolf(wolf, 1);
+	if (wolf->map.size.y > 5000 || wolf->map.size.y < 0)
 		free_wolf(wolf, 1);
 }
 

@@ -6,7 +6,7 @@
 /*   By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:28:28 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/16 17:16:45 by mabessir         ###   ########.fr       */
+/*   Updated: 2018/03/20 10:05:42 by mabessir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ double *rays, double *inc)
 
 void				last_if(t_wolf *wolf, t_walls *walls)
 {
-	if(walls->wall->start > 0)
+	if (walls->wall->start > 0)
 		walls->collumns[walls->wall->start] =
 		walls->collumns[walls->wall->start - 1];
 	if (!(walls->wall->next = (t_wall*)malloc(sizeof(t_wall))))
