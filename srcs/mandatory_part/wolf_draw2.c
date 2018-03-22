@@ -6,7 +6,7 @@
 /*   By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/16 15:26:17 by mabessir          #+#    #+#             */
-/*   Updated: 2018/03/20 18:05:58 by mabessir         ###   ########.fr       */
+/*   Updated: 2018/03/22 10:57:26 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,8 +108,10 @@ void				draw_loop(t_wolf *wolf, t_walls *walls)
 void				w3d_draw(t_wolf *wolf)
 {
 	t_walls			walls;
+	t_wall			*start;
 
 	init_draw(wolf, &walls);
+	start = walls.wall;
 	if (walls.wall->end == -1 && walls.wall->start != -1)
 		walls.wall->end = WIN_WD;
 	while (walls.wall)
@@ -122,6 +124,7 @@ void				w3d_draw(t_wolf *wolf)
 			break ;
 		walls.wall = walls.wall->next;
 	}
+	walls.wall = start;
 	free_walls(&walls);
 	if (!(wolf->wrap->renderer))
 		if (!(wolf->wrap->renderer = SDL_CreateRenderer(wolf->wrap->screen,
@@ -133,3 +136,9 @@ void				w3d_draw(t_wolf *wolf)
 			free_wolf(wolf, 1);
 	sdl_handle(wolf->wrap);
 }
+
+
+
+
+
+
