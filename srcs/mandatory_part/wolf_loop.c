@@ -6,7 +6,7 @@
 /*   By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:27:33 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/22 10:58:41 by adleau           ###   ########.fr       */
+/*   Updated: 2018/03/22 11:18:38 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void		keyup_down(t_wolf *wolf)
 		check_wall_b2(wolf, &tmpx, &tmpy);
 }
 
-int			keyup_events_w3d(t_wolf *wolf)
+void		keyup_events_w3d(t_wolf *wolf)
 {
 	const Uint8		*key = SDL_GetKeyboardState(NULL);
 
@@ -64,26 +64,17 @@ int			keyup_events_w3d(t_wolf *wolf)
 		wolf->map.cam.orientation += 5;
 		if (wolf->map.cam.orientation >= 360)
 			wolf->map.cam.orientation -= 360;
-		return (0);
 	}
 	if (key[SDL_SCANCODE_LEFT])
 	{
 		wolf->map.cam.orientation -= 5;
 		if (wolf->map.cam.orientation < 0)
 			wolf->map.cam.orientation += 360;
-		return (0);
 	}
 	if (key[SDL_SCANCODE_UP])
-	{
 		keyup_up(wolf);
-		return (0);
-	}
 	if (key[SDL_SCANCODE_DOWN])
-	{
 		keyup_down(wolf);
-		return (0);
-	}
-	return (1);
 }
 
 /*
@@ -98,7 +89,7 @@ void		wolf_loop(t_wolf *wolf)
 	istrue = 1;
 	while (istrue)
 	{
-			w3d_draw(wolf);
+		w3d_draw(wolf);
 		if (SDL_PollEvent(&(EVENT_PTR)))
 		{
 			if (EVENT_PTR.type == SDL_QUIT)

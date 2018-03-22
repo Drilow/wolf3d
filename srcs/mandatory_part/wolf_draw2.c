@@ -6,7 +6,7 @@
 /*   By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/16 15:26:17 by mabessir          #+#    #+#             */
-/*   Updated: 2018/03/22 10:57:26 by adleau           ###   ########.fr       */
+/*   Updated: 2018/03/22 11:04:03 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,16 +114,7 @@ void				w3d_draw(t_wolf *wolf)
 	start = walls.wall;
 	if (walls.wall->end == -1 && walls.wall->start != -1)
 		walls.wall->end = WIN_WD;
-	while (walls.wall)
-	{
-		walls.wall->index = wolf->map.walltab[pick_wall(walls.wall)];
-		if (walls.wall->start != -1 && walls.wall->end
-			!= -1 && walls.wall->start - walls.wall->end != 0)
-			draw_wall_tmp(wolf, &walls);
-		else if (walls.wall->start == -1 || walls.wall->end == -1)
-			break ;
-		walls.wall = walls.wall->next;
-	}
+	walls_loop(wolf, &walls);
 	walls.wall = start;
 	free_walls(&walls);
 	if (!(wolf->wrap->renderer))
@@ -136,9 +127,3 @@ void				w3d_draw(t_wolf *wolf)
 			free_wolf(wolf, 1);
 	sdl_handle(wolf->wrap);
 }
-
-
-
-
-
-

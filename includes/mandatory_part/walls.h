@@ -6,7 +6,7 @@
 /*   By: mabessir <mabessir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 08:37:54 by adleau            #+#    #+#             */
-/*   Updated: 2018/03/16 16:06:10 by mabessir         ###   ########.fr       */
+/*   Updated: 2018/03/22 11:05:21 by adleau           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,5 +73,6 @@ double *rays, double *inc);
 void				last_if(t_wolf *wolf, t_walls *walls);
 void				sdl_handle(t_sdl_wrapper *wrap);
 t_vector_2d			get_player(t_vector_2d player, t_vector_2d direction);
+void				walls_loop(t_wolf *wolf, t_walls *walls);
 
 #endif
